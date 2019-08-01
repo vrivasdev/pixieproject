@@ -199,7 +199,7 @@ export class CrupdateSubscriptionModalComponent implements OnInit {
      * Suggest matching users when autocomplete form control's value changes.
      */
     private bindToUserAutocomplete() {
-        this.filteredUsers = this.userAutocomplete.valueChanges.pipe(
+        this.userAutocomplete.valueChanges.pipe(
             debounceTime(400),
             switchMap(query => {
                 if ( ! query) return observableOf([]);
