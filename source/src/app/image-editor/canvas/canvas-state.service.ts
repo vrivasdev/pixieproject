@@ -1,7 +1,9 @@
 import {fabric} from 'fabric';
 import {ReplaySubject} from 'rxjs';
+import {Injectable} from '@angular/core';
 import {Settings} from 'common/core/config/settings.service';
 
+@Injectable()
 export class CanvasStateService {
     public original: {
         width: number;
