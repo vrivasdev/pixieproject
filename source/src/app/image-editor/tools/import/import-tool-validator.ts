@@ -3,6 +3,9 @@ import {UploadValidator} from '../../../../common/uploads/validation/upload-vali
 import {FileSizeValidation} from '../../../../common/uploads/validation/validations/file-size-validation';
 import {AllowedExtensionsValidation} from '../../../../common/uploads/validation/validations/allowed-extensions-validation';
 import {convertToBytes} from '../../../../common/core/utils/convertToBytes';
+import { Settings } from '../../../../../src/common/core/config/settings.service';
+import { Toast } from '../../../../../src/common/core/ui/toast.service';
+import { Translations } from '../../../../../src/common/core/translations/translations.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +13,14 @@ import {convertToBytes} from '../../../../common/core/utils/convertToBytes';
 export class ImportToolValidator extends UploadValidator {
     protected readonly DEFAULT_MAX_FILE_SIZE_MB = 10;
     public showToast = true;
+
+    constructor(
+        protected settings: Settings,
+        protected toast: Toast,
+        protected i18n: Translations
+    ) {
+        super(settings, toast, i18n);
+    }
 
     protected initValidations() {
         this.validations.push(

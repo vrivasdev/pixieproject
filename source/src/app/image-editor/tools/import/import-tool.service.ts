@@ -58,7 +58,7 @@ export class ImportToolService {
     /**
      * File specified file and if it passes, return files data.
      */
-    public validateAndGetData(file: UploadedFile): Promise<{ data: string, extension: string }> {
+    public validateAndGetData(file: UploadedFile): Promise<{ data: string, extension: string }> {        
         const validation = this.validator.validate(file),
         extension = file.extension;
 
