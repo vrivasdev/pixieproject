@@ -13,3 +13,7 @@ $ npm update
 $ npm install
 $ npm i typescript@3.1.6 --save-dev --save-exact
 ```
+- Finally execute the project
+```
+$ ng serve
+```
