@@ -30,6 +30,7 @@ export interface PixieConfig {
     blankCanvasSize?: {width: number; height: number};
     watermarkText?: string;
     textureSize?: number;
+    isAdmin?: boolean;
     baseUrl?: string;
     ui?: {
         visible: boolean;
@@ -144,6 +145,7 @@ export interface PixieConfig {
 export const DEFAULT_CONFIG: PixieConfig  = {
     selector: 'pixie-editor',
     textureSize: 4096,
+    isAdmin: false,
     ui: {
         visible: true,
         mode: EditorMode.INLINE,

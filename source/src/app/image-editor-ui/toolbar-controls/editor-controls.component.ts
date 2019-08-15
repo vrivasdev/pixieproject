@@ -29,6 +29,8 @@ import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
     ]
 })
 export class EditorControlsComponent {
+    private isAdmin: boolean;
+
     @Select(EditorState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
@@ -40,7 +42,9 @@ export class EditorControlsComponent {
         public activeObject: ActiveObjectService,
         private store: Store,
         public breakpoints: BreakpointsService,
-    ) {}
+    ) {
+        this.isAdmin = settings.get('pixie.isAdmin');
+    }
 
     public applyChanges() {
         const panel = this.store.selectSnapshot(EditorState.activePanel);

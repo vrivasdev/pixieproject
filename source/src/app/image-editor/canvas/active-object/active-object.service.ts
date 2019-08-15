@@ -76,7 +76,7 @@ export class ActiveObjectService {
         }
     }
 
-    public move(direction: 'top'|'right'|'bottom'|'left', amount: number) {
+    public move(direction: 'top'|'right'|'bottom'|'left', amount: number) {        
         const obj = this.get();
         if ( ! obj) return;
         obj.set(direction as any, obj[direction] + amount);

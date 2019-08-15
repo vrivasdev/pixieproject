@@ -17,7 +17,7 @@ import {noBackendErrorHandlerFactory} from 'common/core/errors/no-backend-error-
     imports: [
         BrowserModule,
         ImageEditorUIModule,
-        BrowserAnimationsModule,
+        BrowserAnimationsModule
     ],
     providers: [
         {

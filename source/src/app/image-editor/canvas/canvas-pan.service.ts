@@ -66,6 +66,7 @@ export class CanvasPanService {
             }
 
             const coords = this.getClientCoords(opt.e);
+            
             this.isDragging = true;
             this.lastPosX = coords.clientX;
             this.lastPosY = coords.clientY;
@@ -75,9 +76,12 @@ export class CanvasPanService {
             if (this.isDragging) {
                 this.set(opt.e);
             }
+            if (opt.target) {
+                // TODO: Make a static object with 'this.state.fabric'
+            }
         });
 
-        this.state.fabric.on('mouse:up', () => {
+        this.state.fabric.on('mouse:up', (opt) => {
             this.isDragging = false;
         });
     }

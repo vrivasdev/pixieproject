@@ -182,10 +182,9 @@ export class EditorState implements NgxsOnInit {
     @Action(ObjectSelected)
     objectSelected(ctx: StateContext<EditorStateModel>, action: ObjectSelected) {
         const state = this.getActiveObjState();
-
         // only open settings panel if selection event originated from
         // user clicking or tapping object on the canvas and not from
-        // selecting object programmatically in the app
+        // selecting object programmatically in the app                
         if (action.fromUserAction && ctx.getState().activePanel === DrawerName.NAVIGATION) {
             state.activePanel = DrawerName.OBJECT_SETTINGS;
         }

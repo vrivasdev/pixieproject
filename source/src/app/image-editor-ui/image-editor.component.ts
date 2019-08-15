@@ -26,12 +26,13 @@ import {Translations} from '../../common/core/translations/translations.service'
     encapsulation: ViewEncapsulation.None
 })
 export class ImageEditorComponent implements OnInit {
+    private isAdmin: boolean;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.toolbarHidden) toolbarHidden$: Observable<boolean>;
     @Select(EditorState.contentLoaded) contentLoaded$: Observable<boolean>;
     @ViewChild('canvasWrapper') canvasWrapper: ElementRef;
     @ViewChild('canvasMaskWrapper') canvasMaskWrapper: ElementRef;
-
+    // TODO: Define user type (admin or final) property
     constructor(
         public canvas: CanvasService,
         private history: HistoryToolService,
@@ -45,7 +46,9 @@ export class ImageEditorComponent implements OnInit {
         public config: Settings,
         private store: Store,
         private i18n: Translations,
-    ) {}
+    ) {
+        this.isAdmin = config.get('pixie.isAdmin');
+    }
 
     ngOnInit() {
         this.state.wrapperEl = this.canvasWrapper.nativeElement;
@@ -75,7 +78,7 @@ export class ImageEditorComponent implements OnInit {
 
     private openObjectSettingsOnDoubleClick() {
         this.canvas.fabric().on('mouse:dblclick', () => {
-            if (!this.activeObject.getId() || this.store.selectSnapshot(EditorState.dirty)) return;
+            if (!this.activeObject.getId() || this.store.selectSnapshot(EditorState.dirty) || !this.config.get('pixie.isAdmin')) return;
             this.store.dispatch(new OpenPanel(DrawerName.OBJECT_SETTINGS));
         });
     }
@@ -102,7 +105,8 @@ export class ImageEditorComponent implements OnInit {
 
     public onObjectSelection(fabricEvent) {
         this.store.dispatch(new ObjectSelected(
-            fabricEvent.target.name, fabricEvent.e != null
+            fabricEvent.target.name, fabricEvent.e != null &&
+            this.config.get('pixie.isAdmin')
         ));
     }
 
