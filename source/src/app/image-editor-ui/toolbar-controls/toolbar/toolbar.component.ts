@@ -17,6 +17,7 @@ import {HistoryNames} from '../../../image-editor/history/history-names.enum';
 import {HistoryState} from '../../state/history/history.state';
 import {EditorMode} from '../../../image-editor/enums/editor-mode.enum';
 import {startCase} from '../../../../common/core/utils/start-case';
+import { SampleImage } from 'app/image-editor-ui/panels/open-sample-image-panel/sample-image';
 
 @Component({
     selector: 'toolbar',
@@ -98,7 +99,8 @@ export class ToolbarComponent implements AfterViewInit {
     /**
      * Ask user to upload state file and override current editor state.
      */
-    public openStateFile() {
+    public openStateFile(image: SampleImage) {
+        //this.importTool.openBackgroundImage(this.getImageUrl(image));
         return this.importTool.openUploadDialog({type: 'state'});
     }
 
@@ -131,5 +133,14 @@ export class ToolbarComponent implements AfterViewInit {
 
     public getToolDisplayName(name: string) {
         return startCase(name);
+    }
+    public getImageUrl(image: SampleImage, useThumbnail = false) {
+        const url = (image.thumbnail && useThumbnail) ? image.thumbnail : image.url;
+        // prefix relative link with base url, if needed
+        if (url.indexOf('//') === -1) {
+            return this.config.getAssetUrl(url);
+        } else {
+            return url;
+        }
     }
 }

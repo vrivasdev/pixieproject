@@ -48,6 +48,7 @@ export class OpenSampleImagePanelService {
      * Check if "open image" dialog window should be shown.
      */
     private shouldShowOpenImageDialog() {
+
         return this.store.selectSnapshot(EditorState.visible) &&
             this.canvasState.isEmpty() &&
             this.config.get('pixie.ui.openImageDialog.show') &&
