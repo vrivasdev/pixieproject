@@ -1,5 +1,7 @@
-import {Injectable} from '@angular/core';
-import {CanvasStateService} from './canvas-state.service';
+import { Injectable } from '@angular/core';
+import { IMouseEvent } from 'fabric/fabric-impl';
+import { CanvasStateService } from './canvas-state.service';
+import { Settings } from '../../../common/core/config/settings.service';
 
 @Injectable()
 export class CanvasPanService {
@@ -8,7 +10,10 @@ export class CanvasPanService {
     private lastE: MouseEvent|TouchEvent;
     private isDragging  = false;
 
-    constructor(private state: CanvasStateService) {}
+    constructor(
+        private state: CanvasStateService,
+        private config: Settings
+    ) {}
 
     public set(e?: MouseEvent|TouchEvent) {
         // use last stored event, if no event is given
@@ -76,14 +81,22 @@ export class CanvasPanService {
             if (this.isDragging) {
                 this.set(opt.e);
             }
-            if (opt.target) {
-                // TODO: Make a static object with 'this.state.fabric'
+            if (opt.target && !this.config.get('pixie.isAdmin')) {// if element is selected and user is admin
+                this.blockObject(opt);
             }
         });
 
         this.state.fabric.on('mouse:up', (opt) => {
             this.isDragging = false;
         });
+    }
+
+    private blockObject(e: IMouseEvent) {
+        e.target.lockMovementX = true;
+        e.target.lockMovementY = true;
+        e.target.lockRotation  = true;
+        e.target.lockScalingX  = true;
+        e.target.lockScalingY  = true;
     }
 
     /**

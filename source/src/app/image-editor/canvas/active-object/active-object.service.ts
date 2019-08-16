@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Group, IObjectOptions, IText, ITextOptions, Object} from 'fabric/fabric-impl';
+import {Group, IObjectOptions, IText, ITextOptions, Object, IMouseEvent} from 'fabric/fabric-impl';
 import {CanvasStateService} from '../canvas-state.service';
 import {Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
@@ -76,7 +76,7 @@ export class ActiveObjectService {
         }
     }
 
-    public move(direction: 'top'|'right'|'bottom'|'left', amount: number) {        
+    public move(direction: 'top'|'right'|'bottom'|'left', amount: number) {
         const obj = this.get();
         if ( ! obj) return;
         obj.set(direction as any, obj[direction] + amount);
@@ -152,5 +152,9 @@ export class ActiveObjectService {
         } else {
             this.form.patchValue(this.config.get('pixie.objectDefaults'));
         }
+    }
+
+    public blockObject(e: KeyboardEvent) {
+        e.stopPropagation();
     }
 }

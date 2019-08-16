@@ -33,6 +33,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);
+    private isAdmin: boolean;
 
     constructor(
         public history: HistoryToolService,
@@ -45,7 +46,9 @@ export class ToolbarComponent implements AfterViewInit {
         private canvas: CanvasService,
         private floatingPanels: FloatingPanelsService,
         private store: Store,
-    ) {}
+    ) {
+        this.isAdmin = config.get('pixie.isAdmin');
+    }
 
     ngAfterViewInit() {
         this.canvas.state.loaded.pipe(delay(0)).subscribe(() => {

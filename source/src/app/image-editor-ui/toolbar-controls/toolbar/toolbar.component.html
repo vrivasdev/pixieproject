@@ -50,7 +50,7 @@
             <mat-icon svgIcon="add"></mat-icon>
         </button>
     </div>
-    <div class="right">
+    <div class="right" *ngIf="isAdmin" >
         <button mat-icon-button [disabled]="!(canUndo$ | async)" (click)="history.undo()">
             <mat-icon svgIcon="undo"></mat-icon>
         </button>
@@ -70,7 +70,7 @@
 </ng-template>
 
 <mat-menu #openMenu="matMenu" [overlapTrigger]="false">
-    <button mat-menu-item (click)="openBackgroundImage()" trans>Background Image</button>
-    <button mat-menu-item (click)="openOverlayImage()" trans>Overlay Image</button>
-    <button mat-menu-item (click)="openStateFile()" trans>Editor Project File</button>
+    <button *ngIf="isAdmin" mat-menu-item (click)="openBackgroundImage()" trans>Background Image</button>
+    <button *ngIf="isAdmin" mat-menu-item (click)="openOverlayImage()" trans>Overlay Image</button>
+    <button mat-menu-item (click)="openStateFile()" trans>Open Project File</button>
 </mat-menu>
