@@ -6,6 +6,7 @@ import {Settings} from 'common/core/config/settings.service';
 import {MERGED_CONFIG} from './image-editor/default-settings';
 import {ImageEditorUIModule} from './image-editor-ui/image-editor-ui.module';
 import {noBackendErrorHandlerFactory} from 'common/core/errors/no-backend-error-handler';
+import { MatIconModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {noBackendErrorHandlerFactory} from 'common/core/errors/no-backend-error-
     imports: [
         BrowserModule,
         ImageEditorUIModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatIconModule
     ],
     providers: [
         {

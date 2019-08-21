@@ -37,6 +37,7 @@ export class ImportToolService {
                     if (options.backgroundImage && file.extension !== 'json') {
                         this.openBackgroundImage(file.data).then(obj => resolve(obj));
                     } else {
+                        // this.openBackgroundImage(file.data).then(obj => resolve(obj));
                         this.openFile(file.data, file.extension).then(obj => resolve(obj));
                     }
                 }, () => {});
@@ -58,7 +59,7 @@ export class ImportToolService {
     /**
      * File specified file and if it passes, return files data.
      */
-    public validateAndGetData(file: UploadedFile): Promise<{ data: string, extension: string }> {        
+    public validateAndGetData(file: UploadedFile): Promise<{ data: string, extension: string }> {
         const validation = this.validator.validate(file),
         extension = file.extension;
 
