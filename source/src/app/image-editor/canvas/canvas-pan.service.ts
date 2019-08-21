@@ -15,7 +15,7 @@ export class CanvasPanService {
         private config: Settings
     ) {}
 
-    public set(e?: MouseEvent|TouchEvent) {
+    public set(e?: MouseEvent|TouchEvent) {        
         // use last stored event, if no event is given
         // used for re-adjusting pan during zoom
         if ( ! e) e = this.lastE;

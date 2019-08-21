@@ -103,7 +103,7 @@ export class ImageEditorComponent implements OnInit {
         });
     }
 
-    public onObjectSelection(fabricEvent) {
+    public onObjectSelection(fabricEvent) {        
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
             this.config.get('pixie.isAdmin')

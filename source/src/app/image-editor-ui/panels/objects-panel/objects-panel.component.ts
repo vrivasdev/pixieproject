@@ -27,8 +27,9 @@ export class ObjectsPanelComponent {
         public panelRef: OverlayPanelRef,
         private controls: EditorControlsService,
         private canvasState: CanvasStateService,
-        private store: Store,
-    ) {}
+        private store: Store
+    ) {
+    }
 
     public getIcon(object: Object): string {
         return ObjectNames[object.name].icon;
@@ -41,6 +42,16 @@ export class ObjectsPanelComponent {
         }
     }
 
+    public blockSelectedObject(object: Object) {
+
+        // this.blocked = this.blocked ? false : true;
+        object.lockMovementX = object.lockMovementX ? false : true;
+        object.lockMovementY = object.lockMovementY ? false : true;
+        object.lockRotation  = object.lockRotation ? false : true;
+        object.lockScalingX  = object.lockScalingX ? false : true;
+        object.lockScalingY  = object.lockScalingY ? false : true;
+    }
+
     public getObjectDisplayName(object: Object): string {
         const name = object.name;
         return name ? name.replace(/([A-Z])/g, ' $1') : '';
@@ -48,7 +59,6 @@ export class ObjectsPanelComponent {
 
     public reorderObjects(e: CdkDragDrop<string>) {
         moveItemInArray(this.objects.getAll(), e.previousIndex, e.currentIndex);
-
         // pixie and canvas object orders are reversed, need to
         // reverse newIndex given by cdk drag and drop
         const index = this.objects.getAll()
