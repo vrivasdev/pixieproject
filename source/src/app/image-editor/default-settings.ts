@@ -145,7 +145,7 @@ export interface PixieConfig {
 export const DEFAULT_CONFIG: PixieConfig  = {
     selector: 'pixie-editor',
     textureSize: 4096,
-    isAdmin: true,
+    isAdmin: false,
     ui: {
         visible: true,
         mode: EditorMode.INLINE,
