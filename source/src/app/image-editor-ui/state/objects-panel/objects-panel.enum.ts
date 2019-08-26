@@ -1,0 +1,4 @@
+export enum ObjectName {
+    COLOR = 'color',
+    CLEAR = 'clear'
+}

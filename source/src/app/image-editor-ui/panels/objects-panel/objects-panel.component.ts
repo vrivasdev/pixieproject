@@ -21,15 +21,13 @@ import {Observable} from 'rxjs';
 })
 export class ObjectsPanelComponent {
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
-
     constructor(
         public objects: ObjectsService,
         public panelRef: OverlayPanelRef,
         private controls: EditorControlsService,
         private canvasState: CanvasStateService,
         private store: Store
-    ) {
-    }
+    ) {}
 
     public getIcon(object: Object): string {
         return ObjectNames[object.name].icon;
@@ -42,14 +40,25 @@ export class ObjectsPanelComponent {
         }
     }
 
-    public blockSelectedObject(object: Object) {
+    public blockSelectedObject(object: Object, type: string) {
+        switch (type) {
+            case 'text-size':
 
-        // this.blocked = this.blocked ? false : true;
-        object.lockMovementX = object.lockMovementX ? false : true;
-        object.lockMovementY = object.lockMovementY ? false : true;
-        object.lockRotation  = object.lockRotation ? false : true;
-        object.lockScalingX  = object.lockScalingX ? false : true;
-        object.lockScalingY  = object.lockScalingY ? false : true;
+            break;
+            case 'color':
+            break;
+            case 'photo':
+            break;
+            case 'size':
+                object.lockScalingX  = object.lockScalingX ? false : true;
+                object.lockScalingY  = object.lockScalingY ? false : true;
+            break;
+            case 'position':
+                object.lockMovementX = object.lockMovementX ? false : true;
+                object.lockMovementY = object.lockMovementY ? false : true;
+                object.lockRotation  = object.lockRotation ? false : true;
+            break;
+        }
     }
 
     public getObjectDisplayName(object: Object): string {

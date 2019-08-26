@@ -52,3 +52,8 @@ export class SetZoom {
     static readonly type = '[Editor] Set Zoom';
     constructor(public zoom: number) {}
 }
+
+export class BlockObject {
+    static readonly type = '[Block] Block Object';
+    constructor(public type: string) {}
+}
