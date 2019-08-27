@@ -7,6 +7,7 @@ import {MarkAsDirty, OpenObjectSettingsPanel} from '../../state/objects/objects.
 import {ObjectsState} from '../../state/objects/objects.state';
 import {take} from 'rxjs/operators';
 import {EditorState} from '../../../image-editor/state/editor-state';
+import { ObjectPanelState, ObjectsPanelStateModel } from '../../state/objects-panel/objects-panel.state';
 
 @Component({
     selector: 'object-settings-drawer',
@@ -20,6 +21,8 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     @Select(ObjectsState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.activeObjIsText) activeObjIsText$: Observable<boolean>;
     @Select(EditorState.activeObjIsShape) activeObjIsShape$: Observable<boolean>;
+    @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
+
     private subscription: Subscription;
 
     constructor(

@@ -31,7 +31,7 @@
                     
                 </mat-icon>
                 <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')">
-                    <!--{{ object.lockRotation ? "lock" : "color_lens" }}-->
+                    {{ object.lockRotation ? "invert_colors_off" : "invert_colors" }}
                 </mat-icon>
             </div>                           
             <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'photo')">

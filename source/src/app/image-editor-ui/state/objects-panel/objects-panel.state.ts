@@ -1,6 +1,10 @@
-import { Action, NgxsOnInit, State, StateContext } from '@ngxs/store';
+import { Action, NgxsOnInit, State, StateContext, Store, Selector } from '@ngxs/store';
 import { ObjectName } from './objects-panel.enum';
 import { BlockObject } from './objects-panel.actions';
+
+export interface ObjectsPanelStateModel {
+    blockedObject: ObjectName;
+}
 
 @State({
     name: 'ObjectState',
@@ -9,11 +13,18 @@ import { BlockObject } from './objects-panel.actions';
     }
 })
 
-export class ObjectPanelState implements NgxsOnInit {
+export class ObjectPanelState {
+    @Selector()
+    static blockedObject(state: ObjectsPanelStateModel) {
+        return state.blockedObject;
+    }
+
+    constructor(private store: Store) {}
+
     @Action(BlockObject)
-    blockObject(ctx: StateContext, action: BlockObject) {
+    BlockObject(ctx: StateContext<ObjectsPanelStateModel>, action: BlockObject) {
         ctx.patchState({
             blockedObject: action.object
-        })
+        });
     }
 }

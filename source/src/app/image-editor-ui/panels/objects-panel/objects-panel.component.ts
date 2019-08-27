@@ -11,6 +11,8 @@ import {OpenPanel} from '../../../image-editor/state/editor-state-actions';
 import {DrawerName} from '../../toolbar-controls/drawers/drawer-name.enum';
 import {ObjectNames} from '../../../image-editor/objects/object-names.enum';
 import {Observable} from 'rxjs';
+import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
+import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-panel.enum';
 
 @Component({
     selector: 'objects-panel',
@@ -46,6 +48,7 @@ export class ObjectsPanelComponent {
 
             break;
             case 'color':
+                this.store.dispatch(new BlockObject(ObjectName.COLOR));
             break;
             case 'photo':
             break;

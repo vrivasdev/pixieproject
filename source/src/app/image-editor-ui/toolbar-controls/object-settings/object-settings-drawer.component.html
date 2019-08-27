@@ -2,10 +2,9 @@
     <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async">
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>
-    </div>
-
-    <div class="button-with-image" (click)="openPanel('color')">
-        <mat-icon svgIcon="color-custom"></mat-icon>
+    </div>            
+    <div class="button-with-image" (click)="openPanel('color')" [class.hidden]="blockedObject$ | async as blockedObject" >
+        <mat-icon svgIcon="color-custom" *ngIf="blockedObject === 'color' " ></mat-icon>
         <div class="bottom-label" trans>Color</div>
     </div>
 
