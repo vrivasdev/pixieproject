@@ -8,6 +8,8 @@ import {ImageEditorUIModule} from './image-editor-ui/image-editor-ui.module';
 import {noBackendErrorHandlerFactory} from 'common/core/errors/no-backend-error-handler';
 import { MatIconModule } from '@angular/material';
 
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+
 @NgModule({
     declarations: [
         AppComponent
@@ -19,7 +21,8 @@ import { MatIconModule } from '@angular/material';
         BrowserModule,
         ImageEditorUIModule,
         BrowserAnimationsModule,
-        MatIconModule
+        MatIconModule,
+        NgxsReduxDevtoolsPluginModule.forRoot()
     ],
     providers: [
         {

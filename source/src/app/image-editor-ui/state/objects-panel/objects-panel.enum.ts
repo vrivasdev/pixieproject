@@ -1,4 +1,6 @@
 export enum ObjectName {
     COLOR = 'color',
-    CLEAR = 'clear'
+    CLEAR = 'clear',
+    STYLE = 'style',
+    TEXTSIZE = 'textsize'
 }

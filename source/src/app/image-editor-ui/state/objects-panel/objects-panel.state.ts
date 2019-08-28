@@ -1,4 +1,4 @@
-import { Action, NgxsOnInit, State, StateContext, Store, Selector } from '@ngxs/store';
+import { Action, State, StateContext, Store, Selector } from '@ngxs/store';
 import { ObjectName } from './objects-panel.enum';
 import { BlockObject } from './objects-panel.actions';
 
@@ -24,7 +24,7 @@ export class ObjectPanelState {
     @Action(BlockObject)
     BlockObject(ctx: StateContext<ObjectsPanelStateModel>, action: BlockObject) {
         ctx.patchState({
-            blockedObject: action.object
+            blockedObject: (ctx.getState().blockedObject === 'clear') ? action.object : ObjectName.CLEAR
         });
     }
 }

@@ -26,14 +26,17 @@
             <div class="drag-placeholder" *cdkDragPlaceholder>
                 <div class="placeholder-inner"></div>
             </div>
-            <div *ngIf="object.type==='i-text'" >
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'text-size')">
-                    
+            <ng-container *ngIf="object.type==='i-text'" >
+                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'style')">
+                    {{ (blockedObject$ | async) === 'style' ? "lock" : "text_format" }}
                 </mat-icon>
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')">
-                    {{ object.lockRotation ? "invert_colors_off" : "invert_colors" }}
+                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')" >
+                    {{ (blockedObject$ | async) === 'color' ? "invert_colors_off" : "invert_colors" }}
                 </mat-icon>
-            </div>                           
+                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'textsize')" >
+                    {{ (blockedObject$ | async) === 'textsize' ? "format_clear" : "format_size" }}
+                </mat-icon>
+            </ng-container>
             <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'photo')">
                 <!--{{ object.lockRotation ? "lock" : "add_photo_alternate" }}-->
             </mat-icon>

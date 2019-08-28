@@ -13,6 +13,7 @@ import {ObjectNames} from '../../../image-editor/objects/object-names.enum';
 import {Observable} from 'rxjs';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
 import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-panel.enum';
+import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 
 @Component({
     selector: 'objects-panel',
@@ -23,6 +24,7 @@ import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-pane
 })
 export class ObjectsPanelComponent {
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
+    @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
     constructor(
         public objects: ObjectsService,
         public panelRef: OverlayPanelRef,
@@ -44,8 +46,11 @@ export class ObjectsPanelComponent {
 
     public blockSelectedObject(object: Object, type: string) {
         switch (type) {
-            case 'text-size':
-
+            case 'textsize':
+                this.store.dispatch(new BlockObject(ObjectName.TEXTSIZE));
+            break;
+            case 'style':
+                this.store.dispatch(new BlockObject(ObjectName.STYLE));
             break;
             case 'color':
                 this.store.dispatch(new BlockObject(ObjectName.COLOR));

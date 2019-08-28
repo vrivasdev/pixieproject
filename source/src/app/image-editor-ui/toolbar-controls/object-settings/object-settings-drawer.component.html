@@ -1,13 +1,4 @@
-<div class="content" [class.hidden]="activePanel$ | async">
-    <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async">
-        <mat-icon svgIcon="text-options-custom"></mat-icon>
-        <div class="bottom-label" trans>Text Style</div>
-    </div>            
-    <div class="button-with-image" (click)="openPanel('color')" [class.hidden]="blockedObject$ | async as blockedObject" >
-        <mat-icon svgIcon="color-custom" *ngIf="blockedObject === 'color' " ></mat-icon>
-        <div class="bottom-label" trans>Color</div>
-    </div>
-
+<div class="content" [class.hidden]="activePanel$ | async">                                                 
     <div class="button-with-image" (click)="openPanel('shadow')">
         <mat-icon svgIcon="shadow-custom"></mat-icon>
         <div class="bottom-label" trans>Shadow</div>
@@ -18,10 +9,10 @@
         <div class="bottom-label" trans>Outline</div>
     </div>
 
-    <div class="button-with-image" (click)="openPanel('background')">
+    <!--<div class="button-with-image" (click)="openPanel('background')">
         <mat-icon svgIcon="background-custom"></mat-icon>
         <div class="bottom-label" trans>Background</div>
-    </div>
+    </div>-->
 
     <div class="button-with-image" (click)="openPanel('texture')">
         <mat-icon svgIcon="texture-custom"></mat-icon>
@@ -32,11 +23,18 @@
         <mat-icon svgIcon="gradient-custom"></mat-icon>
         <div class="bottom-label" trans>Gradient</div>
     </div>
-
+    <div class="button-with-image" (click)="openPanel('color')" [hidden]="(blockedObject$ | async) == 'color'" >
+        <mat-icon svgIcon="color-custom"></mat-icon>
+        <div class="bottom-label" trans>Color</div>
+    </div>    
+    <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'style'">
+        <mat-icon svgIcon="text-options-custom"></mat-icon>
+        <div class="bottom-label" trans>Text Style</div>
+    </div>
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>
         <div class="bottom-label" trans>Opacity</div>
-    </div>
+    </div>      
 </div>
 
 <ng-container [ngSwitch]="activePanel$ | async">

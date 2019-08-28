@@ -49,6 +49,7 @@ import {FrameState} from '../image-editor-ui/state/frame/frame.state';
 import {CornersState} from '../image-editor-ui/state/corners/corners.state';
 import {BackgroundState} from '../image-editor-ui/state/background/background.state';
 import {HistoryState} from '../image-editor-ui/state/history/history.state';
+import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 
 export function init_app(settings, mergedConfig) {
     return () => {
@@ -88,6 +89,7 @@ export function init_app(settings, mergedConfig) {
             CornersState,
             BackgroundState,
             HistoryState,
+            ObjectPanelState
         ], {developmentMode: !environment.production}),
     ],
     exports: [

@@ -17,3 +17,6 @@ $ npm i typescript@3.1.6 --save-dev --save-exact
 ```
 $ ng serve
 ```
+
+## DEV TOOLS WITH REDUX FOR CHROME
+$ npm install --save-dev @angular-devkit/build-angular
