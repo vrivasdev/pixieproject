@@ -1,4 +1,4 @@
-<div class="content" [class.hidden]="activePanel$ | async">                                                 
+<div class="content" [class.hidden]="activePanel$ | async">
     <div class="button-with-image" (click)="openPanel('shadow')">
         <mat-icon svgIcon="shadow-custom"></mat-icon>
         <div class="bottom-label" trans>Shadow</div>
@@ -14,6 +14,8 @@
         <div class="bottom-label" trans>Background</div>
     </div>-->
 
+
+
     <div class="button-with-image" (click)="openPanel('texture')">
         <mat-icon svgIcon="texture-custom"></mat-icon>
         <div class="bottom-label" trans>Texture</div>
@@ -26,19 +28,24 @@
     <div class="button-with-image" (click)="openPanel('color')" [hidden]="(blockedObject$ | async) == 'color'" >
         <mat-icon svgIcon="color-custom"></mat-icon>
         <div class="bottom-label" trans>Color</div>
-    </div>    
+    </div>
     <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'style'">
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>
     </div>
+    <div class="button-with-image" (click)="openPanel('textSize')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'style'">
+      <mat-icon>format_size</mat-icon>
+      <div class="bottom-label" trans>Text Size</div>
+  </div>
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>
         <div class="bottom-label" trans>Opacity</div>
-    </div>      
+    </div>
 </div>
 
 <ng-container [ngSwitch]="activePanel$ | async">
     <text-controls-drawer class="content" *ngSwitchCase="'textStyle'"></text-controls-drawer>
+    <text-size-drawer class="content" *ngSwitchCase="'textSize'"></text-size-drawer>
     <color-controls-drawer class="content" *ngSwitchCase="'color'" controlName="fill" trans>Color</color-controls-drawer>
     <shadow-controls-drawer class="content" *ngSwitchCase="'shadow'"></shadow-controls-drawer>
     <outline-controls-drawer class="content" *ngSwitchCase="'outline'"></outline-controls-drawer>

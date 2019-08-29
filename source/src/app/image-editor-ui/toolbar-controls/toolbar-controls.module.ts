@@ -41,6 +41,7 @@ import {FloatingObjectControlsComponent} from '../floating-object-controls/float
 import {ImageEditorModule} from '../../image-editor/image-editor.module';
 import {OpacityControlsDrawer} from './drawers/opacity-controls-drawer/opacity-controls-drawer.component';
 import { TextFontSelectorComponent } from './widgets/text-font-selector/text-font-selector.component';
+import { TextSizeDrawerComponent } from './drawers/text-size-drawer/text-size-drawer.component';
 
 @NgModule({
     imports: [
@@ -73,6 +74,7 @@ import { TextFontSelectorComponent } from './widgets/text-font-selector/text-fon
         CropDrawerComponent,
         DrawDrawerComponent,
         TextDrawerComponent,
+        TextSizeDrawerComponent,
         ColorWidgetComponent,
         TextControlsDrawerComponent,
         ShapesDrawerComponent,
@@ -101,6 +103,7 @@ import { TextFontSelectorComponent } from './widgets/text-font-selector/text-fon
         CropDrawerComponent,
         DrawDrawerComponent,
         TextDrawerComponent,
+        TextSizeDrawerComponent,
         ColorWidgetComponent,
         TextControlsDrawerComponent,
         ShapesDrawerComponent,

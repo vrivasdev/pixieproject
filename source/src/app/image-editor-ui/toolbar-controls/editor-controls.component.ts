@@ -29,7 +29,7 @@ import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
     ]
 })
 export class EditorControlsComponent {
-    private isAdmin: boolean;
+    public isAdmin: boolean;
 
     @Select(EditorState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
