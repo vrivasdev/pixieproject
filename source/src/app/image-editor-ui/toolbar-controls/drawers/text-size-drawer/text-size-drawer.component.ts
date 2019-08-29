@@ -1,7 +1,6 @@
 import { Store } from '@ngxs/store';
 import { Component } from '@angular/core';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
-import { MatSelectChange } from '@angular/material';
 
 @Component({
     selector: 'text-size-drawer',
@@ -9,7 +8,7 @@ import { MatSelectChange } from '@angular/material';
     styleUrls: ['./text-size-drawer.component.scss']
 })
 export class TextSizeDrawerComponent {
-    public sizes: any = [20, 22, 24, 30, 40];
+    public sizes: any = [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40];
 
     constructor(
         private store: Store,

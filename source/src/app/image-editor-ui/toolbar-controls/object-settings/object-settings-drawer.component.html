@@ -33,9 +33,9 @@
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>
     </div>
-    <div class="button-with-image" (click)="openPanel('textSize')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'style'">
+    <div class="button-with-image" (click)="openPanel('textSize')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'textsize'">
       <mat-icon>format_size</mat-icon>
-      <div class="bottom-label" trans>Text Size</div>
+      <div class="bottom-label" trans>Size</div>
   </div>
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>

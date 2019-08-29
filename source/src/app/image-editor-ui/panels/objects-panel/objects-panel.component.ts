@@ -47,26 +47,34 @@ export class ObjectsPanelComponent {
     public blockSelectedObject(object: Object, type: string) {
         switch (type) {
             case 'textsize':
-                this.store.dispatch(new BlockObject(ObjectName.TEXTSIZE));
+                this.store.dispatch(new BlockObject(object.data.id, ObjectName.TEXTSIZE));
             break;
             case 'style':
-                this.store.dispatch(new BlockObject(ObjectName.STYLE));
+                this.store.dispatch(new BlockObject(object.data.id, ObjectName.STYLE));
             break;
             case 'color':
-                this.store.dispatch(new BlockObject(ObjectName.COLOR));
+                this.store.dispatch(new BlockObject(object.data.id, ObjectName.COLOR));
             break;
             case 'photo':
             break;
             case 'size':
-                object.lockScalingX  = object.lockScalingX ? false : true;
-                object.lockScalingY  = object.lockScalingY ? false : true;
+                this.blockScaling(object);
             break;
             case 'position':
-                object.lockMovementX = object.lockMovementX ? false : true;
-                object.lockMovementY = object.lockMovementY ? false : true;
-                object.lockRotation  = object.lockRotation ? false : true;
+                this.blockMovement(object);
             break;
         }
+    }
+
+    private blockScaling(object: Object) {
+        object.lockScalingX  = object.lockScalingX ? false : true;
+        object.lockScalingY  = object.lockScalingY ? false : true;
+    }
+
+    private blockMovement(object: Object) {
+        object.lockMovementX = object.lockMovementX ? false : true;
+        object.lockMovementY = object.lockMovementY ? false : true;
+        object.lockRotation  = object.lockRotation ? false : true;
     }
 
     public getObjectDisplayName(object: Object): string {
