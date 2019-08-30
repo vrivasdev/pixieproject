@@ -23,6 +23,9 @@ export class ObjectPanelState {
 
     @Action(BlockObject)
     BlockObject(ctx: StateContext<ObjectsPanelStateModel>, action: BlockObject) {
+        /* TODO: Adapt this code to the state */
+        /*
+        Algorithim
         let objects: any = [];
         let flag: string = 'init';
 
@@ -47,6 +50,6 @@ export class ObjectPanelState {
         console.log(flag, objects);
         ctx.patchState({
             blockedObject: flag === 'concat' ? objects.concat({'id': action.id, 'object': action.object}) : objects
-        });
+        });*/
     }
 }
