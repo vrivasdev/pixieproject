@@ -23,33 +23,38 @@ export class ObjectPanelState {
 
     @Action(BlockObject)
     BlockObject(ctx: StateContext<ObjectsPanelStateModel>, action: BlockObject) {
-        /* TODO: Adapt this code to the state */
-        /*
-        Algorithim
-        let objects: any = [];
-        let flag: string = 'init';
-
-        if (Object.values(ctx.getState().blockedObject).length >= 1 ) {
-            objects = ctx.getState()
-                         .blockedObject.map(item => {
-                             if (item.id === action.id) {
-                                if (item.object === 'clear') {
-                                    console.log('block', item.id, item.object);
-                                    return {'id': action.id, 'object': action.object};
-                                } else {
-                                    console.log(' is not clear', item.id, item.object);
-                                   return {'id': action.id, 'object': 'clear'};
-                                }
-                             } else {
-                                return item;
-                             }
-                         });
-        } else {
-            objects = [{'id': action.id, 'object': action.object}];
-        }
-        console.log(flag, objects);
         ctx.patchState({
-            blockedObject: flag === 'concat' ? objects.concat({'id': action.id, 'object': action.object}) : objects
-        });*/
+            blockedObject:  ctx.getState().blockedObject.length ?
+                            this.setStates(action, ctx.getState()) : [{'id': action.id + '.' + action.object, 'object': action.object}]
+        });
+    }
+
+    private setStates = (action: BlockObject, state: ObjectsPanelStateModel): any => {
+        let newRow = {};
+        let count = 0;
+        let newState = [];
+        let flag = 'new';
+
+        for (const row of state.blockedObject) {
+            count += 1;
+            if (row.id === action.id) {
+                if (row.object !== 'clear' && row.object !== action.object) { // Optional => to be fixed
+                    newRow = {'id': action.id + '.'  + action.object, 'object': action.object};
+                } else {
+                    newRow = {
+                        'id': action.id + '.' + action.object ,
+                        'object': (row.object === 'clear') ? action.object : 'clear'
+                    };
+                    flag = 'update';
+                }
+                newState = newState.concat(newRow);
+            } else {
+                newState = newState.concat({'id': row.id + '.' + row.object, 'object': row.object});
+                if (count === state.blockedObject.length && flag === 'new') {
+                    newState = newState.concat({'id': action.id + '.' + action.object, 'object': action.object});
+                }
+            }
+        }
+        return newState;
     }
 }
