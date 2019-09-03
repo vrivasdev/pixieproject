@@ -3,7 +3,7 @@ import { ObjectName } from './objects-panel.enum';
 import { BlockObject } from './objects-panel.actions';
 
 export interface ObjectsPanelStateModel {
-    blockedObject: [{'id': string, 'object': ObjectName}];
+    blockedObject: [{'id': string, 'objectId': string, 'state': ObjectName}];
 }
 
 @State({
@@ -24,8 +24,8 @@ export class ObjectPanelState {
     @Action(BlockObject)
     BlockObject(ctx: StateContext<ObjectsPanelStateModel>, action: BlockObject) {
         ctx.patchState({
-            blockedObject:  ctx.getState().blockedObject.length ?
-                            this.setStates(action, ctx.getState()) : [{'id': action.id + '.' + action.object, 'object': action.object}]
+            blockedObject: ctx.getState().blockedObject.length ?
+                           this.setStates(action, ctx.getState()) : [{'id': action.id, 'objectId': action.objectId, 'state': action.state}]
         });
     }
 
@@ -37,21 +37,26 @@ export class ObjectPanelState {
 
         for (const row of state.blockedObject) {
             count += 1;
-            if (row.id === action.id) {
-                if (row.object !== 'clear' && row.object !== action.object) { // Optional => to be fixed
-                    newRow = {'id': action.id + '.'  + action.object, 'object': action.object};
+            if (row.id === action.id) { // if actions are on same level
+                if (row.state !== 'clear' && row.state !== action.state) {
+                    if (count === state.blockedObject.length && flag === 'new') {
+                        newRow = {'id': row.id, 'objectId': row.objectId, 'state': row.state};
+                    } else {
+                        newRow = {'id': action.id, 'objectId': row.objectId, 'state': action.state};
+                    }
                 } else {
                     newRow = {
-                        'id': action.id + '.' + action.object ,
-                        'object': (row.object === 'clear') ? action.object : 'clear'
+                        'id': action.id,
+                        'objectId': action.objectId,
+                        'state': (row.state === 'clear') ? action.state : 'clear'
                     };
                     flag = 'update';
                 }
                 newState = newState.concat(newRow);
             } else {
-                newState = newState.concat({'id': row.id + '.' + row.object, 'object': row.object});
+                newState = newState.concat({'id': row.id, 'objectId': row.objectId, 'state': row.state});
                 if (count === state.blockedObject.length && flag === 'new') {
-                    newState = newState.concat({'id': action.id + '.' + action.object, 'object': action.object});
+                    newState = newState.concat({'id': action.id, 'objectId': action.objectId, 'state': action.state});
                 }
             }
         }

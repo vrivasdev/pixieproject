@@ -47,13 +47,16 @@ export class ObjectsPanelComponent {
     public blockSelectedObject(object: Object, type: string) {
         switch (type) {
             case 'textsize':
-                this.store.dispatch(new BlockObject(object.data.id, ObjectName.TEXTSIZE));
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.TEXTSIZE.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.TEXTSIZE));
             break;
             case 'style':
-                this.store.dispatch(new BlockObject(object.data.id, ObjectName.STYLE));
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.STYLE.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.STYLE));
             break;
             case 'color':
-                this.store.dispatch(new BlockObject(object.data.id, ObjectName.COLOR));
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.COLOR.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.COLOR));
             break;
             case 'photo':
             break;
