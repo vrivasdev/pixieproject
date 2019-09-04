@@ -21,6 +21,7 @@ import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/st
     styleUrls: ['./objects-panel.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
+    preserveWhitespaces: false
 })
 export class ObjectsPanelComponent {
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;

@@ -25,15 +25,15 @@
         <mat-icon svgIcon="gradient-custom"></mat-icon>
         <div class="bottom-label" trans>Gradient</div>
     </div>
-    <div class="button-with-image" (click)="openPanel('color')" [hidden]="(blockedObject$ | async) == 'color'" >
+    <div class="button-with-image" (click)="openPanel('color')" [hidden]="(blockedObject$ | async)[activeObject.getId()+'c'] === 'color'" >
         <mat-icon svgIcon="color-custom"></mat-icon>
         <div class="bottom-label" trans>Color</div>
-    </div>
-    <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'style'">
+    </div>    
+    <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async)[activeObject.getId()+'s'] === 'style'">
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>
     </div>
-    <div class="button-with-image" (click)="openPanel('textSize')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async) == 'textsize'">
+    <div class="button-with-image" (click)="openPanel('textSize')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async)[activeObject.getId()+'t'] === 'textsize'">
       <mat-icon>format_size</mat-icon>
       <div class="bottom-label" trans>Size</div>
   </div>

@@ -27,14 +27,14 @@
                 <div class="placeholder-inner"></div>
             </div>
             <ng-container *ngIf="object.type==='i-text'" >
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'style')">
-                    {{ (blockedObject$ | async) === 'style' ? "lock" : "text_format" }}
+                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'style')">                    
+                    {{ (blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'? 'lock' : "text_format" }}
                 </mat-icon>
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')" >
-                    {{ (blockedObject$ | async) === 'color' ? "invert_colors_off" : "invert_colors" }}
+                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')" >                      
+                    {{ (blockedObject$ | async)[object.data.id.trim()+'c'] === 'color'? "invert_colors_off" : "invert_colors" }}
                 </mat-icon>
                 <mat-icon class="block-open" (click)="blockSelectedObject(object, 'textsize')" >
-                    {{ (blockedObject$ | async) === 'textsize' ? "format_clear" : "format_size" }}
+                    {{ (blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'? "format_clear" : "format_size" }}
                 </mat-icon>
             </ng-container>
             <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'photo')">

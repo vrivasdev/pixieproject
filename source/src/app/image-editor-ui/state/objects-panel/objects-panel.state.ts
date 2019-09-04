@@ -16,7 +16,10 @@ export interface ObjectsPanelStateModel {
 export class ObjectPanelState {
     @Selector()
     static blockedObject(state: ObjectsPanelStateModel) {
-        return state.blockedObject;
+        const json = {};
+        state.blockedObject.forEach(obj => json[obj.id] = obj.state );        
+        return json;
+        //return state.blockedObject;
     }
 
     constructor(private store: Store) {}

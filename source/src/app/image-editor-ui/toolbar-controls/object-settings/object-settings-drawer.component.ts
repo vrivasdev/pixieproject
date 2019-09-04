@@ -29,7 +29,9 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
         public activeObject: ActiveObjectService,
         protected history: HistoryToolService,
         private store: Store,
-    ) {}
+    ) {
+        debugger;
+    }
 
     ngOnInit() {
         this.subscription = this.activeObject.propsChanged$
