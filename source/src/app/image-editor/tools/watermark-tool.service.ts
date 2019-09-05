@@ -79,7 +79,7 @@ export class WatermarkToolService {
             originX: 'center',
             originY: 'center',
             fontWeight: 600,
-            fontSize: 150,
+            //fontSize: 150,
             fontFamily: 'Courier New',
         });
 

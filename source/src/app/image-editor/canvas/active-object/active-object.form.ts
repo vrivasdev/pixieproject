@@ -20,7 +20,7 @@ export class ActiveObjectForm {
             fontStyle: [],
             fontFamily: [],
             fontWeight: [],
-            fontSize: []
+            fontSize: 20
         });
     }
 }
