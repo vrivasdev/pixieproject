@@ -8,6 +8,9 @@ import {ObjectsState} from '../../state/objects/objects.state';
 import {take} from 'rxjs/operators';
 import {EditorState} from '../../../image-editor/state/editor-state';
 import { ObjectPanelState, ObjectsPanelStateModel } from '../../state/objects-panel/objects-panel.state';
+import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
+import { CanvasService } from 'app/image-editor/canvas/canvas.service';
+import {HistoryNames} from '../../../image-editor/history/history-names.enum';
 
 @Component({
     selector: 'object-settings-drawer',
@@ -29,9 +32,9 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
         public activeObject: ActiveObjectService,
         protected history: HistoryToolService,
         private store: Store,
-    ) {
-        debugger;
-    }
+        private importTool: ImportToolService,
+        private canvas: CanvasService
+    ) { }
 
     ngOnInit() {
         this.subscription = this.activeObject.propsChanged$
@@ -47,5 +50,27 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
 
     public openPanel(name: string) {
         this.store.dispatch(new OpenObjectSettingsPanel(name));
+    }
+
+    public imageUpdate() {
+        this.importTool.openUploadDialog().then(obj => {
+            let active;
+            
+            if ( ! obj) return;
+
+            active = this.canvas.fabric().getActiveObject();
+
+            obj.height = active.height;
+            obj.left = active.left;
+            obj.top = active.top;
+            obj.width = active.width;
+            obj.scaleX = active.scaleX;
+            obj.scaleY = active.scaleY;
+
+            this.canvas.fabric().remove(active);
+
+            this.canvas.fabric().setActiveObject(obj);
+            this.history.add(HistoryNames.OVERLAY_IMAGE);
+        });
     }
 }

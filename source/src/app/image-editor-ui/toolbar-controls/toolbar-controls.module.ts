@@ -42,6 +42,7 @@ import {ImageEditorModule} from '../../image-editor/image-editor.module';
 import {OpacityControlsDrawer} from './drawers/opacity-controls-drawer/opacity-controls-drawer.component';
 import { TextFontSelectorComponent } from './widgets/text-font-selector/text-font-selector.component';
 import { TextSizeDrawerComponent } from './drawers/text-size-drawer/text-size-drawer.component';
+import { ImageDrawerComponent } from './drawers/image-drawer/image-drawer.component';
 
 @NgModule({
     imports: [
@@ -75,6 +76,7 @@ import { TextSizeDrawerComponent } from './drawers/text-size-drawer/text-size-dr
         DrawDrawerComponent,
         TextDrawerComponent,
         TextSizeDrawerComponent,
+        ImageDrawerComponent,
         ColorWidgetComponent,
         TextControlsDrawerComponent,
         ShapesDrawerComponent,
@@ -104,6 +106,7 @@ import { TextSizeDrawerComponent } from './drawers/text-size-drawer/text-size-dr
         DrawDrawerComponent,
         TextDrawerComponent,
         TextSizeDrawerComponent,
+        ImageDrawerComponent,
         ColorWidgetComponent,
         TextControlsDrawerComponent,
         ShapesDrawerComponent,
