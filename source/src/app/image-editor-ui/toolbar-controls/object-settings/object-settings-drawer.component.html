@@ -37,7 +37,7 @@
       <mat-icon>format_size</mat-icon>
       <div class="bottom-label" trans>Size</div>
     </div>
-    <div class="button-with-image" (click)="imageUpdate()">
+    <div class="button-with-image" (click)="imageUpdate()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'i'] === 'image'">
         <mat-icon>image</mat-icon>
         <div class="bottom-label" trans>Image</div>
     </div>

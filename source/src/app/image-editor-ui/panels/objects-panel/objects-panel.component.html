@@ -37,8 +37,8 @@
                     {{ (blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'? "format_clear" : "format_size" }}
                 </mat-icon>
             </ng-container>
-            <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'photo')">
-                <!--{{ object.lockRotation ? "lock" : "add_photo_alternate" }}-->
+            <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'image')">
+                {{ (blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'? "lock" : "image" }}
             </mat-icon>
             <mat-icon class="block-open" (click)="blockSelectedObject(object, 'size')">
                 {{ object.lockScalingX || object.lockScalingY  ? "lock" : "grid_on" }}

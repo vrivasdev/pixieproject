@@ -59,7 +59,9 @@ export class ObjectsPanelComponent {
                 this.store.dispatch(new BlockObject(object.data.id + ObjectName.COLOR.charAt(0).toLowerCase(),
                                                     object.data.id, ObjectName.COLOR));
             break;
-            case 'photo':
+            case 'image':
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.IMAGE.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.IMAGE));
             break;
             case 'size':
                 this.blockScaling(object);
