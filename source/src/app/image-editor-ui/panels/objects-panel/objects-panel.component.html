@@ -34,17 +34,17 @@
                     {{ (blockedObject$ | async)[object.data.id.trim()+'c'] === 'color'? "invert_colors_off" : "invert_colors" }}
                 </mat-icon>
                 <mat-icon class="block-open" (click)="blockSelectedObject(object, 'textsize')" >
-                    {{ (blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'? "format_clear" : "format_size" }}
+                    {{ (blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'? "format_clear" : "format_bold" }}
                 </mat-icon>
             </ng-container>
-            <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'image')">
-                {{ (blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'? "lock" : "image" }}
+            <mat-icon svgIcon="block_image"></mat-icon>
+            <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'image')" svgIcon="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'? 'block_image' : 'add_to_photos'">
             </mat-icon>
             <mat-icon class="block-open" (click)="blockSelectedObject(object, 'size')">
-                {{ object.lockScalingX || object.lockScalingY  ? "lock" : "grid_on" }}
+                {{ object.lockScalingX || object.lockScalingY  ? "lock" : "aspect_ratio" }}
             </mat-icon>
             <mat-icon class="block-open" (click)="blockSelectedObject(object, 'position')">
-                {{ object.lockMovementX || object.lockMovementY || object.lockRotation ? "lock" : "lock_open" }}
+                {{ object.lockMovementX || object.lockMovementY || object.lockRotation ? "lock" : "settings_overscan" }}
             </mat-icon>         
         </div>
     </div>

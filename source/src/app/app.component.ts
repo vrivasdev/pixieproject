@@ -6,6 +6,8 @@ import {EditorTheme} from './image-editor/enums/editor-theme.enum';
 import {EditorMode} from './image-editor/enums/editor-mode.enum';
 import {Settings} from '../common/core/config/settings.service';
 import {CloseEditor} from './image-editor/state/editor-state-actions';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'pixie-editor',
@@ -66,7 +68,14 @@ export class AppComponent implements OnInit {
         private el: ElementRef,
         private store: Store,
         private config: Settings,
-    ) {}
+        private matIconRegistry: MatIconRegistry,
+        private domSanitizer: DomSanitizer
+    ) {
+        this.matIconRegistry.addSvgIcon(
+            'block_image',
+            this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/individual/block-image.svg')
+        );
+    }
 
     ngOnInit() {
         this.bindToOverlayClick(this.overlay);
