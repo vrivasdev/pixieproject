@@ -27,25 +27,45 @@
                 <div class="placeholder-inner"></div>
             </div>
             <ng-container *ngIf="object.type==='i-text'" >
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'style')">                    
-                    {{ (blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'? 'lock' : "text_format" }}
-                </mat-icon>
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'color')" >                      
-                    {{ (blockedObject$ | async)[object.data.id.trim()+'c'] === 'color'? "invert_colors_off" : "invert_colors" }}
-                </mat-icon>
-                <mat-icon class="block-open" (click)="blockSelectedObject(object, 'textsize')" >
-                    {{ (blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'? "format_clear" : "format_bold" }}
-                </mat-icon>
+                <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'" [ngIfElse]="tStyle" >
+                  <img class="block-open"  src="assets/icons/individual/block-textstyle.svg" (click)="blockSelectedObject(object, 'style')">
+                  </ng-template>
+                <ng-template #tStyle>
+                    <img class="block-open"  src="assets/icons/individual/textstyle.svg" (click)="blockSelectedObject(object, 'style')">
+                </ng-template>
+                <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'c'] === 'color'" [ngIfElse]="tColors" >
+                    <img class="block-open"  src="assets/icons/individual/block-colors.svg" (click)="blockSelectedObject(object, 'color')">
+                  </ng-template>
+                  <ng-template #tColors>
+                      <img class="block-open"  src="assets/icons/individual/colors.svg" (click)="blockSelectedObject(object, 'color')">
+                </ng-template>
+                <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'" [ngIfElse]="tTextsize" >
+                  <img class="block-open"  src="assets/icons/individual/block-textsize.svg" (click)="blockSelectedObject(object, 'textsize')">
+                </ng-template>
+                <ng-template #tTextsize>
+                    <img class="block-open"  src="assets/icons/individual/textsize.svg" (click)="blockSelectedObject(object, 'textsize')">
+                </ng-template>
             </ng-container>
-            <mat-icon svgIcon="block_image"></mat-icon>
-            <mat-icon *ngIf="object.type==='image'"  class="block-open" (click)="blockSelectedObject(object, 'image')" svgIcon="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'? 'block_image' : 'add_to_photos'">
-            </mat-icon>
-            <mat-icon class="block-open" (click)="blockSelectedObject(object, 'size')">
-                {{ object.lockScalingX || object.lockScalingY  ? "lock" : "aspect_ratio" }}
-            </mat-icon>
-            <mat-icon class="block-open" (click)="blockSelectedObject(object, 'position')">
-                {{ object.lockMovementX || object.lockMovementY || object.lockRotation ? "lock" : "settings_overscan" }}
-            </mat-icon>         
+            <ng-container *ngIf="object.type==='image'">
+              <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'" [ngIfElse]="tImage" >
+                <img class="block-open"  src="assets/icons/individual/block-image.svg" (click)="blockSelectedObject(object, 'image')">
+              </ng-template>
+              <ng-template #tImage>
+                  <img class="block-open"  src="assets/icons/individual/add-to-photos.svg" (click)="blockSelectedObject(object, 'image')">
+              </ng-template>
+            </ng-container>
+            <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
+              <img class="block-open"  src="assets/icons/individual/block-size.svg" (click)="blockSelectedObject(object, 'size')">
+            </ng-template>
+            <ng-template #tSize>
+                <img class="block-open"  src="assets/icons/individual/size.svg" (click)="blockSelectedObject(object, 'size')">
+            </ng-template>
+            <ng-template [ngIf]="object.lockMovementX || object.lockMovementY || object.lockRotation" [ngIfElse]="tPosition" >
+              <img class="block-open"  src="assets/icons/individual/block-position.svg" (click)="blockSelectedObject(object, 'position')">
+            </ng-template>
+            <ng-template #tPosition>
+                <img class="block-open"  src="assets/icons/individual/position.svg" (click)="blockSelectedObject(object, 'position')">
+            </ng-template>
         </div>
     </div>
 </div>

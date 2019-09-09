@@ -75,6 +75,10 @@ export class AppComponent implements OnInit {
             'block_image',
             this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/individual/block-image.svg')
         );
+        this.matIconRegistry.addSvgIcon(
+          'add_to_photos',
+          this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/individual/add-to-photos.svg')
+      );
     }
 
     ngOnInit() {
