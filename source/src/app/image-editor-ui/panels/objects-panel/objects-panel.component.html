@@ -28,49 +28,49 @@
             </div>
             <ng-container *ngIf="object.type==='i-text'" >
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'" [ngIfElse]="tStyle" >
-                  <img class="block-open"  src="assets/icons/individual/block-textstyle.svg" (click)="blockSelectedObject(object, 'style')">
+                  <img class="block-open"  src="assets/icons/individual/block-textstyle.svg" (click)="blockSelectedObject(object, 'style')" matTooltip="Unblock Text Style">
                   </ng-template>
                 <ng-template #tStyle>
-                    <img class="block-open"  src="assets/icons/individual/textstyle.svg" (click)="blockSelectedObject(object, 'style')">
+                    <img class="block-open"  src="assets/icons/individual/textstyle.svg" (click)="blockSelectedObject(object, 'style')" matTooltip="Block Text Style">
                 </ng-template>
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'c'] === 'color'" [ngIfElse]="tColors" >
-                    <img class="block-open"  src="assets/icons/individual/block-colors.svg" (click)="blockSelectedObject(object, 'color')">
+                    <img class="block-open"  src="assets/icons/individual/block-colors.svg" (click)="blockSelectedObject(object, 'color')" matTooltip="Unblock Color">
                   </ng-template>
                   <ng-template #tColors>
-                      <img class="block-open"  src="assets/icons/individual/colors.svg" (click)="blockSelectedObject(object, 'color')">
+                      <img class="block-open"  src="assets/icons/individual/colors.svg" (click)="blockSelectedObject(object, 'color')" matTooltip="Block Color">
                 </ng-template>
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'" [ngIfElse]="tTextsize" >
-                  <img class="block-open"  src="assets/icons/individual/block-textsize.svg" (click)="blockSelectedObject(object, 'textsize')">
+                  <img class="block-open"  src="assets/icons/individual/block-textsize.svg" (click)="blockSelectedObject(object, 'textsize')" matTooltip="Unblock Color">
                 </ng-template>
                 <ng-template #tTextsize>
-                    <img class="block-open"  src="assets/icons/individual/textsize.svg" (click)="blockSelectedObject(object, 'textsize')">
+                    <img class="block-open"  src="assets/icons/individual/textsize.svg" (click)="blockSelectedObject(object, 'textsize')" matTooltip="Block Text size">
                 </ng-template>
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'m'] === 'maxtext'" [ngIfElse]="tMaxtext" >
-                  <label class="block-open maxtext"  for="" (click)="blockSelectedObject(object, 'maxtext')">0</label>
+                  <label class="block-open maxtext"  for="" (click)="blockSelectedObject(object, 'maxtext')" matTooltip="Unblock Max characters">0</label>
                 </ng-template>
                 <ng-template #tMaxtext>
-                  <label class="block-open maxtext" for="" (click)="blockSelectedObject(object, 'maxtext')">40</label>
+                  <label class="block-open maxtext" for="" (click)="blockSelectedObject(object, 'maxtext')" matTooltip="Block Max characters">40</label>
               </ng-template>
             </ng-container>
             <ng-container *ngIf="object.type==='image'">
               <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'" [ngIfElse]="tImage" >
-                <img class="block-open"  src="assets/icons/individual/block-image.svg" (click)="blockSelectedObject(object, 'image')">
+                <img class="block-open"  src="assets/icons/individual/block-image.svg" (click)="blockSelectedObject(object, 'image')" matTooltip="Unblock image">
               </ng-template>
               <ng-template #tImage>
-                  <img class="block-open"  src="assets/icons/individual/add-to-photos.svg" (click)="blockSelectedObject(object, 'image')">
+                  <img class="block-open"  src="assets/icons/individual/add-to-photos.svg" (click)="blockSelectedObject(object, 'image')" matTooltip="Block image">
               </ng-template>
             </ng-container>
             <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
-              <img class="block-open"  src="assets/icons/individual/block-size.svg" (click)="blockSelectedObject(object, 'size')">
+              <img class="block-open"  src="assets/icons/individual/block-size.svg" (click)="blockSelectedObject(object, 'size')" matTooltip="Unblock size">
             </ng-template>
             <ng-template #tSize>
-                <img class="block-open"  src="assets/icons/individual/size.svg" (click)="blockSelectedObject(object, 'size')">
+                <img class="block-open"  src="assets/icons/individual/size.svg" (click)="blockSelectedObject(object, 'size')" matTooltip="Block size">
             </ng-template>
             <ng-template [ngIf]="object.lockMovementX || object.lockMovementY || object.lockRotation" [ngIfElse]="tPosition" >
-              <img class="block-open"  src="assets/icons/individual/block-position.svg" (click)="blockSelectedObject(object, 'position')">
+              <img class="block-open"  src="assets/icons/individual/block-position.svg" (click)="blockSelectedObject(object, 'position')" matTooltip="Unblock position">
             </ng-template>
             <ng-template #tPosition>
-                <img class="block-open"  src="assets/icons/individual/position.svg" (click)="blockSelectedObject(object, 'position')">
+                <img class="block-open"  src="assets/icons/individual/position.svg" (click)="blockSelectedObject(object, 'position')" matTooltip="Block position">
             </ng-template>
         </div>
     </div>
