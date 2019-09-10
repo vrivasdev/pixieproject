@@ -46,10 +46,10 @@
                     <img class="block-open"  src="assets/icons/individual/textsize.svg" (click)="blockSelectedObject(object, 'textsize')">
                 </ng-template>
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'m'] === 'maxtext'" [ngIfElse]="tMaxtext" >
-                  <label class="block-open" for="" (click)="blockSelectedObject(object, 'maxtext')">0</label>
+                  <label class="block-open maxtext"  for="" (click)="blockSelectedObject(object, 'maxtext')">0</label>
                 </ng-template>
                 <ng-template #tMaxtext>
-                  <label class="block-open" for="" (click)="blockSelectedObject(object, 'maxtext')">40</label>
+                  <label class="block-open maxtext" for="" (click)="blockSelectedObject(object, 'maxtext')">40</label>
               </ng-template>
             </ng-container>
             <ng-container *ngIf="object.type==='image'">

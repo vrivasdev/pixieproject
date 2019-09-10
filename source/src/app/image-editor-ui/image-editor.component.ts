@@ -133,23 +133,22 @@ export class ImageEditorComponent implements OnInit {
             lines: lines,
         });
     }
-
+    /**
+     * Listen keydown event when user is writting down any new text
+     * @param event keydown event
+     */
     @HostListener('window:keydown', ['$event'])
     keyevent(event: KeyboardEvent) {
-        // TODO: If text validation state is active it will stop the writting action
-        const obj = this.activeObject.get().toObject();
-        const state = 'maxtext';
-
-        console.log(obj.text);
-        console.log(obj.name);
-        console.log(obj.data);
         const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
-
-        debugger;
-        if ( state === 'maxtext' && obj.text.length >= 30) {
-          event.preventDefault();
-          event.stopPropagation();
-          return false;
+        const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
+        const obj = this.activeObject.get();
+                
+        if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
+           ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
+           event.key !== 'Backspace') {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
         }
     }
 }
