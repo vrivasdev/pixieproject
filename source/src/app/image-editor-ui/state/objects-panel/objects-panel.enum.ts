@@ -4,4 +4,5 @@ export enum ObjectName {
     STYLE = 'style',
     TEXTSIZE = 'textsize',
     IMAGE = 'image',
+    MAXTEXT = 'maxtext'
 }

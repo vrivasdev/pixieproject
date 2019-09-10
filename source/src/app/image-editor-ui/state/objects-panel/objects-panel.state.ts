@@ -17,9 +17,8 @@ export class ObjectPanelState {
     @Selector()
     static blockedObject(state: ObjectsPanelStateModel) {
         const json = {};
-        state.blockedObject.forEach(obj => json[obj.id] = obj.state );        
+        state.blockedObject.forEach(obj => json[obj.id] = obj.state );
         return json;
-        //return state.blockedObject;
     }
 
     constructor(private store: Store) {}

@@ -69,6 +69,10 @@ export class ObjectsPanelComponent {
             case 'position':
                 this.blockMovement(object);
             break;
+            case 'maxtext':
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAXTEXT.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.MAXTEXT, 40));
+            break;
         }
     }
 
@@ -78,9 +82,9 @@ export class ObjectsPanelComponent {
     }
 
     private blockMovement(object: Object) {
-        object.lockMovementX = object.lockMovementX ? false : true;
-        object.lockMovementY = object.lockMovementY ? false : true;
-        object.lockRotation  = object.lockRotation ? false : true;
+      object.lockMovementX = object.lockMovementX ? false : true;
+      object.lockMovementY = object.lockMovementY ? false : true;
+      object.lockRotation  = object.lockRotation ? false : true;
     }
 
     public getObjectDisplayName(object: Object): string {

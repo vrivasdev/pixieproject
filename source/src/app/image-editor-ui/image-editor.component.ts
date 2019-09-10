@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Text } from './../../../fabric-types/fabric-impl.d';
+import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, HostListener} from '@angular/core';
 import {CanvasService} from '../image-editor/canvas/canvas.service';
 import {HistoryToolService} from '../image-editor/history/history-tool.service';
 import {fromEvent, Observable} from 'rxjs';
@@ -17,6 +18,7 @@ import {ControlPosition} from '../image-editor/enums/control-positions.enum';
 import {DrawerName} from './toolbar-controls/drawers/drawer-name.enum';
 import {Localization} from '../../common/core/types/models/Localization';
 import {Translations} from '../../common/core/translations/translations.service';
+import { ObjectPanelState } from './state/objects-panel/objects-panel.state';
 
 @Component({
     selector: 'image-editor',
@@ -43,6 +45,7 @@ export class ImageEditorComponent implements OnInit {
         private el: ElementRef,
         private activeObject: ActiveObjectService,
         private state: CanvasStateService,
+        private objectPanelState: ObjectPanelState,
         public config: Settings,
         private store: Store,
         private i18n: Translations,
@@ -103,7 +106,7 @@ export class ImageEditorComponent implements OnInit {
         });
     }
 
-    public onObjectSelection(fabricEvent) {        
+    public onObjectSelection(fabricEvent) {
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
             this.config.get('pixie.isAdmin')
@@ -129,5 +132,24 @@ export class ImageEditorComponent implements OnInit {
             model: new Localization({name: active}),
             lines: lines,
         });
+    }
+
+    @HostListener('window:keydown', ['$event'])
+    keyevent(event: KeyboardEvent) {
+        // TODO: If text validation state is active it will stop the writting action
+        const obj = this.activeObject.get().toObject();
+        const state = 'maxtext';
+
+        console.log(obj.text);
+        console.log(obj.name);
+        console.log(obj.data);
+        const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
+
+        debugger;
+        if ( state === 'maxtext' && obj.text.length >= 30) {
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
+        }
     }
 }

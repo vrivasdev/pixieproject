@@ -25,6 +25,7 @@ export class Keybinds {
 
     public listenOn(document: Document) {
         document.addEventListener('keydown', (e: KeyboardEvent) => {
+
             this.executeBindings(e);
         });
     }
