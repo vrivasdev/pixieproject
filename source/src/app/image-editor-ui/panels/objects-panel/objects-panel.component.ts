@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
 import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-panel.enum';
 import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
+import {Settings} from 'common/core/config/settings.service';
 
 @Component({
     selector: 'objects-panel',
@@ -31,7 +32,8 @@ export class ObjectsPanelComponent {
         public panelRef: OverlayPanelRef,
         private controls: EditorControlsService,
         private canvasState: CanvasStateService,
-        private store: Store
+        private store: Store,
+        private config: Settings
     ) {}
 
     public getIcon(object: Object): string {
@@ -105,5 +107,10 @@ export class ObjectsPanelComponent {
 
     public shouldDisableObject(object: Object): boolean {
         return !object.selectable && object.name !== ObjectNames.drawing.name;
+    }
+
+    public getImageUrl(url: string) {
+      debugger;
+      return this.config.getAssetUrl(url);
     }
 }
