@@ -143,4 +143,7 @@ export class ToolbarComponent implements AfterViewInit {
             return url;
         }
     }
+    public goBack() {
+      location.reload();
+    }
 }
