@@ -31,7 +31,7 @@
         <button mat-button (click)="executeOpenButtonAction()" [class.invisible]="config.get('pixie.ui.toolbar.hideOpenButton')" class="open-button">
             <span class="mat-menu-trigger" [matMenuTriggerFor]="openMenu"></span>
             <mat-icon svgIcon="photo-library"></mat-icon>
-            <span class="name" trans>Open</span>
+            <span class="name" trans>Main</span>
         </button>
         <button mat-button (click)="exportImage()" [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" class="export-button">
             <mat-icon svgIcon="file-download"></mat-icon>
@@ -73,4 +73,5 @@
     <button *ngIf="isAdmin" mat-menu-item (click)="openBackgroundImage()" trans>Background Image</button>
     <button *ngIf="isAdmin" mat-menu-item (click)="openOverlayImage()" trans>Overlay Image</button>
     <button mat-menu-item (click)="openStateFile()" trans>Open Project File</button>
+    <button mat-menu-item (click)="goBack()" trans>Return</button>
 </mat-menu>
