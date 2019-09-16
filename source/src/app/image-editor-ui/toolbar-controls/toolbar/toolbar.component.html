@@ -33,7 +33,7 @@
             <mat-icon svgIcon="photo-library"></mat-icon>
             <span class="name" trans>Main</span>
         </button>
-        <button mat-button (click)="exportImage()" [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" class="export-button">
+        <button mat-button (click)="saveProject()" [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" class="export-button">
             <mat-icon svgIcon="file-download"></mat-icon>
             <span class="name" trans>Save</span>
         </button>

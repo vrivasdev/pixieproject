@@ -14,7 +14,9 @@ import {
     MatIconRegistry,
     MatRadioModule,
     MatSliderModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatOptionModule,
+    MatSelectModule,
 } from '@angular/material';
 import {CustomScrollbarModule} from 'common/core/ui/custom-scrollbar/custom-scrollbar.module';
 import {OverlayPanel} from 'common/core/ui/overlay-panel/overlay-panel.service';
@@ -27,6 +29,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {Settings} from '../../common/core/config/settings.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { ExportPanelComponent } from './panels/export-panel/export-panel.component';
+import { SavePanelComponent } from './panels/save-panel/save-panel.component';
 
 export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: DomSanitizer) {
     return () => {
@@ -55,6 +58,9 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         MatTooltipModule,
         MatDialogModule,
         MatRadioModule,
+        MatOptionModule,
+        MatSelectModule,
+
     ],
     declarations: [
         ImageEditorComponent,
@@ -63,12 +69,14 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         OpenSampleImagePanelComponent,
         BackgroundImageDirective,
         ExportPanelComponent,
+        SavePanelComponent,
     ],
     entryComponents: [
         OpenSampleImagePanelComponent,
         HistoryPanelComponent,
         ObjectsPanelComponent,
         ExportPanelComponent,
+        SavePanelComponent,
     ],
     exports: [
         ImageEditorComponent,

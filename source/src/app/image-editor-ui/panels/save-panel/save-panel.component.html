@@ -1,0 +1,30 @@
+<form (ngSubmit)="save()" [formGroup]="saveForm"  ngNativeValidate>   
+    
+    <mat-radio-group formControlName="share">
+        <mat-radio-button value="group/user">Group/User</mat-radio-button>
+        <mat-radio-button value="all">All</mat-radio-button>        
+    </mat-radio-group>    
+    <mat-label>Category</mat-label>
+    <mat-select>
+        <mat-option>Category #1</mat-option>
+        <mat-option>Category #2</mat-option>
+        <mat-option>Category N</mat-option>
+    </mat-select>
+    <mat-label>Group</mat-label>
+    <mat-select>
+        <mat-option>Group #1</mat-option>
+        <mat-option>Group #2</mat-option>
+        <mat-option>Group N</mat-option>
+    </mat-select>
+    <div class="input-container name-input-container">
+        <label for="flyerName" trans>Flyer name</label>
+        <input type="text" id="flyerName" formControlName="flyerName">
+    </div>
+    <mat-label>Save as</mat-label>
+    <mat-radio-group formControlName="saveType" required>
+        <mat-radio-button value="completed">Completed</mat-radio-button>
+        <mat-radio-button value="draft">Draft</mat-radio-button>        
+    </mat-radio-group>
+    <button mat-stroked-button color="primary" class="save-button" trans>Close</button>
+    <button mat-flat-button color="primary" class="save-button" trans>Save</button>
+</form>

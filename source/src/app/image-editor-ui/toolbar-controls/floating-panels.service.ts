@@ -9,6 +9,7 @@ import {OverlayPanelConfig} from '../../../common/core/ui/overlay-panel/overlay-
 import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
 import {ExportPanelComponent} from '../panels/export-panel/export-panel.component';
 import {Modal} from '../../../common/core/ui/dialogs/modal.service';
+import { SavePanelComponent } from '../panels/save-panel/save-panel.component';
 
 @Injectable()
 export class FloatingPanelsService {
@@ -29,6 +30,10 @@ export class FloatingPanelsService {
 
     public openExportPanel() {
         this.dialog.open(ExportPanelComponent, null, {panelClass: 'export-panel-dialog-container'});
+    }
+
+    public openSavePanel() {
+        this.dialog.open(SavePanelComponent, null, {panelClass: 'save-panel-dialog-container'});
     }
 
     public toggleHistory() {

@@ -76,6 +76,10 @@ export class ToolbarComponent implements AfterViewInit {
         }
     }
 
+    public saveProject() {
+        this.panels.openSavePanel();
+    }
+
     /**
      * Ask user to upload a new background image and override current one.
      */
