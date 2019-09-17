@@ -208,6 +208,7 @@ export const DEFAULT_CONFIG: PixieConfig  = {
             ],
         }
     },
+    saveUrl: '',
     languages: {
         active: 'default',
     },

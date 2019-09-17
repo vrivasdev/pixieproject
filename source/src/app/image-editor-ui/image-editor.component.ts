@@ -142,13 +142,15 @@ export class ImageEditorComponent implements OnInit {
         const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
         const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
         const obj = this.activeObject.get();
-                
-        if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
+
+        if ('data' in obj) {
+          if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
            ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
            event.key !== 'Backspace') {
             event.preventDefault();
             event.stopPropagation();
             return false;
+          }
         }
     }
 }

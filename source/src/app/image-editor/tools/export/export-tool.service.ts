@@ -62,6 +62,20 @@ export class ExportToolService {
         }
     }
 
+    public save(share: string, category: number, group: number, flyerName: string) {
+      let data;
+
+      data = this.getJsonState();
+      this.watermark.remove();
+
+      if ( ! data) return;
+
+      if (this.config.has('pixie.saveUrl')) {
+        this.http.post(this.config.get('pixie.saveUrl'), {data, flyerName})
+            .subscribe(() => {}, () => {});
+      }
+    }
+
     private getCanvasBlob(format: ValidFormats, data: string): Promise<Blob> {
         return new Promise(resolve => {
             let blob;
