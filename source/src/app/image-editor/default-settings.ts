@@ -208,7 +208,7 @@ export const DEFAULT_CONFIG: PixieConfig  = {
             ],
         }
     },
-    saveUrl: '',
+    saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create',
     languages: {
         active: 'default',
     },

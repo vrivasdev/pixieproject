@@ -22,6 +22,7 @@ import {HistoryNames} from './history-names.enum';
 import {staticObjectConfig} from '../objects/static-object-config';
 import {ContentLoaded} from '../state/editor-state-actions';
 import {take} from 'rxjs/operators';
+import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 
 @Injectable()
 export class HistoryToolService {
@@ -79,11 +80,13 @@ export class HistoryToolService {
     }
 
     public getCurrentCanvasState(): SerializedCanvas {
+        // temp1.objects.map(object =>{ if (object.type === 'image'){ object.src = ''; return object; } else { return object } });
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),
             editor: {frame: this.frameTool.getActive(), fonts: this.textTool.getUsedFonts()},
             canvasWidth: this.canvas.state.original.width,
             canvasHeight: this.canvas.state.original.height,
+            objectsPanel: this.store.selectSnapshot(ObjectPanelState.blockedObject)
         };
     }
 

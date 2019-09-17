@@ -62,17 +62,32 @@ export class ExportToolService {
         }
     }
 
-    public save(share: string, category: number, group: number, flyerName: string) {
+    public save(share: string, category: number, group: number, templateName: string) {
       let data;
 
       data = this.getJsonState();
+      
       this.watermark.remove();
 
       if ( ! data) return;
 
       if (this.config.has('pixie.saveUrl')) {
-        this.http.post(this.config.get('pixie.saveUrl'), {data, flyerName})
-            .subscribe(() => {}, () => {});
+            fetch(
+                this.config.get('pixie.saveUrl'),
+                {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({'raw_json': data,
+                                          'template_name': templateName}),
+                    mode: 'no-cors'
+                }
+            )
+            .then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
       }
     }
 
