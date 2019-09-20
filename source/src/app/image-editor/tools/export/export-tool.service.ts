@@ -81,7 +81,8 @@ export class ExportToolService {
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({'raw_json': data,
-                                          'template_name': templateName}),
+                                          'template_name': templateName,
+                                          'template_type': '7'}),
                     mode: 'no-cors'
                 }
             )
