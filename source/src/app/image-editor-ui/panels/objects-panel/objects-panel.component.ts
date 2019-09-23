@@ -110,7 +110,6 @@ export class ObjectsPanelComponent {
     }
 
     public getImageUrl(url: string) {
-      debugger;
       return this.config.getAssetUrl(url);
     }
 }

@@ -10,6 +10,7 @@ import {ImportToolValidator} from './import-tool-validator';
 import {UploadedFile} from '../../../../common/uploads/uploaded-file';
 import {openUploadWindow} from '../../../../common/uploads/utils/open-upload-window';
 import {UploadInputTypes} from '../../../../common/uploads/upload-input-config';
+import SampleJson from '../../../../assets/blockobjects.json';
 
 @Injectable()
 export class ImportToolService {
@@ -28,21 +29,39 @@ export class ImportToolService {
      */
     public openUploadDialog(options: {type?: 'image'|'state', backgroundImage?: boolean} = {type: 'image'}): Promise<any> {
         const accept = this.getUploadAcceptString(options.type);
-
         return new Promise(resolve => {
             openUploadWindow({extensions: accept}).then(files => {
                 this.validateAndGetData(files[0]).then(file => {
                     this.executeOnFileOpenCallback(files[0]);
-
                     if (options.backgroundImage && file.extension !== 'json') {
                         this.openBackgroundImage(file.data).then(obj => resolve(obj));
                     } else {
-                        // this.openBackgroundImage(file.data).then(obj => resolve(obj));
                         this.openFile(file.data, file.extension).then(obj => resolve(obj));
                     }
                 }, () => {});
             });
         });
+    }
+
+    public loadBackground() {
+        // Get default background image for fixes purposes
+        this.loadDataImage(this.config.getAssetUrl('images/white_background.jpg')).then(data => {
+            this.openBackgroundImage(data);
+        });
+    }
+
+    public loadJson() {
+        this.openFile(JSON.stringify(SampleJson), 'json');
+    }
+   
+    private loadDataImage(image): any {
+        return fetch(image).then(response => response.blob())
+                    .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    }));
     }
 
     /**
@@ -67,7 +86,6 @@ export class ImportToolService {
             if (validation.failed) {
                 return reject();
             }
-
             this.readFile(file, extension).then(data => resolve({data, extension}));
         });
     }

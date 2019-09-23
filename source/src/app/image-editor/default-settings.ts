@@ -10,6 +10,7 @@ import {ControlPosition} from './enums/control-positions.enum';
 import {DrawerName} from '../image-editor-ui/toolbar-controls/drawers/drawer-name.enum';
 import {defaultObjectProps} from './objects/default-object-props';
 import {SampleImage} from '../image-editor-ui/panels/open-sample-image-panel/sample-image';
+import SampleJson from '../../assets/blockobjects.json';
 
 export const MERGED_CONFIG = new InjectionToken<PixieConfig>('MERGED_CONFIG');
 
@@ -145,7 +146,7 @@ export interface PixieConfig {
 export const DEFAULT_CONFIG: PixieConfig  = {
     selector: 'pixie-editor',
     textureSize: 4096,
-    isAdmin: true,
+    isAdmin: true,    
     ui: {
         visible: true,
         mode: EditorMode.INLINE,

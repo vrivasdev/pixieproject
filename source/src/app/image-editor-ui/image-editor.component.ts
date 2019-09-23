@@ -2,7 +2,7 @@ import { Text } from './../../../fabric-types/fabric-impl.d';
 import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, HostListener} from '@angular/core';
 import {CanvasService} from '../image-editor/canvas/canvas.service';
 import {HistoryToolService} from '../image-editor/history/history-tool.service';
-import {fromEvent, Observable} from 'rxjs';
+import {fromEvent, Observable, BehaviorSubject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {EditorControlsService} from './toolbar-controls/editor-controls.service';
 import {FloatingPanelsService} from './toolbar-controls/floating-panels.service';
@@ -19,6 +19,8 @@ import {DrawerName} from './toolbar-controls/drawers/drawer-name.enum';
 import {Localization} from '../../common/core/types/models/Localization';
 import {Translations} from '../../common/core/translations/translations.service';
 import { ObjectPanelState } from './state/objects-panel/objects-panel.state';
+import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
+import {delay} from 'rxjs/operators';
 
 @Component({
     selector: 'image-editor',
@@ -34,7 +36,7 @@ export class ImageEditorComponent implements OnInit {
     @Select(EditorState.contentLoaded) contentLoaded$: Observable<boolean>;
     @ViewChild('canvasWrapper') canvasWrapper: ElementRef;
     @ViewChild('canvasMaskWrapper') canvasMaskWrapper: ElementRef;
-    // TODO: Define user type (admin or final) property
+    public compactMode = new BehaviorSubject(false);
     constructor(
         public canvas: CanvasService,
         private history: HistoryToolService,
@@ -49,6 +51,7 @@ export class ImageEditorComponent implements OnInit {
         public config: Settings,
         private store: Store,
         private i18n: Translations,
+        private importToolService: ImportToolService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -73,6 +76,19 @@ export class ImageEditorComponent implements OnInit {
             this.updateHistoryOnObjectModification();
             this.canvasMaskWrapper.nativeElement.classList.remove('not-loaded');
         });
+
+        this.loadBackground();
+        this.loadJson();
+    }
+
+    private loadBackground() {
+        this.importToolService.loadBackground();
+    }
+
+    private loadJson() {
+        debugger;
+        // this.importToolService.loadJson();
+        this.importToolService.loadJson();
     }
 
     private closePanelsOnObjectDelete() {
