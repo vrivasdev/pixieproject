@@ -104,8 +104,7 @@ export class ToolbarComponent implements AfterViewInit {
     /**
      * Ask user to upload state file and override current editor state.
      */
-    public openStateFile(image: SampleImage) {
-        debugger;
+    public openStateFile(image: SampleImage) {        
         //this.importTool.openBackgroundImage(this.getImageUrl(image));
         // return this.importTool.openUploadDialog({type: 'state'});
         this.importToolService.loadJson();

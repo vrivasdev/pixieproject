@@ -29,7 +29,7 @@ import {delay} from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class ImageEditorComponent implements OnInit, AfterViewInit {
+export class ImageEditorComponent implements OnInit {
     private isAdmin: boolean;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.toolbarHidden) toolbarHidden$: Observable<boolean>;
@@ -75,8 +75,18 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
             this.handleObjectSelection();
             this.updateHistoryOnObjectModification();
             this.canvasMaskWrapper.nativeElement.classList.remove('not-loaded');
+            // this.loadBackground();
+            //this.loadJson();
         });
-    }    
+    }
+
+    private loadBackground() {
+        this.importToolService.loadBackground();
+    }
+
+    private loadJson() {
+        this.importToolService.loadJson();
+    }
 
     private loadDataImage(image): any {
         return fetch(image).then(response => response.blob())

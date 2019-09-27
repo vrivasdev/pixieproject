@@ -66,7 +66,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         ImageEditorComponent,
         HistoryPanelComponent,
         ObjectsPanelComponent,
-        //OpenSampleImagePanelComponent,
+        OpenSampleImagePanelComponent,
         BackgroundImageDirective,
         ExportPanelComponent,
         SavePanelComponent,

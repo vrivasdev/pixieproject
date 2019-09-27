@@ -43,7 +43,7 @@
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
 
-       pixie = new Pixie({
+        window['Pixie'] = new Pixie({
             //image: 'assets/images/samples/sample1.jpg',
            // baseUrl: 'http://localhost:4200',
             // blankCanvasSize: {
@@ -76,10 +76,7 @@
                 }
             },
             onLoad: function() {
-                pixie.openMainImage('./assets/white_background.jpg');
-                fetch('./assets/blockobjects.json')
-                    .then(resp => resp.json())
-                    .then(data => pixie.getTool('import').openStateFile(JSON.stringify(data), 'json'));
+                //
             },
         });
 

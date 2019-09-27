@@ -8,6 +8,7 @@ import {Settings} from '../common/core/config/settings.service';
 import {CloseEditor} from './image-editor/state/editor-state-actions';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ImportToolService } from './image-editor/tools/import/import-tool.service';
 
 @Component({
     selector: 'pixie-editor',
@@ -69,7 +70,8 @@ export class AppComponent implements OnInit {
         private store: Store,
         private config: Settings,
         private matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer
+        private domSanitizer: DomSanitizer,
+        private importToolService: ImportToolService
     ) {
         this.matIconRegistry.addSvgIcon(
             'block_image',
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.bindToOverlayClick(this.overlay);
-    }
+    } 
 
     private bindToOverlayClick(overlay: ElementRef) {
         overlay.nativeElement.addEventListener('click', () => {
