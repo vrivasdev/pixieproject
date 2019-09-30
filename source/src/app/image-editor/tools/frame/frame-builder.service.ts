@@ -37,7 +37,7 @@ export class FrameBuilderService {
         this.resize(size);
         this.activeFrame.config = frame;
         this.canvas.fabric().add(this.activeFrame.group);
-
+        debugger;
         // basic frame has no pattern fill
         if (frame.mode === 'basic') {
             return this.canvas.render();
