@@ -47,6 +47,7 @@ export class ToolbarComponent implements AfterViewInit {
         private canvas: CanvasService,
         private floatingPanels: FloatingPanelsService,
         private store: Store,
+        private importToolService: ImportToolService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -57,7 +58,7 @@ export class ToolbarComponent implements AfterViewInit {
         });
 
         this.breakpoints.observe('(max-width: 768px)')
-            .subscribe(result => this.compactMode.next(result.matches));
+            .subscribe(result => this.compactMode.next(result.matches));                
     }
 
     public zoomIn() {
@@ -103,9 +104,10 @@ export class ToolbarComponent implements AfterViewInit {
     /**
      * Ask user to upload state file and override current editor state.
      */
-    public openStateFile(image: SampleImage) {
+    public openStateFile(image: SampleImage) {        
         //this.importTool.openBackgroundImage(this.getImageUrl(image));
-        return this.importTool.openUploadDialog({type: 'state'});
+        // return this.importTool.openUploadDialog({type: 'state'});
+        this.importToolService.loadJson();
     }
 
     /**

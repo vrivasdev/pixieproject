@@ -48,7 +48,7 @@ export class FramePatternsService {
             },
             repeat: mode === 'repeat' ? 'repeat' : 'no-repeat'
         });
-        debugger;
+
         this.activeFrame[part.name].set('fill', pattern);
     }
 

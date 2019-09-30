@@ -75,10 +75,9 @@ export class ImageEditorComponent implements OnInit {
             this.handleObjectSelection();
             this.updateHistoryOnObjectModification();
             this.canvasMaskWrapper.nativeElement.classList.remove('not-loaded');
+            // this.loadBackground();
+            //this.loadJson();
         });
-
-        this.loadBackground();
-        this.loadJson();
     }
 
     private loadBackground() {
@@ -86,11 +85,19 @@ export class ImageEditorComponent implements OnInit {
     }
 
     private loadJson() {
-        debugger;
-        // this.importToolService.loadJson();
         this.importToolService.loadJson();
     }
 
+    private loadDataImage(image): any {
+        return fetch(image).then(response => response.blob())
+                    .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    }));
+    }
+    
     private closePanelsOnObjectDelete() {
         this.canvas.fabric().on('object:delete', () => this.controls.closeCurrentPanel());
     }
