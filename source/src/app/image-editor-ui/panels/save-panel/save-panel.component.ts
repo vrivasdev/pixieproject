@@ -12,6 +12,7 @@ import {BehaviorSubject} from 'rxjs';
     encapsulation: ViewEncapsulation.None
 })
 export class SavePanelComponent implements OnInit {
+    private id;
     public saveForm = new FormGroup({
         share: new FormControl(),
         category: new FormControl(),
@@ -23,13 +24,20 @@ export class SavePanelComponent implements OnInit {
     constructor(
         private config: Settings,
         private exportTool: ExportToolService,
-    ) {}
+    ) {
+        this.id = config.get('pixie.id');
+    }
 
     ngOnInit() {
     }
 
     public save() {
         const val = this.saveForm.value;
-        this.exportTool.save(val.share, val.category, val.group, val.flyerName);
+
+        if (this.id) {
+            this.exportTool.update(this.id, val.share, val.category, val.group, val.flyerName);
+        } else {
+            this.exportTool.save(val.share, val.category, val.group, val.flyerName);
+        }
     }
 }

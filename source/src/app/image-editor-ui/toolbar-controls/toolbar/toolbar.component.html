@@ -14,7 +14,7 @@
             <span *ngIf="activePanel !== 'navigation'" trans>{{getToolDisplayName(activePanel)}}</span>
             <span *ngIf="activePanel === 'navigation'" trans>Editor</span>
         </div>
-        <div class="right">
+        <div class="righttoolbar">
             <button mat-icon-button (click)="applyChanges()" *ngIf="activePanel !== 'navigation'">
                 <mat-icon svgIcon="check"></mat-icon>
             </button>

@@ -80,6 +80,8 @@ export class HistoryToolService {
     }
 
     public getCurrentCanvasState(): SerializedCanvas {
+        console.log('--- blockedObject----', this.store.selectSnapshot(ObjectPanelState.blockedObject));
+        debugger;
         // temp1.objects.map(object =>{ if (object.type === 'image'){ object.src = ''; return object; } else { return object } });
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),

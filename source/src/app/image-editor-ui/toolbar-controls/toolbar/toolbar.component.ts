@@ -35,6 +35,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);
     private isAdmin: boolean;
+    private id;
 
     constructor(
         public history: HistoryToolService,
@@ -58,7 +59,7 @@ export class ToolbarComponent implements AfterViewInit {
         });
 
         this.breakpoints.observe('(max-width: 768px)')
-            .subscribe(result => this.compactMode.next(result.matches));                
+            .subscribe(result => this.compactMode.next(result.matches));
     }
 
     public zoomIn() {
@@ -104,10 +105,10 @@ export class ToolbarComponent implements AfterViewInit {
     /**
      * Ask user to upload state file and override current editor state.
      */
-    public openStateFile(image: SampleImage) {        
+    public openStateFile(image: SampleImage) {
         //this.importTool.openBackgroundImage(this.getImageUrl(image));
-        // return this.importTool.openUploadDialog({type: 'state'});
-        this.importToolService.loadJson();
+        return this.importTool.openUploadDialog({type: 'state'});
+       // this.importToolService.loadJson();
     }
 
     /**
