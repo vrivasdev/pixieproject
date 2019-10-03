@@ -76,7 +76,16 @@
                 }
             },
             onLoad: function() {
-                //
+              let idVal = null;
+              if(idVal) {
+                    //pixie.openMainImage('./js/design_module/angular/assets/white_background.jpg');
+                    fetch('./assets/blockobjects.json')
+                    //fetch(window.location.href + '/get/' + idVal)
+                        .then(resp => resp.json())
+                        //.then(json => json.data.Template.raw_json)
+                        .then(data => pixie.getTool('import').openStateFile(JSON.stringify(data), 'json'));
+                        //.then(data => {console.log(JSON.stringify(data))})
+                 }
             },
         });
 
