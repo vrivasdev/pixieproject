@@ -89,9 +89,6 @@ export class ExportToolService {
             .catch(error => console.error('Error:', error))
             .then(response => {
               console.log('Success:', response);
-<<<<<<< HEAD
-              //window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
-=======
               window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
             });
       }
@@ -127,7 +124,6 @@ export class ExportToolService {
             .then(response => {
               console.log('Success:', response);
               window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
->>>>>>> 63c0f1b8416c6dc1169c86bb7afa110556ee2234
             });
       }
     }
