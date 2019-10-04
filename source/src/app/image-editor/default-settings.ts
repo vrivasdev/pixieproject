@@ -11,6 +11,7 @@ import {DrawerName} from '../image-editor-ui/toolbar-controls/drawers/drawer-nam
 import {defaultObjectProps} from './objects/default-object-props';
 import {SampleImage} from '../image-editor-ui/panels/open-sample-image-panel/sample-image';
 import SampleJson from '../../assets/blockobjects.json';
+import { InternalNgxsExecutionStrategy } from '@ngxs/store/src/execution/internal-ngxs-execution-strategy';
 
 export const MERGED_CONFIG = new InjectionToken<PixieConfig>('MERGED_CONFIG');
 
@@ -33,6 +34,7 @@ export interface PixieConfig {
     textureSize?: number;
     isAdmin?: boolean;
     baseUrl?: string;
+    id?: number;
     ui?: {
         visible: boolean;
         theme: EditorTheme,
@@ -69,6 +71,7 @@ export interface PixieConfig {
         active: string,
     };
     saveUrl?: string;
+    updateUrl?: string;
     onSave?: Function;
     onLoad?: Function;
     onClose?: Function;
@@ -147,6 +150,7 @@ export const DEFAULT_CONFIG: PixieConfig  = {
     selector: 'pixie-editor',
     textureSize: 4096,
     isAdmin: true,
+    id: null,
     ui: {
         visible: true,
         mode: EditorMode.INLINE,
@@ -210,6 +214,7 @@ export const DEFAULT_CONFIG: PixieConfig  = {
         }
     },
     saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create',
+    updateUrl: 'https://devven.avantiway.com/vrivas/myavex/design/update',
     languages: {
         active: 'default',
     },

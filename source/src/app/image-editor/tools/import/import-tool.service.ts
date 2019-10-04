@@ -10,7 +10,7 @@ import {ImportToolValidator} from './import-tool-validator';
 import {UploadedFile} from '../../../../common/uploads/uploaded-file';
 import {openUploadWindow} from '../../../../common/uploads/utils/open-upload-window';
 import {UploadInputTypes} from '../../../../common/uploads/upload-input-config';
-import SampleJson from '../../../../assets/blockobjects.json';
+import SampleJson from '../../../../assets/blockobjects_.json';
 
 @Injectable()
 export class ImportToolService {

@@ -66,11 +66,10 @@ export class ExportToolService {
       let data;
 
       data = this.getJsonState();
-      debugger;
       this.watermark.remove();
 
       if ( ! data) return;
-
+      
       if (this.config.has('pixie.saveUrl')) {
             fetch(
                 this.config.get('pixie.saveUrl'),
@@ -90,7 +89,45 @@ export class ExportToolService {
             .catch(error => console.error('Error:', error))
             .then(response => {
               console.log('Success:', response);
+<<<<<<< HEAD
               //window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+=======
+              window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+            });
+      }
+    }
+
+    public update(id: number, share: string, category: number, group: number, templateName: string) {
+        let data;
+  
+        data = this.getJsonState();
+        this.watermark.remove();
+  
+        if ( ! data) return;
+        
+        if (this.config.has('pixie.updateUrl')) {
+            fetch(
+                this.config.get('pixie.updateUrl'),
+                {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                                          'id': id,
+                                          'raw_json': data,
+                                          'template_name': templateName,
+                                          'template_type': '7'}),
+                    mode: 'no-cors'
+                }
+            )
+            .then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+              console.log('Success:', response);
+              window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+>>>>>>> 63c0f1b8416c6dc1169c86bb7afa110556ee2234
             });
       }
     }
