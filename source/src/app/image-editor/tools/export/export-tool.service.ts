@@ -66,7 +66,7 @@ export class ExportToolService {
       let data;
 
       data = this.getJsonState();
-
+      debugger;
       this.watermark.remove();
 
       if ( ! data) return;
@@ -89,8 +89,8 @@ export class ExportToolService {
             .then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => {
-              console.log('Success:', response)
-              window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+              console.log('Success:', response);
+              //window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
             });
       }
     }
