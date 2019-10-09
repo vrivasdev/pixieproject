@@ -27,6 +27,12 @@ export class ObjectPanelState {
         return json;
     }
 
+    @Selector()
+    static allObjects(state: ObjectsPanelStateModel) {
+        return state.blockedObject;
+    }
+
+
     constructor(private store: Store) {}
 
     @Action(BlockObject)

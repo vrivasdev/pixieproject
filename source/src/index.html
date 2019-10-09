@@ -42,8 +42,8 @@
 <script>
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
-
-        window['Pixie'] = new Pixie({
+        var idVal = null;
+        pixie = new Pixie({
             //image: 'assets/images/samples/sample1.jpg',
            // baseUrl: 'http://localhost:4200',
             // blankCanvasSize: {
@@ -52,12 +52,15 @@
             // },
             ui: {
                 mode: 'inline',
-                showExportPanel: true,
+                showExportPanel: idVal? false: true,
+                openImageDialog: {
+                     show: idVal? false: true
+                },
                 toolbar: {
                     //hideOpenButton: true,
                     //hideSaveButton: true,
                     //hideCloseButton: true,
-                }
+                }                
             },
             tools: {
                 export: {
@@ -76,16 +79,26 @@
                 }
             },
             onLoad: function() {
-              let idVal = null;
+              // let idVal = null;
               if(idVal) {
-                    //pixie.openMainImage('./js/design_module/angular/assets/white_background.jpg');
-                    fetch('./assets/blockobjects.json')
-                    //fetch(window.location.href + '/get/' + idVal)
-                        .then(resp => resp.json())
-                        //.then(json => json.data.Template.raw_json)
-                        .then(data => pixie.getTool('import').openStateFile(JSON.stringify(data), 'json'));
-                        //.then(data => {console.log(JSON.stringify(data))})
-                 }
+                pixie.openMainImage('./assets/white_background.jpg');
+                fetch('./assets/blockobjects.json',                
+                {                    
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    mode: 'no-cors'
+                })
+                .then(resp => resp.json())
+                .then(data => {                                
+                    pixie.getTool('import').openStateObjectPanelFile(JSON.stringify({objectsPanel:data.objectsPanel}));
+                    delete data.objectsPanel;
+                    pixie.getTool('import').openStateFile(JSON.stringify(data));
+                })
+                .catch(error => console.log('Error:', error));
+                //.then(data => {console.log(JSON.stringify(data))})
+              }
             },
         });
 

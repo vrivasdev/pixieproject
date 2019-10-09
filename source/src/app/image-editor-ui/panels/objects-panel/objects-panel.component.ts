@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewEncapsulation, AfterViewInit, OnChanges, OnInit } from '@angular/core';
 import {ObjectsService} from '../../../image-editor/objects/objects.service';
 import {OverlayPanelRef} from 'common/core/ui/overlay-panel/overlay-panel-ref';
 import {Object} from 'fabric/fabric-impl';
@@ -24,9 +24,10 @@ import {Settings} from 'common/core/config/settings.service';
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false
 })
-export class ObjectsPanelComponent {
+export class ObjectsPanelComponent implements AfterViewInit {
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
     @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
+        
     constructor(
         public objects: ObjectsService,
         public panelRef: OverlayPanelRef,

@@ -1,4 +1,5 @@
 import {HistoryItem} from '../../../image-editor/history/history-item.interface';
+import { ObjectPanelItem } from 'app/image-editor/history/objectPanel-item.interface';
 
 export class HistoryChanged {
   public static readonly type = '[History] Changed';

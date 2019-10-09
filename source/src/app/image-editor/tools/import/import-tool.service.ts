@@ -99,6 +99,12 @@ export class ImportToolService {
         });
     }
 
+    public openStateObjectPanelFile(data: string): Promise<any> {
+        return this.resetEditor().then(() => {
+            return this.history.addFromJsonObjectPanel(data);
+        });
+    }
+
     public resetEditor(params: {preserveHistory?: boolean} = {}): Promise<any> {
         // reset UI
         this.canvas.fabric().clear();

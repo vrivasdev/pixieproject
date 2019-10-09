@@ -23,6 +23,8 @@ import {staticObjectConfig} from '../objects/static-object-config';
 import {ContentLoaded} from '../state/editor-state-actions';
 import {take} from 'rxjs/operators';
 import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
+import { ObjectPanelItem } from './objectPanel-item.interface';
+import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
 
 @Injectable()
 export class HistoryToolService {
@@ -72,6 +74,10 @@ export class HistoryToolService {
         this.store.dispatch(new AddHistoryItem(this.createHistoryItem(params.name, params.icon, json)));
     }
 
+    public addObjectPanel(object: any) {
+        this.store.dispatch(new BlockObject(object.id, object.objectId, object.state, 'max' in object ? object.max : null ));
+    }
+
     public addFromJson(json: string|SerializedCanvas) {
         const initial = !this.store.selectSnapshot(HistoryState.items).length,
             name = initial ? HistoryNames.INITIAL : HistoryNames.LOADED_STATE;
@@ -79,16 +85,17 @@ export class HistoryToolService {
         return this.reload();
     }
 
+    public addFromJsonObjectPanel(json: string) {
+        JSON.parse(json).objectsPanel.forEach(object => this.addObjectPanel(object));
+    }
+
     public getCurrentCanvasState(): SerializedCanvas {
-        console.log('--- blockedObject----', this.store.selectSnapshot(ObjectPanelState.blockedObject));
-        debugger;
-        // temp1.objects.map(object =>{ if (object.type === 'image'){ object.src = ''; return object; } else { return object } });
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),
             editor: {frame: this.frameTool.getActive(), fonts: this.textTool.getUsedFonts()},
             canvasWidth: this.canvas.state.original.width,
             canvasHeight: this.canvas.state.original.height,
-            objectsPanel: this.store.selectSnapshot(ObjectPanelState.blockedObject)
+            objectsPanel: this.store.selectSnapshot(ObjectPanelState.allObjects)
         };
     }
 
@@ -151,6 +158,15 @@ export class HistoryToolService {
             icon: icon,
             zoom: this.canvas.zoom.get(),
             activeObjectId: this.activeObject.getId(),
+        });
+    }
+
+    private createObjectPanelItem(object: any): ObjectPanelItem {
+        return Object.assign({
+            id: object.id,
+            objectId: object.objectId,
+            state: object.state,
+            max: object.max
         });
     }
 }

@@ -75,8 +75,6 @@ export class ImageEditorComponent implements OnInit {
             this.handleObjectSelection();
             this.updateHistoryOnObjectModification();
             this.canvasMaskWrapper.nativeElement.classList.remove('not-loaded');
-            // this.loadBackground();
-            //this.loadJson();
         });
     }
 

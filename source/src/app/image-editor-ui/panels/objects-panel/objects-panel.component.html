@@ -26,7 +26,7 @@
             <div class="drag-placeholder" *cdkDragPlaceholder>
                 <div class="placeholder-inner"></div>
             </div>
-            <ng-container *ngIf="object.type==='i-text'" >
+            <ng-container *ngIf="object.type==='i-text'" >                
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'" [ngIfElse]="tStyle" >
                   <img class="block-open"  [src]="getImageUrl('icons/individual/block-textstyle.svg')" (click)="blockSelectedObject(object, 'style')" matTooltip="Unlock Text Style">
                   </ng-template>
