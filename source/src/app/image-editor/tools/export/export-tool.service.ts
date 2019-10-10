@@ -89,7 +89,7 @@ export class ExportToolService {
             .catch(error => console.error('Error:', error))
             .then(response => {
               console.log('Success:', response);
-              window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+              window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
             });
       }
     }
@@ -123,7 +123,7 @@ export class ExportToolService {
             .catch(error => console.error('Error:', error))
             .then(response => {
               console.log('Success:', response);
-              window.location.href = 'https://devven.avantiway.com/vrivas/myavex/design';
+              window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
             });
       }
     }

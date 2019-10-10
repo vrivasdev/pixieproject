@@ -213,8 +213,10 @@ export const DEFAULT_CONFIG: PixieConfig  = {
             ],
         }
     },
-    saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create',
-    updateUrl: 'https://devven.avantiway.com/vrivas/myavex/design/update',
+    //saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create',
+    saveUrl: window.location.protocol + '//' + window.location.hostname + '/design/create',
+    // updateUrl: 'https://devven.avantiway.com/vrivas/myavex/design/update',
+    updateUrl: window.location.protocol + '//' + window.location.hostname + '/design/update',
     languages: {
         active: 'default',
     },
