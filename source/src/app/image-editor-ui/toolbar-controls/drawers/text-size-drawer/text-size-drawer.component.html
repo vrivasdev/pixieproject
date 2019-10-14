@@ -1,6 +1,4 @@
 <div>
     <div>Text Size</div>
-    <select class="custom-select" (change)="setTextSize($event)">
-        <option *ngFor="let size of sizes" [ngValue]="size">{{size}}</option>
-    </select>
+    <input type="text" size="4" (change)="setTextSize($event)" value={{size}}/>
 </div>

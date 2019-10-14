@@ -8,12 +8,14 @@ import { ActiveObjectService } from 'app/image-editor/canvas/active-object/activ
     styleUrls: ['./text-size-drawer.component.scss']
 })
 export class TextSizeDrawerComponent {
-    public sizes: any = [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40];
-
+    public size;
     constructor(
         private store: Store,
         public activeObject: ActiveObjectService
-    ) {}
+    ) {
+      let obj: any = activeObject.get();
+      this.size = 'fontSize' in obj ? obj.fontSize : 0;
+    }
 
     public setTextSize(e: any) {
       this.activeObject.form.patchValue({
