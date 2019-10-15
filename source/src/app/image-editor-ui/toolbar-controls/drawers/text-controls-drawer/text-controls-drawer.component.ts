@@ -19,6 +19,7 @@ export class TextControlsDrawerComponent {
             underline: e.value.indexOf('underline') > -1,
             linethrough: e.value.indexOf('linethrough') > -1,
             fontStyle: e.value.indexOf('italic') > -1 ? 'italic' : 'normal',
+            fontWeight: e.value.indexOf('bold') > -1 ? 'bold' : 'normal'
         });
     }
 }
