@@ -73,8 +73,9 @@ export class ObjectsPanelComponent {
                 this.blockMovement(object);
             break;
             case 'maxtext':
-                this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAXTEXT.charAt(0).toLowerCase(),
-                                                    object.data.id, ObjectName.MAXTEXT, 40));
+                let obj: any = object;
+                this.store.dispatch(new BlockObject(obj.data.id + ObjectName.MAXTEXT.charAt(0).toLowerCase(),
+                                                    obj.data.id, ObjectName.MAXTEXT,  obj.text.length));
             break;
         }
     }

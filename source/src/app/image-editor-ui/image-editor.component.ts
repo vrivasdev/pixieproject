@@ -163,11 +163,13 @@ export class ImageEditorComponent implements OnInit {
         const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
         const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
         const obj = this.activeObject.get();
+        /*TODO: Keep looking how to block ctrl v action*/
+        console.log(window.getSelection().toString());
         if (obj) {
             if ('data' in obj) {
                 if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
                  ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
-                 event.key !== 'Backspace') {
+                 ((event.key !== 'Backspace') || ((event.ctrlKey || event.metaKey) && event.keyCode === 86))) {
                   event.preventDefault();
                   event.stopPropagation();
                   return false;
