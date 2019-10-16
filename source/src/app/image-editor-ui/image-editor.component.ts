@@ -164,12 +164,11 @@ export class ImageEditorComponent implements OnInit {
         const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
         const obj = this.activeObject.get();
         /*TODO: Keep looking how to block ctrl v action*/
-        console.log(window.getSelection().toString());
         if (obj) {
             if ('data' in obj) {
                 if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
                  ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
-                 ((event.key !== 'Backspace') || ((event.ctrlKey || event.metaKey) && event.keyCode === 86))) {
+                 ((event.key !== 'Backspace'))) {
                   event.preventDefault();
                   event.stopPropagation();
                   return false;
@@ -177,4 +176,24 @@ export class ImageEditorComponent implements OnInit {
             }
         }
     }
+
+    @HostListener('document:keydown.control.v', ['$event'])
+    onPaste(event: KeyboardEvent) {
+        const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
+        const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
+        const obj = this.activeObject.get();
+        const nav: any = navigator;
+
+        if ('clipboard' in navigator) {
+            nav.clipboard.readText().then(text => {
+                if ((blockedObject[obj.data.id + 'm'] === 'maxtext') &&
+                ((text.length + this.activeObject.get().toObject().text.length) >= maxTextObject[obj.data.id + 'm'] )) {
+                    console.log('enter');
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return false;
+                }
+            }).catch(error => console.log('Error:', error));
+        }
+      }
 }
