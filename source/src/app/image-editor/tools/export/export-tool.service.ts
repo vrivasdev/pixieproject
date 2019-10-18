@@ -55,14 +55,14 @@ export class ExportToolService {
         });
     }
 
-    public save(share: string, category: number, group: number, templateName: string) {
+    public save(share: string, category: number, group: number, templateName: string, saveType: number) {
       let data;
 
       data = this.getJsonState();
       this.watermark.remove();
 
       if ( ! data) return;
-      
+      debugger;
       if (this.config.has('pixie.saveUrl')) {
             fetch(
                 this.config.get('pixie.saveUrl'),
@@ -74,7 +74,8 @@ export class ExportToolService {
                     },
                     body: JSON.stringify({'raw_json': data,
                                           'template_name': templateName,
-                                          'template_type': '7'}),
+                                          'template_type': '7',
+                                          'draft': saveType}),
                     mode: 'no-cors'
                 }
             )
@@ -87,7 +88,7 @@ export class ExportToolService {
       }
     }
 
-    public update(id: number, share: string, category: number, group: number, templateName: string) {
+    public update(id: number, share: string, category: number, group: number, templateName: string, saveType: number) {
         let data;
   
         data = this.getJsonState();
@@ -108,7 +109,8 @@ export class ExportToolService {
                                           'id': id,
                                           'raw_json': data,
                                           'template_name': templateName,
-                                          'template_type': '7'}),
+                                          'template_type': '7',
+                                          'draft': saveType}),
                     mode: 'no-cors'
                 }
             )

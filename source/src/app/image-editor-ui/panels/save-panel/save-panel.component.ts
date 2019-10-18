@@ -35,9 +35,9 @@ export class SavePanelComponent implements OnInit {
         const val = this.saveForm.value;
 
         if (this.id) {
-            this.exportTool.update(this.id, val.share, val.category, val.group, val.flyerName);
+            this.exportTool.update(this.id, val.share, val.category, val.group, val.flyerName, val.saveType);
         } else {
-            this.exportTool.save(val.share, val.category, val.group, val.flyerName);
+            this.exportTool.save(val.share, val.category, val.group, val.flyerName, val.saveType);
         }
     }
 }
