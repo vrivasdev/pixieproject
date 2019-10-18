@@ -13,6 +13,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class SavePanelComponent implements OnInit {
     private id;
+    private data;
     public saveForm = new FormGroup({
         share: new FormControl(),
         category: new FormControl(),
@@ -29,6 +30,9 @@ export class SavePanelComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.id) { // if edit action is active
+            this.data = this.exportTool.get(this.id);
+        }
     }
 
     public save() {

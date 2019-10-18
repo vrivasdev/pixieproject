@@ -62,7 +62,7 @@ export class ExportToolService {
       this.watermark.remove();
 
       if ( ! data) return;
-      debugger;
+            
       if (this.config.has('pixie.saveUrl')) {
             fetch(
                 this.config.get('pixie.saveUrl'),
@@ -121,6 +121,26 @@ export class ExportToolService {
               window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
             });
       }
+    }
+
+    public get(id: number): Promise<Object> {
+        return new Promise(resolve => {
+            if (this.config.get('pixie.getUrl')) {
+                console.log(this.config.get('pixie.getUrl') + '/' + id);
+                fetch(
+                    this.config.get('pixie.getUrl') + '/' + id,
+                    {
+                        method: 'GET',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        mode: 'no-cors'
+                    })
+                    .then(resp => resp.json())
+                    .then(data => resolve(data))
+                    .catch(error => console.log('Error:', error));
+            }
+        });
     }
 
     private getCanvasBlob(format: ValidFormats, data: string): Promise<Blob> {
