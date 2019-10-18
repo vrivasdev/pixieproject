@@ -50,16 +50,9 @@ export class ExportToolService {
 
         if ( ! data) return;
 
-        if (this.config.has('pixie.saveUrl')) {
-            this.http.post(this.config.get('pixie.saveUrl'), {data, filename, format})
-                .subscribe(() => {}, () => {});
-        } else if (this.config.has('pixie.onSave')) {
-            (this.config.get('pixie.onSave') as Function)(data, filename, format);
-        } else {
-            this.getCanvasBlob(format, data).then(blob => {
-                saveAs(blob, filename);
-            });
-        }
+        this.getCanvasBlob(format, data).then(blob => {
+            saveAs(blob, filename);
+        });
     }
 
     public save(share: string, category: number, group: number, templateName: string) {

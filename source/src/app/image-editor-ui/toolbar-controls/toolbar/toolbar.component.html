@@ -37,6 +37,10 @@
             <mat-icon svgIcon="file-download"></mat-icon>
             <span class="name" trans>Save</span>
         </button>
+        <button mat-button (click)="exportImage()" [class.invisible]="config.get('pixie.ui.toolbar.hideExportButton')" class="export-button">
+            <mat-icon svgIcon="file-download"></mat-icon>
+            <span class="name" trans>Export</span>
+        </button>
     </div>
     <div class="center" *ngIf="config.get('pixie.ui.allowZoom')">
         <button mat-icon-button (click)="zoomOut()">

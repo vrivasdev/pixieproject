@@ -157,6 +157,7 @@ export const DEFAULT_CONFIG: PixieConfig  = {
         theme: EditorTheme.LIGHT,
         allowEditorClose: true,
         allowZoom: true,
+        showExportPanel: true,
         toolbar: {
             hideOpenButton: false,
             hideCloseButton: true,
