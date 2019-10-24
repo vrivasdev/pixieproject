@@ -11,9 +11,11 @@ import {BehaviorSubject} from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class SavePanelComponent implements OnInit {
-    private id;
-    private data;
+export class SavePanelComponent {
+    private id: number;
+    private flyerName: string;
+    private saveType: number;
+
     public saveForm = new FormGroup({
         share: new FormControl(),
         category: new FormControl(),
@@ -21,17 +23,15 @@ export class SavePanelComponent implements OnInit {
         flyerName: new FormControl(),
         saveType: new FormControl(),
     });
-
+    
     constructor(
         private config: Settings,
         private exportTool: ExportToolService,
     ) {
-        this.id = config.get('pixie.id');
-    }
-
-    ngOnInit() {
-        if (this.id) { // if edit action is active
-            this.data = this.exportTool.get(this.id);
+        if (config.get('pixie.id')){
+            this.id = config.get('pixie.id')
+            this.flyerName = config.get('pixie.flyerName')
+            this.saveType = config.get('pixie.saveType')
         }
     }
 
