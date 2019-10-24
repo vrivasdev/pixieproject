@@ -40,9 +40,10 @@
 </pixie-editor>
 
 <script>
+    var base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
-        var idVal = null;
+        var idVal = 1;
         pixie = new Pixie({
             //image: 'assets/images/samples/sample1.jpg',
            // baseUrl: 'http://localhost:4200',
@@ -50,9 +51,12 @@
             //     width: 800,
             //     height: 600,
             // },
+            id: 497,
+            flyerName: 'test001',
+            saveType: 1,
             ui: {
-                mode: 'inline',
-                showExportPanel: idVal? false: true,
+                mode: 'inline',                
+                showExportPanel: true,
                 openImageDialog: {
                      show: idVal? false: true
                 },
@@ -62,6 +66,9 @@
                     //hideCloseButton: true,
                 }                
             },
+            saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create', 
+            updateUrl: 'https://devven.avantiway.com/vrivas/myavex/design/update',
+            getUrl: 'https://devven.avantiway.com/vrivas/myavex/design/get',
             tools: {
                 export: {
                     defaultFormat: 'jpeg',
