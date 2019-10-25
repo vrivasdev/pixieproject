@@ -7,7 +7,9 @@ toolbar {
   padding: 0 20px;
   color: $site-text-color-100;
   background-color: $site-primary-color-100;
-  position: relative;
+  position: fixed;
+  margin-top: -4.50vh;
+  width: 93%;
   z-index: 3;
   @include mat-elevation(1);
 
