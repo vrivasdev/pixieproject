@@ -91,7 +91,7 @@ export class GoogleFontsPanelService {
         return this.http.getWithCache('https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=' + key)
             .pipe(map(response => {
                 return response['items'].map(font => {
-                    return {family: font.family, category: font.category, type: 'google'};
+                    return {family: font.family, category: font.category, type: 'google', subsets: font.subsets};
                 });
             }) as any).toPromise() as any;
     }
