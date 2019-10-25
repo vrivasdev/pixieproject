@@ -7,10 +7,12 @@
 .floating-panel {
   display: block;
   min-width: 250px;
+  max-height: 71vh;
   background-color: $site-bg-color-100;
   @include mat-elevation(3);
   overflow: hidden;
   user-select: none;
+  overflow-y: scroll;
 
   @media only screen and (max-width: $medium) {
     width: 90%;
