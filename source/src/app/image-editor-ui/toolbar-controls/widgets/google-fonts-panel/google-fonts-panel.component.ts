@@ -4,6 +4,7 @@ import {GoogleFontsPanelService} from './google-fonts-panel.service';
 import {FontCategories} from './font-categories';
 import {FontItem} from './font-item';
 import {MatPaginator, PageEvent} from '@angular/material';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'google-fonts-panel',
@@ -36,6 +37,7 @@ export class GoogleFontsPanelComponent implements OnInit, OnDestroy {
     public applyFont(font: FontItem) {
         this.overlayPanelRef.emitValue(font.family);
         this.overlayPanelRef.close();
+        this.fonts.setSelected(font.family === 'Lato' ? true : false);
     }
 
     public changePage(e: PageEvent) {

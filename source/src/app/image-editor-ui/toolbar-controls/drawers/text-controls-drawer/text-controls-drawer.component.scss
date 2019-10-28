@@ -4,6 +4,19 @@ text-controls-drawer {
   .mat-button-toggle-group {
     margin-right: 15px;
   }
+  .variants-selector {
+    width: 100%;
+    height: 50px;
+    color: inherit;
+    border: 1px solid #E0E0E0;
+    padding: 12px;
+    line-height: normal;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: inherit;
+    box-sizing: border-box;
+    border-radius: 4px;    
+  }
 
   text-font-selector {
     line-height: 48px;

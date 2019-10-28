@@ -12,5 +12,13 @@
         <mat-button-toggle [checked]="activeObject.form.get('fontWeight').value === 'bold'" value="bold"><mat-icon svgIcon="format-bold"></mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
 
-    <text-font-selector formControlName="fontFamily"></text-font-selector>
+    <text-font-selector formControlName="fontFamily"></text-font-selector>    
+    
+    <div *ngIf="font.isSelected$ | async">                                      
+        <select class="variants-selector" (change)="applyVariant($event.target.value)">
+            <option *ngFor="let variant of font.selectedVariants$ | async" value="{{variant}}">
+                {{ variant }}
+            </option>
+        </select>             
+    </div>    
 </ng-container>

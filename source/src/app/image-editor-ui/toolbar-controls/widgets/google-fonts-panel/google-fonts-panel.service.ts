@@ -5,10 +5,13 @@ import {FontsPaginatorService} from './fonts-paginator.service';
 import {map} from 'rxjs/operators';
 import {HttpCacheClient} from 'common/core/http/http-cache-client';
 import {FontItem} from './font-item';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class GoogleFontsPanelService {
     private loadedFonts: FontItem[] = [];
+    public selectedVariants$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+    public isSelected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(
         private http: HttpCacheClient,
@@ -91,8 +94,15 @@ export class GoogleFontsPanelService {
         return this.http.getWithCache('https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=' + key)
             .pipe(map(response => {
                 return response['items'].map(font => {
+                    if (font.family === 'Lato') {
+                        this.selectedVariants$.next(font.variants);
+                    }
                     return {family: font.family, category: font.category, type: 'google', subsets: font.subsets};
                 });
             }) as any).toPromise() as any;
+    }
+
+    public setSelected(selected: boolean): void {
+        this.isSelected$.next(selected);
     }
 }
