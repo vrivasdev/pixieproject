@@ -95,6 +95,7 @@ export class GoogleFontsPanelService {
             .pipe(map(response => {
                 return response['items'].map(font => {
                     if (font.family === 'Lato') {
+                        console.log('Font variants', font.variants);
                         this.selectedVariants$.next(font.variants);
                     }
                     return {family: font.family, category: font.category, type: 'google', subsets: font.subsets};
@@ -103,6 +104,7 @@ export class GoogleFontsPanelService {
     }
 
     public setSelected(selected: boolean): void {
+        console.log('is selected:', selected)
         this.isSelected$.next(selected);
     }
 }
