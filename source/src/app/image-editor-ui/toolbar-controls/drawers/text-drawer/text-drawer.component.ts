@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/co
 import {ActiveObjectService} from '../../../../image-editor/canvas/active-object/active-object.service';
 import {Store} from '@ngxs/store';
 import {AddText} from '../../../state/text/text.actions';
+import { GoogleFontsPanelService } from '../../widgets/google-fonts-panel/google-fonts-panel.service';
 
 @Component({
     selector: 'text-drawer',
@@ -15,6 +16,7 @@ export class TextDrawerComponent {
     constructor(
         private store: Store,
         public activeObject: ActiveObjectService,
+        public font: GoogleFontsPanelService
     ) {}
 
     public addText() {

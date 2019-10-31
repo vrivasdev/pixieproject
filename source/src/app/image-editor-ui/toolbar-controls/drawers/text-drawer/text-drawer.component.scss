@@ -7,6 +7,21 @@ text-drawer {
     margin-left: 25px;
   }
 
+  .variants-selector {
+    width: 100%;
+    height: 50px;
+    color: inherit;
+    border: 1px solid #E0E0E0;
+    padding: 12px;
+    line-height: normal;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: inherit;
+    box-sizing: border-box;
+    border-radius: 4px;    
+    margin-bottom: 27px;
+  }
+
   text-font-selector {
     line-height: 48px;
     margin-bottom: 10px;

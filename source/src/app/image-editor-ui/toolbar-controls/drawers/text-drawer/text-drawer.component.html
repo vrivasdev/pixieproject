@@ -12,4 +12,11 @@
         <text-font-selector formControlName="fontFamily"></text-font-selector>
         <div class="bottom-label" trans>Font</div>
     </div>
+    <div *ngIf="font.isSelected$ | async">                                      
+        <select class="variants-selector" (change)="applyVariant($event.target.value)">
+            <option *ngFor="let variant of font.selectedVariants$ | async" value="{{variant}}">
+                {{ variant }}
+            </option>
+        </select>             
+    </div>    
 </div>
