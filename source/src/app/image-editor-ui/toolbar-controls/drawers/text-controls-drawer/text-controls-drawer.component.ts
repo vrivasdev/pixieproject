@@ -26,10 +26,6 @@ export class TextControlsDrawerComponent {
     }
     public applyVariant(variant: string) {
         const [fontWeight, fontStyle] = this.getVariantFormat(variant);
-        
-        console.log('___ font weight __:', fontWeight);
-        console.log('___ fontStyle __:', fontStyle);
-
         this.activeObject.form.patchValue({
             fontWeight: fontWeight,
             fontStyle: fontStyle

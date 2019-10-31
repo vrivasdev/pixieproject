@@ -22,4 +22,34 @@ export class TextDrawerComponent {
     public addText() {
         this.store.dispatch(new AddText());
     }
+    public applyVariant(variant: string) {
+        const [fontWeight, fontStyle] = this.getVariantFormat(variant);
+        this.activeObject.form.patchValue({
+            fontWeight: fontWeight,
+            fontStyle: fontStyle
+        });
+    }
+    private getVariantFormat(variant: string): Array<string|number> {
+        const variants = variant.split(/(\d+)/);
+        let fontStyle: string;
+        let fontWeight: string | number;
+        
+        if (variants[0].length) {
+            fontStyle = (variants[0] === 'regular') ? 'normal' : variants[0];
+            fontWeight = 'normal';
+        } else if (variants[2].length && variants[2] !== 'regular') {
+            fontStyle = variants[2];
+        } else {
+            fontStyle = 'normal';
+        }
+
+        if (variants.length > 1) {
+            if (variants[1].length) {
+                fontWeight = parseInt(variants[1], 0);
+            } else {
+                fontWeight = 'normal';
+            }
+        }
+        return [fontWeight, fontStyle];
+    }
 }
