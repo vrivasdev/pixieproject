@@ -43,7 +43,7 @@
     var base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
-        var idVal = 1;
+        var idVal = null;
         pixie = new Pixie({
             //image: 'assets/images/samples/sample1.jpg',
            // baseUrl: 'http://localhost:4200',
@@ -51,7 +51,7 @@
             //     width: 800,
             //     height: 600,
             // },
-            id: 497,
+            id: idVal,
             flyerName: 'test001',
             saveType: 'completed',
             ui: {
@@ -66,9 +66,9 @@
                     //hideCloseButton: true,
                 }                
             },
-            saveUrl: 'https://devven.avantiway.com/vrivas/myavex/design/create', 
-            updateUrl: 'https://devven.avantiway.com/vrivas/myavex/design/update',
-            getUrl: 'https://devven.avantiway.com/vrivas/myavex/design/get',
+            saveUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/create', 
+            updateUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/update',
+            getUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/get',
             tools: {
                 export: {
                     defaultFormat: 'jpeg',
