@@ -37,7 +37,7 @@ export class SavePanelComponent {
 
     public save() {
         const val = this.saveForm.value;
-        debugger;
+        
         if (this.id) {
             this.exportTool.update(this.id, val.share, val.category, val.group,
                                    val.flyerName ? val.flyerName : this.flyerName,
