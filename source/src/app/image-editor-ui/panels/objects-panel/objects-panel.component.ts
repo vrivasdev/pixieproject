@@ -35,7 +35,9 @@ export class ObjectsPanelComponent {
         private canvasState: CanvasStateService,
         private store: Store,
         private config: Settings
-    ) {}
+    ) {
+        console.log('Objects:', this.objects);
+    }
 
     public getIcon(object: Object): string {
         return ObjectNames[object.name].icon;
@@ -49,6 +51,7 @@ export class ObjectsPanelComponent {
     }
 
     public blockSelectedObject(object: Object, type: string) {
+        console.log('type:', type)
         switch (type) {
             case 'textsize':
                 this.store.dispatch(new BlockObject(object.data.id + ObjectName.TEXTSIZE.charAt(0).toLowerCase(),
@@ -77,6 +80,11 @@ export class ObjectsPanelComponent {
                 this.store.dispatch(new BlockObject(obj.data.id + ObjectName.MAXTEXT.charAt(0).toLowerCase(),
                                                     obj.data.id, ObjectName.MAXTEXT,  obj.text.length));
             break;
+            case 'xmappingtext':
+                console.log('___xmappingtext___')
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAPPINGTEXT.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.MAPPINGTEXT));
+            break;
         }
     }
 
@@ -102,7 +110,7 @@ export class ObjectsPanelComponent {
         // reverse newIndex given by cdk drag and drop
         const index = this.objects.getAll()
             .slice().reverse().findIndex(obj => obj.data.id === e.item.data);
-
+        
         this.objects.getById(e.item.data).moveTo(index);
         this.canvasState.fabric.requestRenderAll();
     }

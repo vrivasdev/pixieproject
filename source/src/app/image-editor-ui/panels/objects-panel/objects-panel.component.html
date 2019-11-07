@@ -50,7 +50,13 @@
                 </ng-template>
                 <ng-template #tMaxtext>
                   <label class="block-open maxtext" for="" (click)="blockSelectedObject(object, 'maxtext')" matTooltip="Lock Max characters">max</label>
-              </ng-template>
+                </ng-template>
+                <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'x'] === 'xmappingtext'" [ngIfElse]="tMappingText" >
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Unlock Text mapping">
+                </ng-template>
+                <ng-template #tMappingText>
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Lock Text mapping">
+                </ng-template>
             </ng-container>
             <ng-container *ngIf="object.type==='image'">
               <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'" [ngIfElse]="tImage" >
