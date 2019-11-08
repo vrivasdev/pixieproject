@@ -1,4 +1,4 @@
-<div class="content" [class.hidden]="activePanel$ | async">        
+<div class="content" [class.hidden]="activePanel$ | async">            
     <div class="button-with-image" (click)="openPanel('shadow')">
         <mat-icon svgIcon="shadow-custom"></mat-icon>
         <div class="bottom-label" trans>Shadow</div>
@@ -37,10 +37,9 @@
         <mat-icon>image</mat-icon>
         <div class="bottom-label" trans>Image</div>
     </div>
-    <div class="button-with-image" (click)="textMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext' && type !== 'i-text'">
-        {{ type }}
+    <div class="button-with-image" (click)="textMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeObject.get().type === 'i-text'" > 
         <mat-icon>mapping</mat-icon>
-        <div class="bottom-label" trans>Text mapping </div>
+        <div class="bottom-label" trans>Mapping</div>
     </div>
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>

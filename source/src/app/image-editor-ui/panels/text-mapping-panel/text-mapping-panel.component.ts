@@ -14,7 +14,18 @@ export class TextMappingPanelComponent {
         mls: new FormControl(),
         profile: new FormControl()
     });
+
+    public clearSelector(event, selector) {
+        console.log('event:', event);
+        this.saveForm.patchValue(selector === 'mls' ? {mls: ''} : {profile: ''});
+    }
+
     public save() {
-        console.log('___form save___');
+        if ( this.saveForm.value.mls ) {
+            this.saveForm.value.mls;
+        }
+        else {
+            this.saveForm.value.profile;
+        }
     }
 }

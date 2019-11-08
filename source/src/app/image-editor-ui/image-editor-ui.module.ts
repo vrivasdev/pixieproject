@@ -18,6 +18,7 @@ import {
     MatOptionModule,
     MatSelectModule,
 } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 import {CustomScrollbarModule} from 'common/core/ui/custom-scrollbar/custom-scrollbar.module';
 import {OverlayPanel} from 'common/core/ui/overlay-panel/overlay-panel.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
@@ -61,6 +62,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         MatRadioModule,
         MatOptionModule,
         MatSelectModule,
+        MatTabsModule,
 
     ],
     declarations: [

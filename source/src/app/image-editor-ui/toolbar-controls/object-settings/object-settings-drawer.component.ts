@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, AfterViewInit, AfterViewChecked} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {ActiveObjectService} from '../../../image-editor/canvas/active-object/active-object.service';
 import {HistoryToolService} from '../../../image-editor/history/history-tool.service';
 import {Select, Store} from '@ngxs/store';
@@ -21,7 +21,7 @@ import { FloatingPanelsService } from '../floating-panels.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {'class': 'controls-drawer'},
 })
-export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     @Select(ObjectsState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.activeObjIsText) activeObjIsText$: Observable<boolean>;
     @Select(EditorState.activeObjIsShape) activeObjIsShape$: Observable<boolean>;
@@ -37,8 +37,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy, AfterVi
         private importTool: ImportToolService,
         private canvas: CanvasService,
         public panels: FloatingPanelsService,
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
         this.subscription = this.activeObject.propsChanged$
@@ -50,10 +49,6 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy, AfterVi
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
-
-    ngAfterViewChecked() {
-        this.type = this.activeObject.get().type;
     }
 
     public openPanel(name: string) {

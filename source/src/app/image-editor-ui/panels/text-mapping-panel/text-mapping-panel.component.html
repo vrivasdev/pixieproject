@@ -1,19 +1,25 @@
 <form (ngSubmit)="save()"  [formGroup]="saveForm" ngNativeValidate>
-    <mat-label>Select MLS:</mat-label>
-    <mat-select formControlName="mls">        
-        <mat-option value="address">Address</mat-option>
-        <mat-option value="baths">Baths</mat-option>
-        <mat-option value="rooms">Rooms</mat-option>
-        <mat-option value="agent-name">Agent Name</mat-option>
-        <mat-option value="remarks">Remarks</mat-option>
-    </mat-select>
-    <mat-label>Select Profile:</mat-label>
-    <mat-select formControlName="profile">        
-        <mat-option value="name">Name</mat-option>
-        <mat-option value="phone">Phone</mat-option>
-        <mat-option value="email">Email</mat-option>
-        <mat-option value="website">Website</mat-option>        
-    </mat-select>    
+    <mat-tab-group>
+        <mat-tab label="MLS">
+            <mat-label>Select an option:</mat-label>
+            <mat-select formControlName="mls" (selectionChange)="clearSelector($event, 'profile')">        
+                <mat-option value="address">Address</mat-option>
+                <mat-option value="baths">Baths</mat-option>
+                <mat-option value="rooms">Rooms</mat-option>
+                <mat-option value="agent-name">Agent Name</mat-option>
+                <mat-option value="remarks">Remarks</mat-option>
+            </mat-select>
+        </mat-tab>
+        <mat-tab label="Profile">
+            <mat-label>Select and option:</mat-label>
+            <mat-select formControlName="profile" (selectionChange)="clearSelector($event, 'mls')">        
+                <mat-option value="name">Name</mat-option>
+                <mat-option value="phone">Phone</mat-option>
+                <mat-option value="email">Email</mat-option>
+                <mat-option value="website">Website</mat-option>        
+            </mat-select>
+        </mat-tab>
+    </mat-tab-group>    
     <button mat-flat-button color="primary" class="save-button" trans>Save</button>
     <button mat-stroked-button color="primary" class="save-button" trans>Close</button>
 </form>
