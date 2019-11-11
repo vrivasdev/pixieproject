@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.bindToOverlayClick(this.overlay);
-    } 
+    }
 
     private bindToOverlayClick(overlay: ElementRef) {
         overlay.nativeElement.addEventListener('click', () => {

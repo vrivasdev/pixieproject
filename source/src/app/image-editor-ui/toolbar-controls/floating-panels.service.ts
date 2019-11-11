@@ -39,7 +39,7 @@ export class FloatingPanelsService {
 
     public openTextMappingPanel() {
         this.dialog.open(TextMappingPanelComponent, null, {panelClass: 'text-mapping-panel-dialog-container'});
-    }
+    }    
 
     public toggleHistory() {
         this.closePanel('objects');
@@ -75,13 +75,16 @@ export class FloatingPanelsService {
         );
     }
 
-    public closePanel(name: 'history' | 'objects' | 'objectOptions') {
+    public closePanel(name: 'history' | 'objects' | 'objectOptions' | 'dialog') {
         switch (name) {
             case 'history':
                 this.historyPanelRef && this.historyPanelRef.close();
                 break;
             case 'objects':
                 this.objectsPanelRef && this.objectsPanelRef.close();
+                break;
+            case 'dialog':
+                this.dialog.close();
                 break;
         }
     }

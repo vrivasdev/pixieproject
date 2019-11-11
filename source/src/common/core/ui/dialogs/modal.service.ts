@@ -26,4 +26,8 @@ export class Modal {
     public anyDialogOpen(): boolean {
         return this.dialog.openDialogs.length > 0;
     }
+
+    public close(): void {
+        this.dialog.closeAll();
+    }
 }
