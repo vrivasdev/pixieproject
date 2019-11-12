@@ -5,7 +5,6 @@ import { Store } from '@ngxs/store';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 import { SetMapping } from 'app/image-editor/state/mapping-state-actions';
 import { MappingType } from 'app/image-editor/state/mapping-type.enum';
-import { FloatingPanelsService } from 'app/image-editor-ui/toolbar-controls/floating-panels.service';
 
 @Component({
     selector: 'text-mappig-panel',
@@ -17,9 +16,7 @@ import { FloatingPanelsService } from 'app/image-editor-ui/toolbar-controls/floa
 export class TextMappingPanelComponent {
     
     constructor(private store: Store,
-                private activeObject: ActiveObjectService,
-                private floatingPanel: FloatingPanelsService
-                ) {}
+                private activeObject: ActiveObjectService) {}
 
     public saveForm = new FormGroup({
         mls: new FormControl(),
@@ -34,6 +31,7 @@ export class TextMappingPanelComponent {
         const {field, type} = this.saveForm.value.mls ? { 'field': this.saveForm.value.mls, 'type': MappingType.MLS}
                                                       : { 'field': this.saveForm.value.profile, 'type': MappingType.PROFILE};
         this.store.dispatch(new SetMapping(this.activeObject.get().data.id, type, field));
-        //this.floatingPanel.closePanel('dialog');
+        /* TODO: Close panel action */
+        //this.panels.closePanel('dialog');
     }
 }
