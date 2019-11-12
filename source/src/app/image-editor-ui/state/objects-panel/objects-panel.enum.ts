@@ -5,5 +5,6 @@ export enum ObjectName {
     TEXTSIZE = 'textsize',
     IMAGE = 'image',
     MAXTEXT = 'maxtext',
-    MAPPINGTEXT = 'xmappingtext'
+    MAPPINGTEXT = 'xmappingtext',
+    MAPPINGIMAGE = 'ymappingimage'
 }

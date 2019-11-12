@@ -80,4 +80,8 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     public textMappingModal() {
         this.panels.openTextMappingPanel();
     }
+
+    public imageMappingModal() {
+        this.panels.openImageMappingPanel();
+    }
 }

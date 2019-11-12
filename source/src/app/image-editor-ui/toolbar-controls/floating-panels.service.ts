@@ -11,6 +11,7 @@ import {ExportPanelComponent} from '../panels/export-panel/export-panel.componen
 import {Modal} from '../../../common/core/ui/dialogs/modal.service';
 import { SavePanelComponent } from '../panels/save-panel/save-panel.component';
 import { TextMappingPanelComponent } from '../panels/text-mapping-panel/text-mapping-panel.component';
+import { ImageMappingPanelComponent } from '../panels/image-mapping-panel/image-mapping-panel.component';
 
 @Injectable()
 export class FloatingPanelsService {
@@ -39,7 +40,11 @@ export class FloatingPanelsService {
 
     public openTextMappingPanel() {
         this.dialog.open(TextMappingPanelComponent, null, {panelClass: 'text-mapping-panel-dialog-container'});
-    }    
+    }
+
+    public openImageMappingPanel() {
+        this.dialog.open(ImageMappingPanelComponent, null, {panelClass: 'image-mapping-panel-dialog-container'});
+    }
 
     public toggleHistory() {
         this.closePanel('objects');

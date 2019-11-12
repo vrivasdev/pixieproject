@@ -65,6 +65,12 @@
               <ng-template #tImage>
                   <img class="block-open"  [src]="getImageUrl('icons/individual/add-to-photos.svg')" (click)="blockSelectedObject(object, 'image')" matTooltip="Lock image">
               </ng-template>
+              <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'y'] === 'ymappingimage'" [ngIfElse]="tMappingImage" >
+                <img class="block-open"  [src]="getImageUrl('icons/individual/block-mapping.svg')" (click)="blockSelectedObject(object, 'ymappingimage')" matTooltip="">
+              </ng-template>
+              <ng-template #tMappingImage>
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'ymappingimage')" matTooltip="">
+              </ng-template>
             </ng-container>
             <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
               <img class="block-open"  [src]="getImageUrl('icons/individual/block-size.svg')" (click)="blockSelectedObject(object, 'size')" matTooltip="Unlock size">
@@ -77,7 +83,7 @@
             </ng-template>
             <ng-template #tPosition>
                 <img class="block-open"  [src]="getImageUrl('icons/individual/position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Lock position">
-            </ng-template>
+            </ng-template>            
         </div>
     </div>
 </div>

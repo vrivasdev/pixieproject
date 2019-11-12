@@ -32,7 +32,6 @@ export class ObjectPanelState {
         return state.blockedObject;
     }
 
-
     constructor(private store: Store) {}
 
     @Action(BlockObject)

@@ -83,6 +83,10 @@ export class ObjectsPanelComponent {
                 this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAPPINGTEXT.charAt(0).toLowerCase(),
                                                     object.data.id, ObjectName.MAPPINGTEXT));
             break;
+            case 'ymappingimage':
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAPPINGIMAGE.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.MAPPINGIMAGE));
+            break;
         }
     }
 

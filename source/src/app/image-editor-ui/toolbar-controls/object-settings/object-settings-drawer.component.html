@@ -25,6 +25,10 @@
         <mat-icon svgIcon="color-custom"></mat-icon>
         <div class="bottom-label" trans>Color</div>
     </div>    
+    <div class="button-with-image" (click)="imageMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeObject.get().type === 'image'">
+        <mat-icon>mapping</mat-icon>
+        <div class="bottom-label" trans>Mapping</div>
+    </div>    
     <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async)[activeObject.getId()+'s'] === 'style'">
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>

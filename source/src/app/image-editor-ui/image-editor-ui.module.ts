@@ -32,6 +32,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import { ExportPanelComponent } from './panels/export-panel/export-panel.component';
 import { SavePanelComponent } from './panels/save-panel/save-panel.component';
 import { TextMappingPanelComponent } from './panels/text-mapping-panel/text-mapping-panel.component';
+import { ImageMappingPanelComponent } from './panels/image-mapping-panel/image-mapping-panel.component';
 
 export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: DomSanitizer) {
     return () => {
@@ -74,6 +75,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         ExportPanelComponent,
         SavePanelComponent,
         TextMappingPanelComponent,
+        ImageMappingPanelComponent,
     ],
     entryComponents: [
         OpenSampleImagePanelComponent,
@@ -82,6 +84,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         ExportPanelComponent,
         SavePanelComponent,
         TextMappingPanelComponent,
+        ImageMappingPanelComponent,
     ],
     exports: [
         ImageEditorComponent,
