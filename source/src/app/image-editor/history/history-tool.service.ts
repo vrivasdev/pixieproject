@@ -25,6 +25,7 @@ import {take} from 'rxjs/operators';
 import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 import { ObjectPanelItem } from './objectPanel-item.interface';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
+import { MappingState } from '../state/mapping-state';
 
 @Injectable()
 export class HistoryToolService {
@@ -95,7 +96,8 @@ export class HistoryToolService {
             editor: {frame: this.frameTool.getActive(), fonts: this.textTool.getUsedFonts()},
             canvasWidth: this.canvas.state.original.width,
             canvasHeight: this.canvas.state.original.height,
-            objectsPanel: this.store.selectSnapshot(ObjectPanelState.allObjects)
+            objectsPanel: this.store.selectSnapshot(ObjectPanelState.allObjects),
+            objectsMapping: this.store.selectSnapshot(MappingState.getMappingObjects)
         };
     }
 

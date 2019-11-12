@@ -1,5 +1,5 @@
 import { MappingType } from './mapping-type.enum';
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { SetMapping } from './mapping-state-actions';
 
 interface MappingStateModel {
@@ -13,6 +13,11 @@ interface MappingStateModel {
     }
 })
 export class MappingState {
+    @Selector()
+    static getMappingObjects(state: MappingStateModel) {
+        return state.objects;
+    }
+
     @Action(SetMapping)
     setMapping(ctx: StateContext<MappingStateModel>, action: SetMapping) {
         const objectsState = ctx.getState().objects;

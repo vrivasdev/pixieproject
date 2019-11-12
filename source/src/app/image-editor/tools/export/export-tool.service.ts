@@ -93,7 +93,7 @@ export class ExportToolService {
   
         data = this.getJsonState();
         this.watermark.remove();
-  
+        
         if ( ! data) return;
         
         if (this.config.has('pixie.updateUrl')) {

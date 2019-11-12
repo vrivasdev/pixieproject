@@ -10,4 +10,5 @@ export interface SerializedCanvas {
     canvasWidth: number;
     canvasHeight: number;
     objectsPanel: any;
+    objectsMapping: any;
 }
