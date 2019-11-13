@@ -29,6 +29,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
     public type: String;
+    public activeType;
 
     constructor(
         public activeObject: ActiveObjectService,
@@ -40,6 +41,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.activeType = this.activeObject.get() ? this.activeObject.get().type : null;
         this.subscription = this.activeObject.propsChanged$
             .pipe(take(1))
             .subscribe(() => {

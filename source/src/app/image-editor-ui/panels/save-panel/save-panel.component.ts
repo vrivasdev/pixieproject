@@ -15,6 +15,7 @@ export class SavePanelComponent {
     private id: number;
     private flyerName: string;
     private saveType: number;
+    public active;
 
     public saveForm = new FormGroup({
         share: new FormControl(),
@@ -28,7 +29,7 @@ export class SavePanelComponent {
         private config: Settings,
         private exportTool: ExportToolService,
     ) {
-        if (config.get('pixie.id')){
+        if (config.get('pixie.id')) {
             this.id = config.get('pixie.id')
             this.flyerName = config.get('pixie.flyerName')
             this.saveType = config.get('pixie.saveType')
