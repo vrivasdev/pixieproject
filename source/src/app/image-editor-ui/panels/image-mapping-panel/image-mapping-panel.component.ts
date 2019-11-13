@@ -1,10 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 import { SetMapping } from 'app/image-editor/state/mapping-state-actions';
 import { MappingType } from 'app/image-editor/state/mapping-type.enum';
+import { Map } from 'app/image-editor/state/map.enum';
 
 @Component({
     selector: 'image-mappig-panel',
@@ -22,16 +23,16 @@ export class ImageMappingPanelComponent {
         type: new FormControl(),
     });
 
-    public selected = 'mls';
+    public selectedType = 'mls';
 
     public clearSelector(event, selector) {
         this.saveForm.patchValue(selector === 'mls' ? {mls: ''} : {profile: ''});
     }
 
     public save() {
-        console.log('Type:', this.saveForm.value.type);
-        /*const {field, type} = this.saveForm.value.mls ? { 'field': this.saveForm.value.mls, 'type': MappingType.MLS}
-                                                      : { 'field': this.saveForm.value.profile, 'type': MappingType.PROFILE};
-        this.store.dispatch(new SetMapping(this.activeObject.get().data.id, type, field));*/
+        this.store.dispatch(new SetMapping(this.activeObject.get().data.id,
+                                           this.saveForm.value.type === 'mls' ? MappingType.MLS : MappingType.PROFILE,
+                                           this.saveForm.value.type,
+                                           Map.IMAGE));
     }
 }

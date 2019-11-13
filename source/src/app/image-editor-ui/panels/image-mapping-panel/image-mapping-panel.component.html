@@ -1,10 +1,12 @@
 <h2 mat-dialog-title>Image Mapping</h2>
 <form (ngSubmit)="save()"  [formGroup]="saveForm" ngNativeValidate>    
-    <mat-label>Select an option:</mat-label>
-    <mat-select [(value)]="selected" formControlName="type" required>
-        <mat-option value="mls" selected>MLS</mat-option>
-        <mat-option value="profile">Profile</mat-option>
-    </mat-select>  
+    <mat-form-field>
+        <mat-label>Select an option:</mat-label>
+        <mat-select [(ngModel)]="selectedType" formControlName="type" required>
+            <mat-option value="mls">MLS</mat-option>
+            <mat-option value="profile">Profile</mat-option>
+        </mat-select>  
+    </mat-form-field>
     <button mat-flat-button color="primary" class="save-button" trans>Save</button>
     <button mat-stroked-button color="primary" class="save-button" trans>Close</button>
 </form>
