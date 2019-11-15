@@ -18,6 +18,7 @@ import {
     MatOptionModule,
     MatSelectModule,
 } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 import {CustomScrollbarModule} from 'common/core/ui/custom-scrollbar/custom-scrollbar.module';
 import {OverlayPanel} from 'common/core/ui/overlay-panel/overlay-panel.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
@@ -30,6 +31,8 @@ import {Settings} from '../../common/core/config/settings.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { ExportPanelComponent } from './panels/export-panel/export-panel.component';
 import { SavePanelComponent } from './panels/save-panel/save-panel.component';
+import { TextMappingPanelComponent } from './panels/text-mapping-panel/text-mapping-panel.component';
+import { ImageMappingPanelComponent } from './panels/image-mapping-panel/image-mapping-panel.component';
 
 export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: DomSanitizer) {
     return () => {
@@ -60,6 +63,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         MatRadioModule,
         MatOptionModule,
         MatSelectModule,
+        MatTabsModule,
 
     ],
     declarations: [
@@ -70,6 +74,8 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         BackgroundImageDirective,
         ExportPanelComponent,
         SavePanelComponent,
+        TextMappingPanelComponent,
+        ImageMappingPanelComponent,
     ],
     entryComponents: [
         OpenSampleImagePanelComponent,
@@ -77,6 +83,8 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         ObjectsPanelComponent,
         ExportPanelComponent,
         SavePanelComponent,
+        TextMappingPanelComponent,
+        ImageMappingPanelComponent,
     ],
     exports: [
         ImageEditorComponent,

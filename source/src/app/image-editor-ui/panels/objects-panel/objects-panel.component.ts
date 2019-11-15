@@ -51,7 +51,6 @@ export class ObjectsPanelComponent {
     }
 
     public blockSelectedObject(object: Object, type: string) {
-        console.log('type:', type)
         switch (type) {
             case 'textsize':
                 this.store.dispatch(new BlockObject(object.data.id + ObjectName.TEXTSIZE.charAt(0).toLowerCase(),
@@ -81,9 +80,12 @@ export class ObjectsPanelComponent {
                                                     obj.data.id, ObjectName.MAXTEXT,  obj.text.length));
             break;
             case 'xmappingtext':
-                console.log('___xmappingtext___')
                 this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAPPINGTEXT.charAt(0).toLowerCase(),
                                                     object.data.id, ObjectName.MAPPINGTEXT));
+            break;
+            case 'ymappingimage':
+                this.store.dispatch(new BlockObject(object.data.id + ObjectName.MAPPINGIMAGE.charAt(0).toLowerCase(),
+                                                    object.data.id, ObjectName.MAPPINGIMAGE));
             break;
         }
     }

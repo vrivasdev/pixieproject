@@ -1,4 +1,4 @@
-<div class="content" [class.hidden]="activePanel$ | async">
+<div class="content" [class.hidden]="activePanel$ | async">            
     <div class="button-with-image" (click)="openPanel('shadow')">
         <mat-icon svgIcon="shadow-custom"></mat-icon>
         <div class="bottom-label" trans>Shadow</div>
@@ -8,14 +8,10 @@
         <mat-icon svgIcon="outline-custom"></mat-icon>
         <div class="bottom-label" trans>Outline</div>
     </div>
-
     <!--<div class="button-with-image" (click)="openPanel('background')">
         <mat-icon svgIcon="background-custom"></mat-icon>
         <div class="bottom-label" trans>Background</div>
     </div>-->
-
-
-
     <div class="button-with-image" (click)="openPanel('texture')">
         <mat-icon svgIcon="texture-custom"></mat-icon>
         <div class="bottom-label" trans>Texture</div>
@@ -29,6 +25,10 @@
         <mat-icon svgIcon="color-custom"></mat-icon>
         <div class="bottom-label" trans>Color</div>
     </div>    
+    <div class="button-with-image" (click)="imageMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeType === 'image'">
+        <mat-icon>mapping</mat-icon>
+        <div class="bottom-label" trans>Mapping</div>
+    </div>    
     <div class="button-with-image" (click)="openPanel('textStyle')" *ngIf="activeObjIsText$ | async" [hidden]="(blockedObject$ | async)[activeObject.getId()+'s'] === 'style'">
         <mat-icon svgIcon="text-options-custom"></mat-icon>
         <div class="bottom-label" trans>Text Style</div>
@@ -40,6 +40,10 @@
     <div class="button-with-image" (click)="imageUpdate()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'i'] === 'image'">
         <mat-icon>image</mat-icon>
         <div class="bottom-label" trans>Image</div>
+    </div>
+    <div class="button-with-image" (click)="textMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeType === 'i-text'" > 
+        <mat-icon>mapping</mat-icon>
+        <div class="bottom-label" trans>Mapping</div>
     </div>
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>

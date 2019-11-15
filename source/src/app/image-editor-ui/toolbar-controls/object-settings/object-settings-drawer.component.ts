@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {ActiveObjectService} from '../../../image-editor/canvas/active-object/active-object.service';
 import {HistoryToolService} from '../../../image-editor/history/history-tool.service';
 import {Select, Store} from '@ngxs/store';
@@ -11,6 +11,7 @@ import { ObjectPanelState, ObjectsPanelStateModel } from '../../state/objects-pa
 import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
 import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 import {HistoryNames} from '../../../image-editor/history/history-names.enum';
+import { FloatingPanelsService } from '../floating-panels.service';
 
 @Component({
     selector: 'object-settings-drawer',
@@ -27,16 +28,20 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
 
     private subscription: Subscription;
+    public type: String;
+    public activeType;
 
     constructor(
         public activeObject: ActiveObjectService,
         protected history: HistoryToolService,
         private store: Store,
         private importTool: ImportToolService,
-        private canvas: CanvasService
-    ) { }
+        private canvas: CanvasService,
+        public panels: FloatingPanelsService,
+    ) {}
 
     ngOnInit() {
+        this.activeType = this.activeObject.get() ? this.activeObject.get().type : null;
         this.subscription = this.activeObject.propsChanged$
             .pipe(take(1))
             .subscribe(() => {
@@ -72,5 +77,13 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
             this.canvas.fabric().setActiveObject(obj);
             this.history.add(HistoryNames.OVERLAY_IMAGE);
         });
+    }
+
+    public textMappingModal() {
+        this.panels.openTextMappingPanel();
+    }
+
+    public imageMappingModal() {
+        this.panels.openImageMappingPanel();
     }
 }

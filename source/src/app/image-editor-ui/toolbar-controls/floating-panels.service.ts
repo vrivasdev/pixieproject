@@ -10,6 +10,8 @@ import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
 import {ExportPanelComponent} from '../panels/export-panel/export-panel.component';
 import {Modal} from '../../../common/core/ui/dialogs/modal.service';
 import { SavePanelComponent } from '../panels/save-panel/save-panel.component';
+import { TextMappingPanelComponent } from '../panels/text-mapping-panel/text-mapping-panel.component';
+import { ImageMappingPanelComponent } from '../panels/image-mapping-panel/image-mapping-panel.component';
 
 @Injectable()
 export class FloatingPanelsService {
@@ -34,6 +36,14 @@ export class FloatingPanelsService {
 
     public openSavePanel() {
         this.dialog.open(SavePanelComponent, null, {panelClass: 'save-panel-dialog-container'});
+    }
+
+    public openTextMappingPanel() {
+        this.dialog.open(TextMappingPanelComponent, null, {panelClass: 'text-mapping-panel-dialog-container'});
+    }
+
+    public openImageMappingPanel() {
+        this.dialog.open(ImageMappingPanelComponent, null, {panelClass: 'image-mapping-panel-dialog-container'});
     }
 
     public toggleHistory() {
@@ -70,13 +80,16 @@ export class FloatingPanelsService {
         );
     }
 
-    public closePanel(name: 'history' | 'objects' | 'objectOptions') {
+    public closePanel(name: 'history' | 'objects' | 'objectOptions' | 'dialog') {
         switch (name) {
             case 'history':
                 this.historyPanelRef && this.historyPanelRef.close();
                 break;
             case 'objects':
                 this.objectsPanelRef && this.objectsPanelRef.close();
+                break;
+            case 'dialog':
+                this.dialog.close();
                 break;
         }
     }

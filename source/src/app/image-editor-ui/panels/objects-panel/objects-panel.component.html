@@ -52,7 +52,7 @@
                   <label class="block-open maxtext" for="" (click)="blockSelectedObject(object, 'maxtext')" matTooltip="Lock Max characters">max</label>
                 </ng-template>
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'x'] === 'xmappingtext'" [ngIfElse]="tMappingText" >
-                  <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Unlock Text mapping">
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/block-mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Unlock Text mapping">
                 </ng-template>
                 <ng-template #tMappingText>
                   <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Lock Text mapping">
@@ -64,6 +64,12 @@
               </ng-template>
               <ng-template #tImage>
                   <img class="block-open"  [src]="getImageUrl('icons/individual/add-to-photos.svg')" (click)="blockSelectedObject(object, 'image')" matTooltip="Lock image">
+              </ng-template>
+              <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'y'] === 'ymappingimage'" [ngIfElse]="tMappingImage" >
+                <img class="block-open"  [src]="getImageUrl('icons/individual/block-mapping.svg')" (click)="blockSelectedObject(object, 'ymappingimage')" matTooltip="">
+              </ng-template>
+              <ng-template #tMappingImage>
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'ymappingimage')" matTooltip="">
               </ng-template>
             </ng-container>
             <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
@@ -77,7 +83,7 @@
             </ng-template>
             <ng-template #tPosition>
                 <img class="block-open"  [src]="getImageUrl('icons/individual/position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Lock position">
-            </ng-template>
+            </ng-template>            
         </div>
     </div>
 </div>
