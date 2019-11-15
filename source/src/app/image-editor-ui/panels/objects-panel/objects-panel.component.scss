@@ -1,5 +1,17 @@
 @import "../../../../scss/variables";
 
+.floating-panel {
+  width: 270px !important;
+  height: 300px !important;
+  margin-top: 150px !important;
+  margin-left: 135px !important;
+  right: 0% !important;
+  position: fixed !important;
+  bottom: -1% !important;
+  min-width: 250px !important;
+  max-height: 71vh !important;
+}
+
 objects-panel {
   display: block;
 
