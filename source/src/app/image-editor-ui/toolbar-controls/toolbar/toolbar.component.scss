@@ -81,8 +81,8 @@ toolbar {
   }
 }
 
-@media only screen and (min-width: 1440px) and(max-screen: 1920px) {
+@media only screen and (min-width: 1440px) and(min-width: 1920px) {
   toolbar {
-    margin-top: 0.6vh !important;
+    margin-top: -1.9%;
   }
 }
