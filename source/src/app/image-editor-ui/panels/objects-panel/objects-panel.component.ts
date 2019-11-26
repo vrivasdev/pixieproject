@@ -15,6 +15,7 @@ import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-pan
 import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-panel.enum';
 import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 import {Settings} from 'common/core/config/settings.service';
+import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 
 @Component({
     selector: 'objects-panel',
@@ -34,7 +35,8 @@ export class ObjectsPanelComponent {
         private controls: EditorControlsService,
         private canvasState: CanvasStateService,
         private store: Store,
-        private config: Settings
+        private config: Settings,
+        private active: ActiveObjectService
     ) {
         console.log('Objects:', this.objects);
     }
