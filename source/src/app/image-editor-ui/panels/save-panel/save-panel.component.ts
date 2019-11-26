@@ -38,7 +38,7 @@ export class SavePanelComponent {
 
     public save() {
         const val = this.saveForm.value;
-        
+        document.getElementById('gif-loader').style.display = 'flex';
         if (this.id) {
             this.exportTool.update(this.id, val.share, val.category, val.group,
                                    val.flyerName ? val.flyerName : this.flyerName,

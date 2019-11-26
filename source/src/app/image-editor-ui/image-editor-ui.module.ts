@@ -33,6 +33,7 @@ import { ExportPanelComponent } from './panels/export-panel/export-panel.compone
 import { SavePanelComponent } from './panels/save-panel/save-panel.component';
 import { TextMappingPanelComponent } from './panels/text-mapping-panel/text-mapping-panel.component';
 import { ImageMappingPanelComponent } from './panels/image-mapping-panel/image-mapping-panel.component';
+import { LoaderComponent } from './loader/loader.component';
 
 export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: DomSanitizer) {
     return () => {
@@ -64,7 +65,6 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         MatOptionModule,
         MatSelectModule,
         MatTabsModule,
-
     ],
     declarations: [
         ImageEditorComponent,
@@ -76,6 +76,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         SavePanelComponent,
         TextMappingPanelComponent,
         ImageMappingPanelComponent,
+        LoaderComponent,
     ],
     entryComponents: [
         OpenSampleImagePanelComponent,
@@ -85,6 +86,7 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         SavePanelComponent,
         TextMappingPanelComponent,
         ImageMappingPanelComponent,
+        LoaderComponent,
     ],
     exports: [
         ImageEditorComponent,
