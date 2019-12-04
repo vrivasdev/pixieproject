@@ -21,6 +21,7 @@ import {Translations} from '../../common/core/translations/translations.service'
 import { ObjectPanelState } from './state/objects-panel/objects-panel.state';
 import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
 import {delay} from 'rxjs/operators';
+import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
 
 @Component({
     selector: 'image-editor',
@@ -51,7 +52,8 @@ export class ImageEditorComponent implements OnInit {
         public config: Settings,
         private store: Store,
         private i18n: Translations,
-        private importToolService: ImportToolService
+        private importToolService: ImportToolService,
+        private textMappingService: TextMappingService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -123,6 +125,11 @@ export class ImageEditorComponent implements OnInit {
         this.canvas.fabric().on('selection:updated', e => this.onObjectSelection(e));
 
         this.canvas.fabric().on('selection:cleared', fabricEvent => {
+            const deselected: any = fabricEvent.deselected[0];
+            const text = 'text' in deselected ? deselected.text : null;
+            const variables = text.match(/\[(\w+)\]/g);
+
+
             this.store.dispatch(new ObjectDeselected(fabricEvent.e != null));
         });
     }
@@ -163,6 +170,7 @@ export class ImageEditorComponent implements OnInit {
         const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
         const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
         const obj = this.activeObject.get();
+
         /*TODO: Keep looking how to block ctrl v action*/
         if (obj) {
             if ('data' in obj) {

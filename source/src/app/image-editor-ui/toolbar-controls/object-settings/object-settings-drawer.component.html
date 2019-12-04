@@ -41,10 +41,10 @@
         <mat-icon>image</mat-icon>
         <div class="bottom-label" trans>Image</div>
     </div>
-    <div class="button-with-image" (click)="textMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeType === 'i-text'" > 
+    <!--<div class="button-with-image" (click)="textMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeType === 'i-text'" > 
         <mat-icon>mapping</mat-icon>
         <div class="bottom-label" trans>Mapping</div>
-    </div>
+    </div>-->
     <div class="button-with-image" (click)="openPanel('opacity')">
         <mat-icon svgIcon="opacity-custom"></mat-icon>
         <div class="bottom-label" trans>Opacity</div>

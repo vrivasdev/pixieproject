@@ -34,6 +34,7 @@ export interface PixieConfig {
     textureSize?: number;
     isAdmin?: boolean;
     baseUrl?: string;
+    profile?: Object;
     id?: number;
     ui?: {
         visible: boolean;
