@@ -53,7 +53,7 @@ export class ImageEditorComponent implements OnInit {
         private store: Store,
         private i18n: Translations,
         private importToolService: ImportToolService,
-        private textMappingService: TextMappingService
+        private mappingService: TextMappingService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -127,9 +127,17 @@ export class ImageEditorComponent implements OnInit {
         this.canvas.fabric().on('selection:cleared', fabricEvent => {
             const deselected: any = fabricEvent.deselected[0];
             const text = 'text' in deselected ? deselected.text : null;
-            const variables = text.match(/\[(\w+)\]/g);
 
-
+            this.mappingService
+                .getVarContent(text,
+                               this.mappingService
+                                   .filterWords(text)
+                                   .map(value => value.slice(1, -1)))
+                .then(newText => {
+                    console.log(newText);
+                    debugger;
+                });
+            
             this.store.dispatch(new ObjectDeselected(fabricEvent.e != null));
         });
     }
