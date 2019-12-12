@@ -164,13 +164,25 @@ export class ExportToolService {
      */
     public getDataUrl(format: ValidFormats = this.getDefault('format'), quality: number = this.getDefault('quality')): string {
         this.prepareCanvas();
-
+        
         try {
-            return this.canvas.fabric().toDataURL({
+            let svg = this.canvas.fabric().toSVG({
+                suppressPreamble: true,
+                viewBox: {
+                    x: 0,
+                    y: 0,
+                    width: this.canvas.fabric().getWidth(),
+                    height: this.canvas.fabric().getHeight()
+                },
+                encoding: ''});
+                        
+            saveAs(new Blob([svg], {type: 'image/svg+xml'}), 'testsvg.svg');
+            
+            /*return this.canvas.fabric().toDataURL({
                 format: format,
                 quality: quality,
                 multiplier: this.canvas.state.original.width / this.canvas.fabric().getWidth(),
-            });
+            });*/
         } catch (e) {
             if (e.message.toLowerCase().indexOf('tainted') === -1) return null;
             this.toast.open('Could not export canvas with external image.');
