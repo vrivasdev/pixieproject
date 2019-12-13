@@ -164,18 +164,19 @@ export class ExportToolService {
      */
     public getDataUrl(format: ValidFormats = this.getDefault('format'), quality: number = this.getDefault('quality')): string {
         this.prepareCanvas();
-        
         try {
             let svg = this.canvas.fabric().toSVG({
                 suppressPreamble: true,
                 viewBox: {
                     x: 0,
                     y: 0,
-                    width: this.canvas.fabric().getWidth(),
-                    height: this.canvas.fabric().getHeight()
+                    width:  this.canvas.state.original.width + (this.canvas.state.original.width - this.canvas.fabric().getWidth()),
+                    height:  this.canvas.state.original.height + (this.canvas.state.original.height - this.canvas.fabric().getHeight())
                 },
-                encoding: ''});
-                        
+                encoding: ''}, );
+            
+            debugger;
+
             saveAs(new Blob([svg], {type: 'image/svg+xml'}), 'testsvg.svg');
             
             /*return this.canvas.fabric().toDataURL({
