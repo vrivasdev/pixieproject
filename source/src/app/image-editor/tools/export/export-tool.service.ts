@@ -170,11 +170,12 @@ export class ExportToolService {
                 viewBox: {
                     x: 0,
                     y: 0,
-                    width:  this.canvas.state.original.width + (this.canvas.state.original.width - this.canvas.fabric().getWidth()),
-                    height:  this.canvas.state.original.height + (this.canvas.state.original.height - this.canvas.fabric().getHeight())
+                    width:  this.canvas.state.original.width,
+                    height:  this.canvas.state.original.height
                 },
                 encoding: ''}, );
-            
+
+            svg = svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/, `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`);
             debugger;
 
             saveAs(new Blob([svg], {type: 'image/svg+xml'}), 'testsvg.svg');
