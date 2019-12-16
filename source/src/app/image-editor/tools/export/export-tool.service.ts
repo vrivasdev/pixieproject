@@ -165,6 +165,7 @@ export class ExportToolService {
     public getDataUrl(format: ValidFormats = this.getDefault('format'), quality: number = this.getDefault('quality')): string {
         this.prepareCanvas();
         try {
+            /* Transforming into SVG format
             let svg = this.canvas.fabric().toSVG({
                 suppressPreamble: true,
                 viewBox: {
@@ -175,16 +176,15 @@ export class ExportToolService {
                 },
                 encoding: ''}, );
 
-            svg = svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/, `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`);
-            debugger;
-
-            saveAs(new Blob([svg], {type: 'image/svg+xml'}), 'testsvg.svg');
+            saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/, `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)],
+                            {type: 'image/svg+xml'}), 
+                            'testsvg.svg');*/
             
-            /*return this.canvas.fabric().toDataURL({
+            return this.canvas.fabric().toDataURL({
                 format: format,
                 quality: quality,
                 multiplier: this.canvas.state.original.width / this.canvas.fabric().getWidth(),
-            });*/
+            });
         } catch (e) {
             if (e.message.toLowerCase().indexOf('tainted') === -1) return null;
             this.toast.open('Could not export canvas with external image.');
