@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {WatermarkToolService} from '../watermark-tool.service';
 import {Toast} from 'common/core/ui/toast.service';
 import {ucFirst} from '../../../../common/core/utils/uc-first';
+import { parse, stringify } from 'svgson';
 
 type ValidFormats = 'png'|'jpeg'|'json';
 
@@ -165,8 +166,8 @@ export class ExportToolService {
     public getDataUrl(format: ValidFormats = this.getDefault('format'), quality: number = this.getDefault('quality')): string {
         this.prepareCanvas();
         try {
-            /* Transforming into SVG format
-            let svg = this.canvas.fabric().toSVG({
+            // Transforming into SVG format
+            const svg = this.canvas.fabric().toSVG({
                 suppressPreamble: true,
                 viewBox: {
                     x: 0,
@@ -174,17 +175,25 @@ export class ExportToolService {
                     width:  this.canvas.state.original.width,
                     height:  this.canvas.state.original.height
                 },
-                encoding: ''}, );
-
-            saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/, `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)],
-                            {type: 'image/svg+xml'}), 
-                            'testsvg.svg');*/
+                encoding: ''});
+            const result = svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
+                                     `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`);
             
-            return this.canvas.fabric().toDataURL({
+            parse(result).then(json => {
+                console.log(JSON.stringify(json, null, 2));
+            });
+            debugger;
+
+            saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
+                                             `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)],
+                            {type: 'image/svg+xml'}),
+                            'testsvg.svg');
+            
+            /*return this.canvas.fabric().toDataURL({
                 format: format,
                 quality: quality,
                 multiplier: this.canvas.state.original.width / this.canvas.fabric().getWidth(),
-            });
+            });*/
         } catch (e) {
             if (e.message.toLowerCase().indexOf('tainted') === -1) return null;
             this.toast.open('Could not export canvas with external image.');
