@@ -43,7 +43,7 @@
     var base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
-        var idVal = 7;
+        var idVal = null;
         pixie = new Pixie({
             //image: 'assets/images/samples/sample1.jpg',
            // baseUrl: 'http://localhost:4200',
@@ -54,9 +54,13 @@
             id: idVal,
             flyerName: 'test001',
             saveType: 'completed',
+            profile: {Email: "jhonyfm@gmail.com", 
+                      First_Name: "Jhony",
+                      Last_Name: "Ferreira Marques",
+                      Phone_Number: ""},
             ui: {
                 mode: 'inline',                
-                showExportPanel: true,
+                showExportPanel: true, 
                 openImageDialog: {
                      show: idVal? false: true
                 },
@@ -69,6 +73,7 @@
             saveUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/create', 
             updateUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/update',
             getUrl: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/get',
+            renderize: 'http://tartaros.avantiway.com/vrivas/myavex.avantiway.com/design/renderize',
             tools: {
                 export: {
                     defaultFormat: 'jpeg',

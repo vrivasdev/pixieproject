@@ -127,7 +127,6 @@ export class ExportToolService {
     public get(id: number): Promise<Object> {
         return new Promise(resolve => {
             if (this.config.get('pixie.getUrl')) {
-                console.log(this.config.get('pixie.getUrl') + '/' + id);
                 fetch(
                     this.config.get('pixie.getUrl') + '/' + id,
                     {
@@ -177,17 +176,31 @@ export class ExportToolService {
                 },
                 encoding: ''});
             const result = svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
-                                     `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`);
-            
-            parse(result).then(json => {
-                console.log(JSON.stringify(json, null, 2));
-            });
-            debugger;
+                                     `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)
+                              .replace(/\"/g, '\'')
+                              .replace(/(\r\n|\n|\r|\b|\f|\t)/gm, '');
+            fetch(
+                this.config.get('pixie.renderize'),
+                {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    mode: 'no-cors',
+                    body: JSON.stringify({'svg': result, 'to': 'jpeg'})
+                }
+            );
+            /*.then(resp => resp.json())
+            .then(data => {
+                console.log('__data___:', data);
+            })
+            .catch(error => console.log('Error:', error));*/
 
-            saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
+            /*saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
                                              `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)],
                             {type: 'image/svg+xml'}),
-                            'testsvg.svg');
+                            'testsvg.svg');*/
             
             /*return this.canvas.fabric().toDataURL({
                 format: format,
