@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {WatermarkToolService} from '../watermark-tool.service';
 import {Toast} from 'common/core/ui/toast.service';
 import {ucFirst} from '../../../../common/core/utils/uc-first';
-import { parse, stringify } from 'svgson';
+import * as $ from 'jquery';
 
 type ValidFormats = 'png'|'jpeg'|'json';
 
@@ -179,34 +179,22 @@ export class ExportToolService {
                                      `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)
                               .replace(/\"/g, '\'')
                               .replace(/(\r\n|\n|\r|\b|\f|\t)/gm, '');
-            fetch(
-                this.config.get('pixie.renderize'),
-                {
-                    method: 'POST',
-                    cache: 'no-cache',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    mode: 'no-cors',
-                    body: JSON.stringify({'svg': result, 'to': 'jpeg'})
-                }
-            );
-            /*.then(resp => resp.json())
-            .then(data => {
-                console.log('__data___:', data);
-            })
-            .catch(error => console.log('Error:', error));*/
-
-            /*saveAs(new Blob([svg.replace(/width=\"\d+\.\d+\" height=\"\d+\.\d+\"/,
-                                             `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)],
-                            {type: 'image/svg+xml'}),
-                            'testsvg.svg');*/
-            
-            /*return this.canvas.fabric().toDataURL({
-                format: format,
-                quality: quality,
-                multiplier: this.canvas.state.original.width / this.canvas.fabric().getWidth(),
-            });*/
+            $.ajax({
+                url : this.config.get('pixie.renderize'),
+                type : 'post',
+                cache : false,
+                dataType : 'json',
+                data : JSON.stringify({
+                    'svg': result,
+                    'to': format
+                }),
+            error : (e) => {
+                console.log( 'Error:', e);
+            },
+            success : (response) => {
+                saveAs(`data:image/jpeg;base64, ${response.data}`, `${this.getDefault('name')}.${format}`);
+            }
+        });
         } catch (e) {
             if (e.message.toLowerCase().indexOf('tainted') === -1) return null;
             this.toast.open('Could not export canvas with external image.');
