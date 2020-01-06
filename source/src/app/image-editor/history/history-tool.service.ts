@@ -82,9 +82,6 @@ export class HistoryToolService {
     public addFromJson(json: string|SerializedCanvas) {
         const initial = !this.store.selectSnapshot(HistoryState.items).length,
             name = initial ? HistoryNames.INITIAL : HistoryNames.LOADED_STATE;
-        console.log('json:', json);
-        console.log('is string:', typeof json);
-        console.log('parse json:', typeof json === 'string' ? JSON.parse(json) : json);
         
         this.add(name, typeof json === 'string' ? JSON.parse(json) : json);
         return this.reload();
