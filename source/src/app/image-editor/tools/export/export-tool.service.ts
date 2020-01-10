@@ -56,12 +56,33 @@ export class ExportToolService {
         });
     }
 
+    public getRawJson(data): Array<string> {
+        let raw_json =  null;
+        let raw_json_back = null;
+        const tab = localStorage.getItem('tab');
+        debugger;
+        if (!localStorage.getItem('tab')) {
+            raw_json = data;
+        } else if (tab === 'front') {
+            raw_json = data;
+            raw_json_back = localStorage.getItem('back-state');
+        } else if (tab === 'back') {
+            raw_json = localStorage.getItem('front-state');
+            raw_json_back = data;
+        }
+        return [raw_json, raw_json_back];
+    }
+
     public save(share: string, category: number, group: number, templateName: string, saveType: number) {
       let data;
-
+      let raw_json =  null;
+      let raw_json_back = null;
+      
       data = this.getJsonState();
       this.watermark.remove();
 
+      [raw_json, raw_json_back] = this.getRawJson(data);
+      
       if ( ! data) return;
             
       if (this.config.has('pixie.saveUrl')) {
@@ -73,7 +94,8 @@ export class ExportToolService {
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({'raw_json': data,
+                    body: JSON.stringify({'raw_json': raw_json,
+                                          'raw_json_back': raw_json_back,
                                           'template_name': templateName,
                                           'template_type': '7',
                                           'draft': saveType}),
