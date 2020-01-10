@@ -59,17 +59,27 @@ export class ExportToolService {
     public getRawJson(data): Array<string> {
         let raw_json =  null;
         let raw_json_back = null;
+        const base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
         const tab = localStorage.getItem('tab');
-        debugger;
-        if (!localStorage.getItem('tab')) {
-            raw_json = data;
-        } else if (tab === 'front') {
-            raw_json = data;
-            raw_json_back = localStorage.getItem('back-state');
-        } else if (tab === 'back') {
-            raw_json = localStorage.getItem('front-state');
-            raw_json_back = data;
-        }
+        const service = 'getJson';
+        const type = localStorage.getItem('tab');
+        const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
+
+        fetch((globalUrl !== '/') ? `${base}/${service}/${type}` : `${base}/${service}/${type}`)
+                    .then(resp => resp.json())
+                    .then(json => {
+                        if (!localStorage.getItem('tab')) {
+                            raw_json = data;
+                        } else if (tab === 'front') {
+                            raw_json = data;
+                            raw_json_back = JSON.parse(json.data);
+                        } else if (tab === 'back') {
+                            raw_json = JSON.parse(json.data);
+                            raw_json_back = data;
+                        }
+                    })
+                    .catch(error => console.log(`Error: ${error}`));
+        
         return [raw_json, raw_json_back];
     }
 
