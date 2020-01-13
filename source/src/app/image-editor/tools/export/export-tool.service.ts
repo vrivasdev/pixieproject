@@ -65,6 +65,8 @@ export class ExportToolService {
         const type = localStorage.getItem('tab');
         const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
 
+        debugger;
+        
         fetch((globalUrl !== '/') ? `${base}/${service}/${type}` : `${base}/${service}/${type}`)
                     .then(resp => resp.json())
                     .then(json => {
