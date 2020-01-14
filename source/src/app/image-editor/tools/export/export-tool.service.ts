@@ -142,37 +142,57 @@ export class ExportToolService {
 
     public update(id: number, share: string, category: number, group: number, templateName: string, saveType: number) {
         let data;
-  
+        let raw_json =  null;
+        let raw_json_back = null;
+        const base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+        const tab = localStorage.getItem('tab');
+        const service = 'getJson';
+        const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
+        const otherTab = tab === 'front'? 'back': 'front';
+          
         data = this.getJsonState();
         this.watermark.remove();
         
         if ( ! data) return;
-        
-        if (this.config.has('pixie.updateUrl')) {
-            fetch(
-                this.config.get('pixie.updateUrl'),
-                {
-                    method: 'POST',
-                    cache: 'no-cache',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                                          'id': id,
-                                          'raw_json': data,
-                                          'template_name': templateName,
-                                          'template_type': '7',
-                                          'draft': saveType}),
-                    mode: 'no-cors'
+        fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
+            .then(resp => resp.json())
+            .then(json => {
+                if (!localStorage.getItem('tab')) {
+                    raw_json = data;
+                } else if (tab === 'front') {
+                    raw_json = data;
+                    raw_json_back = json.data;
+                } else if (tab === 'back') {
+                    raw_json = json.data;
+                    raw_json_back = data;
                 }
-            )
-            .then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-              console.log('Success:', response);
-              window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+                if (this.config.has('pixie.updateUrl')) {
+                    fetch(
+                        this.config.get('pixie.updateUrl'),
+                        {
+                            method: 'POST',
+                            cache: 'no-cache',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                                  'id': id,
+                                                  'raw_json': data,
+                                                  'raw_json_back': raw_json_back,
+                                                  'template_name': templateName,
+                                                  'template_type': '7',
+                                                  'draft': saveType}),
+                            mode: 'no-cors'
+                        }
+                    )
+                    .then(res => res.json())
+                    .catch(error => console.error('Error:', error))
+                    .then(response => {
+                      console.log('Success:', response);
+                      window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+                    });
+                }
             });
-      }
     }
 
     public get(id: number): Promise<Object> {
