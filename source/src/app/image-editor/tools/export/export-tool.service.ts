@@ -177,7 +177,7 @@ export class ExportToolService {
                             },
                             body: JSON.stringify({
                                                   'id': id,
-                                                  'raw_json': data,
+                                                  'raw_json': raw_json,
                                                   'raw_json_back': raw_json_back,
                                                   'template_name': templateName,
                                                   'template_type': '7',
