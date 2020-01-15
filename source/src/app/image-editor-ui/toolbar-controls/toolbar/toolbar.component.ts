@@ -151,6 +151,7 @@ export class ToolbarComponent implements AfterViewInit {
         }
     }
     public goBack() {
+      localStorage.setItem('active', 'false');
       location.reload();
     }
 }

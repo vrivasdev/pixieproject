@@ -132,6 +132,7 @@ export class ExportToolService {
                     .then()
                     .then(response => {
                         console.log('Success:', response);
+                        localStorage.setItem('active', 'false');
                         window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
                     })
                     .catch(error => console.error('Error:', error));
@@ -189,6 +190,7 @@ export class ExportToolService {
                     .catch(error => console.error('Error:', error))
                     .then(response => {
                       console.log('Success:', response);
+                      localStorage.setItem('active', 'false');
                       window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
                     });
                 }
