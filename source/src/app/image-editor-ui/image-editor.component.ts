@@ -125,8 +125,9 @@ export class ImageEditorComponent implements OnInit {
         this.canvas.fabric().on('selection:updated', e => this.onObjectSelection(e));
 
         this.canvas.fabric().on('selection:cleared', fabricEvent => {
+            console.log('Deselected:', fabricEvent);
             const deselected: any = fabricEvent.deselected[0];
-            const text = 'text' in deselected ? deselected.text : null;
+            const text = 'text' in deselected ? deselected.text : null;-
 
             this.mappingService
                 .getVarContent(text,

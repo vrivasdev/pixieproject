@@ -16,7 +16,7 @@ image-editor {
     width: 100%;
     display: flex;
     align-items: center;
-    margin-top: 0;
+    margin-top: 0 !important;
     
     .canvas-mask-wrapper {
       margin: auto;
