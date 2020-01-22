@@ -96,49 +96,54 @@ export class ExportToolService {
         
         data = this.getJsonState();
         this.watermark.remove();
-        
+            
         if ( ! data) return;
 
-        fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
+        if (!localStorage.getItem('tab')) {
+            this.saveTemplate(data, raw_json_back, templateName, saveType);
+        } else {
+            fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
             .then(resp => resp.json())
             .then(json => {
-                console.log('get front or back');
-                if (!localStorage.getItem('tab')) {
-                    raw_json = data;
-                } else if (tab === 'front') {
+                if (tab === 'front') {
                     raw_json = data;
                     raw_json_back = json.data;
                 } else if (tab === 'back') {
                     raw_json = json.data;
                     raw_json_back = data;
                 }
-                if (this.config.has('pixie.saveUrl')) {
-                    fetch(
-                        this.config.get('pixie.saveUrl'),
-                        {
-                            method: 'POST',
-                            cache: 'no-cache',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({'raw_json': raw_json,
-                                                    'raw_json_back': raw_json_back,
-                                                    'template_name': templateName,
-                                                    'template_type': '7',
-                                                    'draft': saveType}),
-                            mode: 'no-cors'
-                        }
-                    )
-                    .then()
-                    .then(response => {
-                        console.log('Success:', response);
-                        localStorage.setItem('active', 'false');
-                        window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-                    })
-                    .catch(error => console.error('Error:', error));
-                }
+                this.saveTemplate(raw_json, raw_json_back, templateName, saveType);
             })
             .catch(error => console.log(`Error: ${error}`));
+        }
+    }
+
+    public saveTemplate(raw_json, raw_json_back, templateName, saveType) {
+        if (this.config.has('pixie.saveUrl')) {
+            fetch(
+                this.config.get('pixie.saveUrl'),
+                {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({'raw_json': raw_json,
+                                            'raw_json_back': raw_json_back,
+                                            'template_name': templateName,
+                                            'template_type': '7',
+                                            'draft': saveType}),
+                    mode: 'no-cors'
+                }
+            )
+            .then()
+            .then(response => {
+                console.log('Success:', response);
+                localStorage.setItem('active', 'false');
+                window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+            })
+            .catch(error => console.error('Error:', error));
+        }
     }
 
     public update(id: number, share: string, category: number, group: number, templateName: string, saveType: number) {
