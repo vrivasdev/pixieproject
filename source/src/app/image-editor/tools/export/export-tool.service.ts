@@ -99,7 +99,7 @@ export class ExportToolService {
             
         if ( ! data) return;
 
-        if (!localStorage.getItem('tab')) {
+        if (localStorage.getItem('isNewDesign') === 'true') {
             this.saveTemplate(data, raw_json_back, templateName, saveType);
         } else {
             fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
