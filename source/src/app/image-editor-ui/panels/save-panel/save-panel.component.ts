@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@an
 import {FormControl, FormGroup} from '@angular/forms';
 import {Settings} from '../../../../common/core/config/settings.service';
 import {ExportToolService} from '../../../image-editor/tools/export/export-tool.service';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
     selector: 'save-panel',
