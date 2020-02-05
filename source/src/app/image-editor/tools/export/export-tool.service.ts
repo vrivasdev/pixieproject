@@ -38,13 +38,13 @@ export class ExportToolService {
         if ( ! quality) quality = this.getDefault('quality');
 
         const filename = name + '.' + format; let data;
-
+        
         this.applyWaterMark();
 
         if (format === 'json') {
             data = this.getJsonState();
         } else {
-            data = this.getDataUrl(format, quality);
+            data = this.getDataUrl(name, format, quality);
         }
 
         this.watermark.remove();
@@ -240,7 +240,9 @@ export class ExportToolService {
     /**
      * Export current editor state as data url.
      */
-    public getDataUrl(format: ValidFormats = this.getDefault('format'), quality: number = this.getDefault('quality')): string {
+    public getDataUrl(name: string = this.getDefault('name'),
+                     format: ValidFormats = this.getDefault('format'),
+                     quality: number = this.getDefault('quality')): string {
         this.prepareCanvas();
         try {
             // Transforming into SVG format
@@ -266,13 +268,11 @@ export class ExportToolService {
                     'svg': result,
                     'to': format
                 }),
-            error : (e) => {
-                console.log( 'Error:', e);
-            },
-            success : (response) => {
-                saveAs(`data:image/jpeg;base64, ${response.data}`, `${this.getDefault('name')}.${format}`);
-            }
-        });
+                error : (e) => console.log( 'Error:', e),
+                success : (response) => {                    
+                    saveAs(`data:image/jpeg;base64, ${response.data}`, `${name}.${format}`);
+                }
+            });
         } catch (e) {
             if (e.message.toLowerCase().indexOf('tainted') === -1) return null;
             this.toast.open('Could not export canvas with external image.');
