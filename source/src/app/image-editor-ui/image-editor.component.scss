@@ -20,6 +20,7 @@ image-editor {
     
     .canvas-mask-wrapper {
       margin: auto;
+      margin-top: 1.5%;
 
       &.not-loaded, &.empty {
         visibility: hidden;
