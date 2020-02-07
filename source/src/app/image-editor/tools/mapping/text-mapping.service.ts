@@ -13,7 +13,7 @@ export class TextMappingService {
             let newText = text;
 
             vars.forEach(index => {
-                if (profile[index]) newText = newText.split(index).join(profile[index]);
+                if (profile[index]) newText = newText.split(`[${index}]`).join(profile[index]);
             });
             
             resolve(newText);

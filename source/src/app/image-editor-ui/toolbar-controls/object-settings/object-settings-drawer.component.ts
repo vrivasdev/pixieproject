@@ -12,6 +12,7 @@ import { ImportToolService } from 'app/image-editor/tools/import/import-tool.ser
 import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 import {HistoryNames} from '../../../image-editor/history/history-names.enum';
 import { FloatingPanelsService } from '../floating-panels.service';
+import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
 
 @Component({
     selector: 'object-settings-drawer',
@@ -38,6 +39,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
         private importTool: ImportToolService,
         private canvas: CanvasService,
         public panels: FloatingPanelsService,
+        private mappingService: TextMappingService
     ) {}
 
     ngOnInit() {
@@ -85,5 +87,27 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
 
     public imageMappingModal() {
         this.panels.openImageMappingPanel();
+    }
+
+    public previewText() {
+        const obj: any = this.activeObject.get();
+        const text = 'text' in obj ? obj.text : null;
+
+        if (text) {
+            this.mappingService
+            .getVarContent(text,
+                        this.mappingService
+                            .filterWords(text)
+                            .map(value => value.slice(1, -1)))
+                            .then(newText => {
+                                if ('tmpText' in obj && obj.tmpText) {
+                                    obj.set('text', obj.tmpText);
+                                    delete  obj.tmpText;
+                                } else {
+                                    obj.set('tmpText', text);
+                                    obj.set('text', newText);
+                                }
+                            });
+        }
     }
 }
