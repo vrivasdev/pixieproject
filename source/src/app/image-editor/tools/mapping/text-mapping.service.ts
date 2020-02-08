@@ -23,4 +23,14 @@ export class TextMappingService {
     public filterWords(text: string): Array<string> {
         return text.match(/\[(\w+)\]/g) ? text.match(/\[(\w+)\]/g) : [];
     }
+
+    public toggleText(obj: any, text: string, newText: string) {
+        if ('tmpText' in obj && obj.tmpText) {
+            obj.set('text', obj.tmpText);
+            delete  obj.tmpText;
+        } else {
+            obj.set('tmpText', text);
+            obj.set('text', newText);
+        }
+    }
 }

@@ -91,7 +91,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
 
     public previewText() {
         const obj: any = this.activeObject.get();
-        const text = 'text' in obj ? obj.text : null;
+        const text = obj && 'text' in obj ? obj.text : null;
 
         if (text) {
             this.mappingService
@@ -100,13 +100,8 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
                             .filterWords(text)
                             .map(value => value.slice(1, -1)))
                             .then(newText => {
-                                if ('tmpText' in obj && obj.tmpText) {
-                                    obj.set('text', obj.tmpText);
-                                    delete  obj.tmpText;
-                                } else {
-                                    obj.set('tmpText', text);
-                                    obj.set('text', newText);
-                                }
+                                this.mappingService.toggleText(obj, text, newText);
+                                this.activeObject.deselect();
                             });
         }
     }
