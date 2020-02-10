@@ -31,6 +31,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     public type: String;
     public activeType;
+    public preview: string;
 
     constructor(
         public activeObject: ActiveObjectService,
@@ -40,7 +41,9 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
         private canvas: CanvasService,
         public panels: FloatingPanelsService,
         private mappingService: TextMappingService
-    ) {}
+    ) {
+        this.preview = 'Preview';
+    }
 
     ngOnInit() {
         this.activeType = this.activeObject.get() ? this.activeObject.get().type : null;
@@ -101,6 +104,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
                             .map(value => value.slice(1, -1)))
                             .then(newText => {
                                 this.mappingService.toggleText(obj, text, newText);
+                                this.preview = this.mappingService.filterWords(text).length ? 'Not Preview' : 'Preview';
                                 this.activeObject.deselect();
                             });
         }

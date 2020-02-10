@@ -24,7 +24,7 @@ export class TextMappingService {
         return text.match(/\[(\w+)\]/g) ? text.match(/\[(\w+)\]/g) : [];
     }
 
-    public toggleText(obj: any, text: string, newText: string) {
+    public toggleText(obj: any, text: string, newText: string): void {
         if ('tmpText' in obj && obj.tmpText) {
             obj.set('text', obj.tmpText);
             delete  obj.tmpText;

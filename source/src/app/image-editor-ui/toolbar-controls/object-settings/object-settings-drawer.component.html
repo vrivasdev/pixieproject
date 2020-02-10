@@ -49,9 +49,9 @@
         <mat-icon svgIcon="opacity-custom"></mat-icon>
         <div class="bottom-label" trans>Opacity</div>
     </div>
-    <div class="button-with-image" (click)="previewText()" *ngIf="activeObjIsText$ | async">
+    <div class="button-with-image" (click)="previewText()" *ngIf="activeObjIsText$ | async">         
         <mat-icon>format_size</mat-icon>
-        <div class="bottom-label" trans>Preview</div>
+        <div class="bottom-label">{{ preview }}</div>        
     </div>
 </div>
 
