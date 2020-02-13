@@ -41,6 +41,7 @@ interface EditorStateModel {
     contentLoaded: boolean;
     objectSettings?: ObjectsStateModel;
     activeObjIsText?: boolean;
+    activeObjIsImage?: boolean;
     activeObjIsShape?: boolean;
     activeObjId?: string;
     zoom: number;
@@ -57,6 +58,7 @@ interface EditorStateModel {
         controlsPosition: ControlPosition.TOP,
         contentLoaded: false,
         activeObjIsText: false,
+        activeObjIsImage: false,
         activeObjIsShape: false,
         activeObjId: null,
         zoom: 100,
@@ -126,6 +128,11 @@ export class EditorState implements NgxsOnInit {
     @Selector()
     static activeObjIsText(state: EditorStateModel) {
         return state.activeObjIsText;
+    }
+
+    @Selector()
+    static activeObjIsImage(state: EditorStateModel) {
+        return state.activeObjIsImage;
     }
 
     @Selector()
@@ -252,12 +259,14 @@ export class EditorState implements NgxsOnInit {
         const state = {
             activeObjId: null,
             activeObjIsText: false,
+            activeObjIsImage: false,
             activeObjIsShape: false,
         } as EditorStateModel;
 
         if (obj) {
             state.activeObjId = obj.data.id;
             state.activeObjIsText = obj.type === 'i-text';
+            state.activeObjIsImage = obj.type === 'image';
             state.activeObjIsShape = obj.name === ObjectNames.shape.name;
         }
 

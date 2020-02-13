@@ -92,17 +92,19 @@ export class ExportToolService {
         const tab = localStorage.getItem('tab');
         const service = 'getJson';
         const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
-        const otherTab = tab === 'front'? 'back': 'front';
+        // const globalUrl = 'http://myavex.local/design/';
+        const otherTab = tab === 'front' ? 'back' : 'front';
         
         data = this.getJsonState();
         this.watermark.remove();
-            
         if ( ! data) return;
 
         if (localStorage.getItem('isNewDesign') === 'true') {
+            console.log('is new desing - data:', data);
             this.saveTemplate(data, raw_json_back, templateName, saveType);
         } else {
             fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
+            //fetch(`${globalUrl}${service}/${otherTab}`)
             .then(resp => resp.json())
             .then(json => {
                 if (tab === 'front') {

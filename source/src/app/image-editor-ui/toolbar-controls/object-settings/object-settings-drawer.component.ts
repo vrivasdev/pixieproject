@@ -25,6 +25,7 @@ import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.
 export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     @Select(ObjectsState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.activeObjIsText) activeObjIsText$: Observable<boolean>;
+    @Select(EditorState.activeObjIsImage) activeObjIsImage$: Observable<boolean>;
     @Select(EditorState.activeObjIsShape) activeObjIsShape$: Observable<boolean>;
     @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
 
@@ -108,5 +109,9 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
                                 this.activeObject.deselect();
                             });
         }
+    }
+    
+    public previewImage() {
+        console.log('Preview image');
     }
 }

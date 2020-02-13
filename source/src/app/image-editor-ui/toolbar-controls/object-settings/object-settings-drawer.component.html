@@ -25,7 +25,8 @@
         <mat-icon svgIcon="color-custom"></mat-icon>
         <div class="bottom-label" trans>Color</div>
     </div>    
-    <div class="button-with-image" (click)="imageMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'x'] === 'xmappingtext'" *ngIf="activeType === 'image'">
+    
+    <div class="button-with-image" (click)="imageMappingModal()" [hidden]="(blockedObject$ | async)[activeObject.getId()+'y'] === 'ymappingimage'" *ngIf="activeType === 'image'">        
         <mat-icon>mapping</mat-icon>
         <div class="bottom-label" trans>Mapping</div>
     </div>    
@@ -51,6 +52,10 @@
     </div>
     <div class="button-with-image" (click)="previewText()" *ngIf="activeObjIsText$ | async">         
         <mat-icon>format_size</mat-icon>
+        <div class="bottom-label">{{ preview }}</div>        
+    </div>    
+    <div class="button-with-image" (click)="previewImage()" *ngIf="activeObjIsImage$ | async">
+        <mat-icon>image</mat-icon>
         <div class="bottom-label">{{ preview }}</div>        
     </div>
 </div>
