@@ -96,7 +96,6 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     public previewText() {
         const obj: any = this.activeObject.get();
         const text = obj && 'text' in obj ? obj.text : null;
-
         if (text) {
             this.mappingService
             .getVarContent(text,

@@ -10,10 +10,19 @@ export class TextMappingService {
     public getVarContent(text: string, vars: Array<string>): Promise<any> {
         return new Promise(resolve => {
             const profile = this.config.get('pixie.profile');
+            const mlsVars = ['baths', 'street_number', 'street_name', 'apartment', 'zipcode',
+                             'city', 'state', 'country', 'address', 'description', 'type', 'bedrooms', 'price'];
             let newText = text;
 
             vars.forEach(index => {
-                if (profile[index]) newText = newText.split(`[${index}]`).join(profile[index]);
+                if (profile[index]) {
+                    if (mlsVars.includes(index) && profile['mls'].length > 0 ) {
+                        /* TODO: if variable is mls */
+                        
+                    } else {
+                        newText = newText.split(`[${index}]`).join(profile[index]);
+                    }
+                }
             });
             
             resolve(newText);
