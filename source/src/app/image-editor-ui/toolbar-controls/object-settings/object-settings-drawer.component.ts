@@ -13,6 +13,7 @@ import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 import {HistoryNames} from '../../../image-editor/history/history-names.enum';
 import { FloatingPanelsService } from '../floating-panels.service';
 import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
+import { MappingState } from 'app/image-editor/state/mapping-state';
 
 @Component({
     selector: 'object-settings-drawer',
@@ -111,6 +112,8 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     }
     
     public previewImage() {
-        console.log('Preview image');
+        const objects = this.store.selectSnapshot(MappingState.getMappingObjects);
+        console.log('active:', this.activeObject.get());
+        // objects[0].objectId === 'id' && objects[0].type === 'mls';
     }
 }

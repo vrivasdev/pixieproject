@@ -6,6 +6,7 @@ import { ActiveObjectService } from 'app/image-editor/canvas/active-object/activ
 import { SetMapping } from 'app/image-editor/state/mapping-state-actions';
 import { MappingType } from 'app/image-editor/state/mapping-type.enum';
 import { Map } from 'app/image-editor/state/map.enum';
+import { Modal } from 'common/core/ui/dialogs/modal.service';
 
 @Component({
     selector: 'image-mappig-panel',
@@ -17,7 +18,8 @@ import { Map } from 'app/image-editor/state/map.enum';
 export class ImageMappingPanelComponent {
     
     constructor(private store: Store,
-                private activeObject: ActiveObjectService) {}
+                private activeObject: ActiveObjectService,
+                private dialog: Modal) {}
 
     public saveForm = new FormGroup({
         type: new FormControl(),
@@ -34,5 +36,6 @@ export class ImageMappingPanelComponent {
                                            this.saveForm.value.type === 'mls' ? MappingType.MLS : MappingType.PROFILE,
                                            this.saveForm.value.type,
                                            Map.IMAGE));
+        this.dialog.close();
     }
 }
