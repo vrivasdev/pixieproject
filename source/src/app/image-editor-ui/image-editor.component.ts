@@ -180,11 +180,21 @@ export class ImageEditorComponent implements OnInit {
     keyevent(event: KeyboardEvent) {
         const blockedObject = this.store.selectSnapshot(ObjectPanelState.blockedObject);
         const maxTextObject = this.store.selectSnapshot(ObjectPanelState.maxTextObject);
-        const obj = this.activeObject.get();
-
-        /*TODO: Keep looking how to block ctrl v action*/
+        const obj: any = this.activeObject.get();
+        
         if (obj) {
             if ('data' in obj) {
+                console.log('cacheTranslationX:', obj.cacheTranslationX);
+                console.log('left:', obj.left);
+                console.log('scalex:', obj.scaleX);
+                console.log('Obj:', obj);
+                if (obj.textAlign === 'right' && event.key !== 'Backspace') {
+                    obj.lockMovementX = true;
+                    obj.left -= 20; // >= 20 => moves to the left
+                } else if (obj.textAlign === 'right' && event.key === 'Backspace') {
+                    obj.left += 21;
+                    obj.lockMovementX = true;
+                }
                 if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
                  ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
                  ((event.key !== 'Backspace'))) {
