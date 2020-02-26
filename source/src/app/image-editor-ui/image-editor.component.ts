@@ -22,6 +22,7 @@ import { ObjectPanelState } from './state/objects-panel/objects-panel.state';
 import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
 import {delay} from 'rxjs/operators';
 import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
+import * as codes from 'assets/spacemap.json';
 
 @Component({
     selector: 'image-editor',
@@ -184,19 +185,20 @@ export class ImageEditorComponent implements OnInit {
         
         if (obj) {
             if ('data' in obj) {
-                console.log('cacheTranslationX:', obj.cacheTranslationX);
-                console.log('left:', obj.left);
-                console.log('scalex:', obj.scaleX);
-                console.log('Obj:', obj);
-                if (obj.textAlign === 'right' && event.key !== 'Backspace') {
-                    obj.lockMovementX = true;
-                    obj.left -= 20; // >= 20 => moves to the left
-                } else if (obj.textAlign === 'right' && event.key === 'Backspace') {
-                    obj.left += 21;
-                    obj.lockMovementX = true;
+                if (obj.textAlign === 'right' && obj.textLines.length === 1) { // Right alignment
+                    const extra = 'beforeWidth' in obj? Math.abs(obj.width - obj.beforeWidth) : 0;
+                    
+                    obj.beforeWidth = obj.width;
+
+                    codes.forEach(code => {
+                        if (code.keys.includes(event.key)) {
+                            obj.left = obj.left + (extra + code.space) * (code.remove ? -1 : 1);
+                        }
+                    });
                 }
+                
                 if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
-                 ( this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&
+                 (this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&+-
                  ((event.key !== 'Backspace'))) {
                   event.preventDefault();
                   event.stopPropagation();
