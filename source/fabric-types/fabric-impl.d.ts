@@ -3304,6 +3304,11 @@ interface IITextOptions extends IObjectOptions, ITextOptions {
 	 * Indicates whether internal text char widths can be cached
 	 */
 	caching?: boolean;
+
+	/**
+	 * Horizontal origin of transformation of an object (one of "left", "right", "center")
+	 */
+	originX?: string;
 }
 export interface IText extends Text, IITextOptions {}
 export class IText extends Object {

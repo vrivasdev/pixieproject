@@ -184,19 +184,7 @@ export class ImageEditorComponent implements OnInit {
         const obj: any = this.activeObject.get();
         
         if (obj) {
-            if ('data' in obj) {
-                if (obj.textAlign === 'right' && obj.textLines.length === 1) { // Right alignment
-                    const extra = 'beforeWidth' in obj? Math.abs(obj.width - obj.beforeWidth) : 0;
-                    
-                    obj.beforeWidth = obj.width;
-
-                    codes.forEach(code => {
-                        if (code.keys.includes(event.key)) {
-                            obj.left = obj.left + (extra + code.space) * (code.remove ? -1 : 1);
-                        }
-                    });
-                }
-                
+            if ('data' in obj) {           
                 if (blockedObject[obj.data.id + 'm'] === 'maxtext' &&
                  (this.activeObject.get().toObject().text.length >= maxTextObject[obj.data.id + 'm']) &&+-
                  ((event.key !== 'Backspace'))) {
@@ -219,7 +207,6 @@ export class ImageEditorComponent implements OnInit {
             nav.clipboard.readText().then(text => {
                 if ((blockedObject[obj.data.id + 'm'] === 'maxtext') &&
                 ((text.length + this.activeObject.get().toObject().text.length) >= maxTextObject[obj.data.id + 'm'] )) {
-                    console.log('enter');
                     event.preventDefault();
                     event.stopPropagation();
                     return false;

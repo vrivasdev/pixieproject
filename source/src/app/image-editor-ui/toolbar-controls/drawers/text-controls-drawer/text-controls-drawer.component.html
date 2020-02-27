@@ -1,5 +1,5 @@
 <ng-container [formGroup]="activeObject.form">
-    <mat-button-toggle-group formControlName="textAlign" aria-label="Text Align" class="text-align-group">
+    <mat-button-toggle-group formControlName="textAlign" aria-label="Text Align" class="text-align-group" (change)="setAlignment($event)">
         <mat-button-toggle value="left"><mat-icon svgIcon="format-align-left"></mat-icon></mat-button-toggle>
         <mat-button-toggle value="center"><mat-icon svgIcon="format-align-center"></mat-icon></mat-button-toggle>
         <mat-button-toggle value="right"><mat-icon svgIcon="format-align-right"></mat-icon></mat-button-toggle>

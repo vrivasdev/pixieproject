@@ -27,7 +27,6 @@ export class ActiveObjectService {
 
         this.form.valueChanges
             .subscribe(values => {
-                console.log('values', values);
                 this.setValues(values);
             });
     }
@@ -41,7 +40,6 @@ export class ActiveObjectService {
     }
 
     public setValues(values: ITextOptions) {
-        console.log('Set values');
         const obj = this.get();
         if ( ! obj) return;
 

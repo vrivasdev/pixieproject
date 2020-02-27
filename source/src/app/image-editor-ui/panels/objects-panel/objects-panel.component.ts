@@ -38,7 +38,6 @@ export class ObjectsPanelComponent {
         private config: Settings,
         private active: ActiveObjectService
     ) {
-        console.log('Objects:', this.objects);
     }
 
     public getIcon(object: Object): string {

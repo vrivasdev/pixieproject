@@ -54,4 +54,18 @@ export class TextControlsDrawerComponent {
         }
         return [fontWeight, fontStyle];
     }
+
+    public setAlignment(e: MatButtonToggleChange) {
+        const obj: any = this.activeObject.get();
+        let sing: number; 
+
+        if (e.value === 'right' || (e.value === 'left' && obj.originX !== 'left' )) {
+            obj.set({originX:e.value});
+            
+            if (e.value === 'left') sing = -1;
+            else if (e.value === 'right') sing = 1;
+
+            obj.set({left: obj.left + (sing)*(obj.aCoords.tr.x - obj.aCoords.tl.x)})
+        }
+    }
 }
