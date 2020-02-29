@@ -37,6 +37,7 @@ export class TextFontSelectorComponent {
     }
 
     public writeValue(value: string|null) {
+        console.log('Font:', value);
         this.selectedFont$.next(value);
     }
 

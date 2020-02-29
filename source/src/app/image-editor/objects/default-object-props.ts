@@ -1,5 +1,5 @@
 export const defaultObjectProps = {
-    fill: 'rgb(30, 139, 195)',
+    fill: 'rgb(235, 235, 235)',
     opacity: 1,
     backgroundColor: null,
     strokeWidth: 0.1,
@@ -14,6 +14,6 @@ export const defaultObjectProps = {
     underline: false,
     linethrough: false,
     fontStyle: 'normal',
-    fontFamily: 'Times New Roman',
-    fontWeight: 400,
+    fontFamily: 'Lato',
+    fontWeight: 100,
 };
