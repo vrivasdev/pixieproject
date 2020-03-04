@@ -206,7 +206,6 @@ export class ImageEditorComponent implements OnInit {
             nav.clipboard.readText().then(text => {
                 if ((blockedObject[obj.data.id + 'm'] === 'maxtext') &&
                 ((text.length + this.activeObject.get().toObject().text.length) >= maxTextObject[obj.data.id + 'm'] )) {
-                    console.log('enter');
                     event.preventDefault();
                     event.stopPropagation();
                     return false;

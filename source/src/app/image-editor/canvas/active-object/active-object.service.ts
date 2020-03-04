@@ -27,7 +27,6 @@ export class ActiveObjectService {
 
         this.form.valueChanges
             .subscribe(values => {
-                console.log('values', values);
                 this.setValues(values);
             });
     }

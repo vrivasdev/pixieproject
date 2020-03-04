@@ -32,6 +32,7 @@ export class TextToolService {
         };
 
         const itext = new fabric.IText(text, options);
+        
         this.canvas.fabric().add(itext);
         this.autoPositionText(itext);
 
