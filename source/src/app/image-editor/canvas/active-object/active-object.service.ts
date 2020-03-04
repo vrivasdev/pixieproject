@@ -41,7 +41,6 @@ export class ActiveObjectService {
     }
 
     public setValues(values: ITextOptions) {
-        console.log('Set values');
         const obj = this.get();
         if ( ! obj) return;
 

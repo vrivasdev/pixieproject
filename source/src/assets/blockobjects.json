@@ -113,7 +113,7 @@
         {
           "type": "i-text",
           "version": "2.7.0",
-          "originX": "left",
+          "originX": "right",
           "originY": "top",
           "left": 100.66,
           "top": 100.74,

@@ -51,14 +51,14 @@
             //     width: 800,
             //     height: 600,
             // },
-            id: idVal,
+            id: null,
             flyerName: 'test001',
             saveType: 'completed',
-            profile: {Email: "jhonyfm@gmail.com", 
+            /*profile: {Email: "jhonyfm@gmail.com", 
                       First_Name: "Jhony",
                       Last_Name: "Ferreira Marques",
                       Phone_Number: "",
-                      Image: "img/profile/user/340/img_agent_340.png"},
+                      Image: "img/profile/user/340/img_agent_340.png"},*/
             profile : {
                 id: "340",
                 First_Name: "Jhony",
@@ -105,7 +105,8 @@
                 mode: 'inline',                
                 showExportPanel: true, 
                 openImageDialog: {
-                     show: (idVal || state)? false: true
+                     // show: (idVal || state)? false: true
+                     show: true
                 },
                 toolbar: {
                     //hideOpenButton: true,

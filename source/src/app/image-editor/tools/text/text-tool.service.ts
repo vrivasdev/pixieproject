@@ -54,6 +54,7 @@ export class TextToolService {
         }
 
         text.viewportCenter();
+        console.log('Text:', text);
 
         // push text down, if it intersects with another text object
         this.canvas.fabric().getObjects('i-text').forEach(obj => {

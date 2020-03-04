@@ -99,6 +99,7 @@ export class ExportToolService {
         this.watermark.remove();
         if ( ! data) return;
 
+        localStorage.setItem('isNewDesign', 'true');
         if (localStorage.getItem('isNewDesign') === 'true') {
             console.log('is new desing - data:', data);
             this.saveTemplate(data, raw_json_back, templateName, saveType);
@@ -121,6 +122,11 @@ export class ExportToolService {
     }
 
     public saveTemplate(raw_json, raw_json_back, templateName, saveType) {
+        console.log({'raw_json': raw_json,
+        'raw_json_back': raw_json_back,
+        'template_name': templateName,
+        'template_type': '7',
+        'draft': saveType});
         if (this.config.has('pixie.saveUrl')) {
             fetch(
                 this.config.get('pixie.saveUrl'),
