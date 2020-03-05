@@ -16,6 +16,7 @@ import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.
 import { MappingState } from 'app/image-editor/state/mapping-state';
 import { Settings } from 'common/core/config/settings.service';
 
+
 @Component({
     selector: 'object-settings-drawer',
     templateUrl: './object-settings-drawer.component.html',
@@ -117,16 +118,14 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
         const objects: any = this.store.selectSnapshot(MappingState.getMappingObjects);
         const active: any = this.activeObject.get();
 
-        if ((objects[0].objectId === active.data.id) && objects[0].type === 'mls') {
-
+        if (objects.filter(object => object.objectId === active.data.id && object.type === 'mls').length) {
             const mlss = this.config.get('pixie.profile.mls');
             const images = mlss.length ? JSON.parse(mlss[0][1].photo.photo) : null;
             const mls = images.length ? images[0].MediaURL : null;
             
-            if ('_originalElement' in active ) {
-                active._element.src = mls;
-                active._element.currentStc = mls;
-            }
+            this.canvas.fabric().remove(active);
+            this.canvas.replaceImage(active, mls);
+            this.history.add(HistoryNames.OVERLAY_IMAGE);
         }
     }
 }

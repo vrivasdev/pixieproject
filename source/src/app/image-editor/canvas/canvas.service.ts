@@ -124,6 +124,25 @@ export class CanvasService {
         });
     }
 
+    public replaceImage(active: any, url: string): void {
+        if ('_originalElement' in active ) {
+            this.fabric().remove(active);
+            fabric.util.loadImage(url, img => {
+                const newImage = new fabric.Image(img);
+                
+                newImage.height = active.height;
+                newImage.left = active.left;
+                newImage.top = active.top;
+                newImage.width = active.width;
+                newImage.scaleX = active.scaleX;
+                newImage.scaleY = active.scaleY;
+
+                this.fabric().add(newImage);
+                this.fabric().setActiveObject(newImage);
+                this.render();
+            });
+        }
+    }
     /**
      * Create a blank canvas with specified dimensions.
      */
