@@ -83,7 +83,7 @@ export class ExportToolService {
         return [raw_json, raw_json_back];
     }
 
-    public save(share: string, category: number, group: number, templateName: string, saveType: number) {
+    public save(share: string, categoryId: number, group: number, templateName: string, saveType: number) {
         let data;
         let raw_json =  null;
         let raw_json_back = null;
@@ -102,7 +102,7 @@ export class ExportToolService {
         localStorage.setItem('isNewDesign', 'true');
         if (localStorage.getItem('isNewDesign') === 'true') {
             console.log('is new desing - data:', data);
-            this.saveTemplate(data, raw_json_back, templateName, saveType);
+            this.saveTemplate(data, raw_json_back, templateName, saveType, categoryId);
         } else {
             fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
             //fetch(`${globalUrl}${service}/${otherTab}`)
@@ -115,18 +115,13 @@ export class ExportToolService {
                     raw_json = json.data;
                     raw_json_back = data;
                 }
-                this.saveTemplate(raw_json, raw_json_back, templateName, saveType);
+                this.saveTemplate(raw_json, raw_json_back, templateName, saveType, categoryId);
             })
             .catch(error => console.log(`Error: ${error}`));
         }
     }
 
-    public saveTemplate(raw_json, raw_json_back, templateName, saveType) {
-        console.log({'raw_json': raw_json,
-        'raw_json_back': raw_json_back,
-        'template_name': templateName,
-        'template_type': '7',
-        'draft': saveType});
+    public saveTemplate(raw_json, raw_json_back, templateName, saveType, categoryId) {
         if (this.config.has('pixie.saveUrl')) {
             fetch(
                 this.config.get('pixie.saveUrl'),
@@ -140,7 +135,8 @@ export class ExportToolService {
                                             'raw_json_back': raw_json_back,
                                             'template_name': templateName,
                                             'template_type': '7',
-                                            'draft': saveType}),
+                                            'draft': saveType,
+                                            'category_id': categoryId}),
                     mode: 'no-cors'
                 }
             )
@@ -195,6 +191,7 @@ export class ExportToolService {
                                                   'raw_json_back': raw_json_back,
                                                   'template_name': templateName,
                                                   'template_type': '7',
+                                                  'category_id': category,
                                                   'draft': saveType}),
                             mode: 'no-cors'
                         }

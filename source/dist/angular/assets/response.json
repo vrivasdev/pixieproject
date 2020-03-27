@@ -1,0 +1,170 @@
+{
+    "success": "true",
+    "message": "Data successfully displayed",
+    "data": [
+        {
+            "name": "Print > Signs",
+            "subCategories": [
+                {
+                    "id": "18",
+                    "name": "Riders"
+                }
+            ]
+        },
+        {
+            "name": "Digital > Ads",
+            "subCategories": [
+                {
+                    "id": "12",
+                    "name": "Banners"
+                }
+            ]
+        },
+        {
+            "name": "Print > Flyers > One-Sided",
+            "subCategories": [
+                {
+                    "id": "53",
+                    "name": "Prospesting"
+                },
+                {
+                    "id": "52",
+                    "name": "Properties"
+                }
+            ]
+        },
+        {
+            "name": "Print > Flyers > Two-Sided",
+            "subCategories": [
+                {
+                    "id": "30",
+                    "name": "Back"
+                }
+            ]
+        },
+        {
+            "name": "Digital > Social Media > Posts",
+            "subCategories": [
+                {
+                    "id": "20",
+                    "name": "Agent Bio"
+                },
+                {
+                    "id": "19",
+                    "name": "Welcome"
+                },
+                {
+                    "id": "21",
+                    "name": "Properties"
+                },
+                {
+                    "id": "22",
+                    "name": "Prospecting"
+                }
+            ]
+        },
+        {
+            "name": "Digital > Social Media > Stories",
+            "subCategories": [
+                {
+                    "id": "24",
+                    "name": "Agent Bio"
+                },
+                {
+                    "id": "26",
+                    "name": "Prospecting"
+                },
+                {
+                    "id": "25",
+                    "name": "Properties"
+                }
+            ]
+        },
+        {
+            "name": "Digital > Ads > Facebook Ads",
+            "subCategories": [
+                {
+                    "id": "28",
+                    "name": "Prospecting"
+                },
+                {
+                    "id": "27",
+                    "name": "Properties"
+                }
+            ]
+        },
+        {
+            "name": "Print > Signs > Yard Signs > Open House",
+            "subCategories": [
+                {
+                    "id": "50",
+                    "name": "18 x 24"
+                },
+                {
+                    "id": "49",
+                    "name": "20 x 20"
+                }
+            ]
+        },
+        {
+            "name": "Print > Signs > Yard Signs > Properties",
+            "subCategories": [
+                {
+                    "id": "48",
+                    "name": "18 x 24"
+                },
+                {
+                    "id": "47",
+                    "name": "14 x 10"
+                },
+                {
+                    "id": "46",
+                    "name": "12 x 12"
+                },
+                {
+                    "id": "45",
+                    "name": "5 x 8"
+                }
+            ]
+        },
+        {
+            "name": "Print > Postcards > 9 x 6.5  > Front",
+            "subCategories": [
+                {
+                    "id": "44",
+                    "name": "Prospecting"
+                },
+                {
+                    "id": "43",
+                    "name": "Properties "
+                }
+            ]
+        },
+        {
+            "name": "Print > Postcards > 8.5 x 5.5 > Front",
+            "subCategories": [
+                {
+                    "id": "42",
+                    "name": "Prospecting"
+                },
+                {
+                    "id": "41",
+                    "name": "Properties"
+                }
+            ]
+        },
+        {
+            "name": "Print > Flyers > Two-Sided > Front",
+            "subCategories": [
+                {
+                    "id": "40",
+                    "name": "Prospecting"
+                },
+                {
+                    "id": "39",
+                    "name": "Properties "
+                }
+            ]
+        }
+    ]
+}

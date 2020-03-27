@@ -10,7 +10,7 @@ import { MatIconModule, MatTooltipModule, MatSelectModule, MatOptionModule, MatF
 import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
     declarations: [
@@ -30,6 +30,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
         MatFormFieldModule,
         MatTabsModule,
         HttpClientModule,
+        MatListModule,
         NgxsReduxDevtoolsPluginModule.forRoot()
     ],
     providers: [

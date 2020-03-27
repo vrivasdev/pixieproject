@@ -4,10 +4,12 @@
         <mat-radio-button value="all">All</mat-radio-button>
     </mat-radio-group>
     <mat-label>Category</mat-label>
-    <mat-select formControlName="category">
-        <mat-option value="1">Category #1</mat-option>
-        <mat-option value="2">Category #2</mat-option>
-        <mat-option value="3">Category N</mat-option>
+    <mat-select formControlName="category" [(value)]="selected">
+        <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
+            <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
+                {{subcategory.name}}
+            </mat-option>
+        </mat-optgroup>
     </mat-select>
     <mat-label>Group</mat-label>
     <mat-select formControlName="group">

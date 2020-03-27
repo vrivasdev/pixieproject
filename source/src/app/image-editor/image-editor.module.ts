@@ -1,3 +1,4 @@
+
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Settings} from 'common/core/config/settings.service';
@@ -52,6 +53,7 @@ import {HistoryState} from '../image-editor-ui/state/history/history.state';
 import {ObjectPanelState} from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 import {MappingState} from './state/mapping-state';
 import { TextMappingService } from './tools/mapping/text-mapping.service';
+import { SavePanelService } from './save/save-panel.service';
 
 export function init_app(settings, mergedConfig) {
     return () => {
@@ -138,7 +140,8 @@ export function init_app(settings, mergedConfig) {
         ActiveFrameService,
         FrameBuilderService,
         ToolsService,
-        TextMappingService
+        TextMappingService,
+        SavePanelService
     ],
 })
 export class ImageEditorModule {

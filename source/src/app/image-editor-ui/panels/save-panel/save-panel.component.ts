@@ -1,7 +1,19 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {Settings} from '../../../../common/core/config/settings.service';
 import {ExportToolService} from '../../../image-editor/tools/export/export-tool.service';
+import { SavePanelService } from 'app/image-editor/save/save-panel.service';
+import { Observable } from 'rxjs';
+
+interface SubCategory {
+    id: string,
+    name: string
+}
+  
+interface Categories {
+    name: string;
+    subCategory: SubCategory[];
+}
 
 @Component({
     selector: 'save-panel',
@@ -15,6 +27,7 @@ export class SavePanelComponent {
     private flyerName: string;
     private saveType: number;
     public active;
+    public categories$: Observable<Categories[]>;
 
     public saveForm = new FormGroup({
         share: new FormControl(),
@@ -27,12 +40,14 @@ export class SavePanelComponent {
     constructor(
         private config: Settings,
         private exportTool: ExportToolService,
+        private savePanel: SavePanelService
     ) {
         if (config.get('pixie.id')) {
             this.id = config.get('pixie.id')
             this.flyerName = config.get('pixie.flyerName')
             this.saveType = config.get('pixie.saveType')
         }
+        this.categories$ = this.savePanel.get();
     }
 
     public save() {
