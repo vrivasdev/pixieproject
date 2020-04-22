@@ -1,8 +1,4 @@
 <form (ngSubmit)="save()" [formGroup]="saveForm"  ngNativeValidate>
-    <mat-radio-group formControlName="share">
-        <mat-radio-button value="group/user">Group/User</mat-radio-button>
-        <mat-radio-button value="all">All</mat-radio-button>
-    </mat-radio-group>
     <mat-label>Category</mat-label>
     <mat-select formControlName="category" [(value)]="selected">
         <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
@@ -11,12 +7,32 @@
             </mat-option>
         </mat-optgroup>
     </mat-select>
-    <mat-label>Group</mat-label>
-    <mat-select formControlName="group">
-        <mat-option value="1">Group #1</mat-option>
-        <mat-option value="2">Group #2</mat-option>
-        <mat-option value="3">Group N</mat-option>
-    </mat-select>
+    <mat-label>Assign to</mat-label>
+    <mat-form-field class="chip-list">
+        <mat-chip-list #chipList>
+            <mat-chip
+            *ngFor="let agent of agents"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(agent)">
+            {{agent}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+            #agentInput
+            formControlName = "agentCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent">
+            {{agent}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
     <div class="input-container name-input-container">
         <label for="flyerName" trans>Flyer name</label>
         <input type="text" id="flyerName" formControlName="flyerName" value="{{flyerName}}">

@@ -77,5 +77,6 @@
     <button *ngIf="isAdmin" mat-menu-item (click)="openBackgroundImage()" trans>Background Image</button>
     <button *ngIf="isAdmin" mat-menu-item (click)="openOverlayImage()" trans>Overlay Image</button>
     <button mat-menu-item (click)="openStateFile()" trans>Open Project File</button>
+    <button *ngIf="hasId" mat-menu-item (click)="markAsPreview()" trans>Mark as Preview</button>
     <button mat-menu-item (click)="goBack()" trans>Return</button>
 </mat-menu>

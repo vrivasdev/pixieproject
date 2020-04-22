@@ -35,7 +35,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);
     private isAdmin: boolean;
-    private id;
+    private hasId: boolean;
 
     constructor(
         public history: HistoryToolService,
@@ -51,6 +51,7 @@ export class ToolbarComponent implements AfterViewInit {
         private importToolService: ImportToolService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
+        this.hasId     = config.get('pixie.id') ? true: false;
     }
 
     ngAfterViewInit() {
@@ -153,5 +154,9 @@ export class ToolbarComponent implements AfterViewInit {
     public goBack() {
       localStorage.setItem('active', 'false');
       location.reload();
+    }
+
+    public markAsPreview() {
+        this.exportTool.createPreview();
     }
 }

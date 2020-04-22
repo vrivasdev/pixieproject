@@ -6,7 +6,7 @@ import {Settings} from 'common/core/config/settings.service';
 import {MERGED_CONFIG} from './image-editor/default-settings';
 import {ImageEditorUIModule} from './image-editor-ui/image-editor-ui.module';
 import {noBackendErrorHandlerFactory} from 'common/core/errors/no-backend-error-handler';
-import { MatIconModule, MatTooltipModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatTooltipModule, MatSelectModule, MatOptionModule, MatFormFieldModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';

@@ -17,6 +17,8 @@ import {
     MatTooltipModule,
     MatOptionModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule,
 } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import {CustomScrollbarModule} from 'common/core/ui/custom-scrollbar/custom-scrollbar.module';
@@ -65,6 +67,8 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         MatOptionModule,
         MatSelectModule,
         MatTabsModule,
+        MatAutocompleteModule,
+        MatChipsModule,
     ],
     declarations: [
         ImageEditorComponent,

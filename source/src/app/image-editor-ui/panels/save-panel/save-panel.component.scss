@@ -1,5 +1,5 @@
 .save-panel-dialog-container.be-modal {
-    width: 255px;
+    width: 350px;
   
     .mat-dialog-container {
       padding: 18px;
@@ -38,6 +38,10 @@ save-panel {
     .save-button {
       margin-top: 15px;
       display: block;
+      width: 100%;
+    }
+
+    .chip-list {
       width: 100%;
     }
   }
