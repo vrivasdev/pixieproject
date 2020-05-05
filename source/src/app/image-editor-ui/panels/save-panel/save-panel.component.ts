@@ -6,8 +6,9 @@ import { SavePanelService } from 'app/image-editor/save/save-panel.service';
 import { Observable } from 'rxjs';
 import { COMMA, ENTER, SPACE, TAB } from '@angular/cdk/keycodes';
 import { startWith, map } from 'rxjs/operators';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatRadioChange } from '@angular/material';
 
 interface SubCategory {
     id: string,
@@ -29,7 +30,7 @@ interface Categories {
 export class SavePanelComponent {
     private id: number;
     private flyerName: string;
-    private saveType: number;
+    private saveType: string;
     public active;
     public categories$: Observable<Categories[]>;
     public visible = true;
@@ -39,15 +40,16 @@ export class SavePanelComponent {
     public agentCtrl = new FormControl();
     public filteredAgents: Observable<string[]>;
     public agents: string[] = [];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-    public allAgents: string[] = ['everyone', 'rrondon@avantiway.com'];
-
+    public allAgents: string[] = ['everyone', 'rrondon@avantiway.com']
     public saveForm = new FormGroup({
-        category: new FormControl(),
-        group: new FormControl(),
         flyerName: new FormControl(),
         saveType: new FormControl(),
+        category: new FormControl(),
+        group: new FormControl(),
         agentCtrl: new FormControl()
     });
+    public types = ['completed', 'draft'];
+    public optSelected: string = 'draft';
 
     @ViewChild('agentInput') agentInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -62,7 +64,10 @@ export class SavePanelComponent {
             this.flyerName = config.get('pixie.flyerName');
             this.saveType = config.get('pixie.saveType');
         }
-        
+        else {
+            // this.saveType = 'draft';
+        }
+
         this.categories$ = this.savePanel.get();
 
         this.filteredAgents = this.agentCtrl.valueChanges.pipe(
@@ -72,15 +77,15 @@ export class SavePanelComponent {
 
     public save() {
         const val = this.saveForm.value;
-
-        if (this.id) {
+        
+        if (this.id && this.config.get('pixie.isAgent') !== '1') {
             this.exportTool.update(this.id, 
                                    this.agents,
                                    val.category, 
                                    val.group,
                                    val.flyerName ? val.flyerName : this.flyerName,
                                    val.saveType ? val.saveType : this.saveType);
-        } else {
+        } else if (!this.id || this.config.get('pixie.isAgent') === '1') {
             this.exportTool.save(this.agents, 
                                  val.category, 
                                  val.group, 
@@ -128,5 +133,11 @@ export class SavePanelComponent {
         return this.allAgents
                     .filter(fruit => fruit.toLowerCase()
                                           .indexOf(value.toLowerCase()) === 0);
+    }
+
+    public typeChange(event: MatRadioChange) {
+        console.log(event);
+        console.log(event.value);
+        console.log(event.source);
     }
 }

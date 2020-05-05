@@ -121,6 +121,20 @@ export class ExportToolService {
 
     public saveTemplate(raw_json, raw_json_back, templateName, saveType, categoryId , share) {
         if (this.config.has('pixie.saveUrl')) {
+            const params = {
+                'raw_json': raw_json,
+                'raw_json_back': raw_json_back,
+                'draft': saveType,
+                'category_id': categoryId,
+                'share': share,
+                'svg': this.getSVG(),
+                'parent_template': this.config.get('pixie.isAgent') === '1'? this.config.get('pixie.id') : null 
+            };
+            const temp = (this.config.get('pixie.isAgent') === '1') ? '' : 'template_';
+    
+            params[`${temp}name`] = templateName;
+            params[`${temp}type`] = '3';
+
             fetch(
                 this.config.get('pixie.saveUrl'),
                 {
@@ -129,14 +143,7 @@ export class ExportToolService {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({'raw_json': raw_json,
-                                            'raw_json_back': raw_json_back,
-                                            'template_name': templateName,
-                                            'template_type': '7',
-                                            'draft': saveType,
-                                            'category_id': categoryId,
-                                            'share': share,
-                                            'svg': this.getSVG()}),
+                    body: JSON.stringify(params),
                     mode: 'no-cors'
                 }
             )
@@ -205,7 +212,7 @@ export class ExportToolService {
                                         'raw_json': raw_json,
                                         'raw_json_back': raw_json_back,
                                         'template_name': templateName,
-                                        'template_type': '7',
+                                        'template_type': '3',
                                         'category_id': category,
                                         'draft': saveType,
                                         'svg': this.getSVG(),

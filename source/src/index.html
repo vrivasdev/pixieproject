@@ -40,7 +40,8 @@
 </pixie-editor>
 <script>
     var base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-    var idVal = 684;
+    //var idVal = 684;
+    var idVal = null;
     var state = true;
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
@@ -51,7 +52,7 @@
             //     width: 800,
             //     height: 600,
             // },
-            id: 684,
+            // id: 684,
             flyerName: 'test001',
             saveType: 'completed',
             /*profile: {Email: "jhonyfm@gmail.com", 
@@ -105,8 +106,8 @@
                 mode: 'inline',                
                 showExportPanel: true, 
                 openImageDialog: {
-                     show: (idVal || state)? false: true
-                     //show: true
+                     //show: (idVal || state)? false: true
+                     show: true
                 },
                 toolbar: {
                     //hideOpenButton: true,
