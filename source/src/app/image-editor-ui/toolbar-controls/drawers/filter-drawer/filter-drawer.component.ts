@@ -17,7 +17,7 @@ import {startCase} from '../../../../../common/core/utils/start-case';
     host: {'class': 'controls-drawer'},
 })
 export class FilterDrawerComponent {
-    @Select(EditorState.activePanel) forePanel$: Observable<string>;
+    // @Select(EditorState.activePanel) forePanel$: Observable<string>;
     @Select(FilterState.activeFilters) activeFilters$: Observable<string[]>;
     @Select(FilterState.selectedFilter) selectedFilter$: Observable<string|null>;
     @Select(FilterState.dirty) dirty$: Observable<boolean>;

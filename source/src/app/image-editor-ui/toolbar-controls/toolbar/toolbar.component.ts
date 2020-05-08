@@ -30,7 +30,7 @@ export class ToolbarComponent implements AfterViewInit {
     @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
     @Select(EditorState.mode) mode$: Observable<EditorMode>;
     @Select(EditorState.zoom) zoom$: Observable<number>;
-    @Select(EditorState.activePanel) activePanel$: Observable<string>;
+    // @Select(EditorState.activePanel) activePanel$: Observable<string>;
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);

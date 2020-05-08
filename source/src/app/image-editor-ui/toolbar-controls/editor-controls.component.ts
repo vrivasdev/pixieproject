@@ -31,7 +31,7 @@ import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
 export class EditorControlsComponent {
     public isAdmin: boolean;
 
-    @Select(EditorState.activePanel) activePanel$: Observable<string>;
+    // @Select(EditorState.activePanel) activePanel$: Observable<string>;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
     @Select(EditorState.dirty) dirty$: Observable<boolean>;

@@ -1,14 +1,15 @@
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { MatRadioChange } from '@angular/material';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER, SPACE, TAB } from '@angular/cdk/keycodes';
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+
 import {Settings} from '../../../../common/core/config/settings.service';
 import {ExportToolService} from '../../../image-editor/tools/export/export-tool.service';
 import { SavePanelService } from 'app/image-editor/save/save-panel.service';
-import { Observable } from 'rxjs';
-import { COMMA, ENTER, SPACE, TAB } from '@angular/cdk/keycodes';
-import { startWith, map } from 'rxjs/operators';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
-import { MatRadioChange } from '@angular/material';
 
 interface SubCategory {
     id: string,
@@ -41,15 +42,18 @@ export class SavePanelComponent {
     public filteredAgents: Observable<string[]>;
     public agents: string[] = [];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     public allAgents: string[] = ['everyone', 'rrondon@avantiway.com']
+    public flyerNameCtrl =  new FormControl('', [Validators.required])
+    public categoryCtrl = new FormControl();
     public saveForm = new FormGroup({
-        flyerName: new FormControl(),
+        flyerName: this.flyerNameCtrl,
         saveType: new FormControl(),
-        category: new FormControl(),
+        category: this.categoryCtrl,
         group: new FormControl(),
         agentCtrl: new FormControl()
     });
     public types = ['completed', 'draft'];
-    public optSelected: string = 'draft';
+    public optSelected: string;
+    public isAdmin: boolean;
 
     @ViewChild('agentInput') agentInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -63,13 +67,20 @@ export class SavePanelComponent {
             this.id = config.get('pixie.id');
             this.flyerName = config.get('pixie.flyerName');
             this.saveType = config.get('pixie.saveType');
-        }
-        else {
-            // this.saveType = 'draft';
-        }
 
+            if (config.get('pixie.saveType') === 'completed') {
+                this.optSelected = '0';
+            } else {
+                this.optSelected = '1';
+                this.saveForm.controls['category'].disable();
+            }
+        } else {
+            this.optSelected = '1'; // draft type as defatult
+            this.saveForm.controls['category'].disable();
+        }
+        
+        this.isAdmin = this.config.get('pixie.profile.isAdmin');
         this.categories$ = this.savePanel.get();
-
         this.filteredAgents = this.agentCtrl.valueChanges.pipe(
             startWith(null),
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allAgents.slice()));
@@ -136,8 +147,21 @@ export class SavePanelComponent {
     }
 
     public typeChange(event: MatRadioChange) {
-        console.log(event);
-        console.log(event.value);
-        console.log(event.source);
+        const category = this.saveForm.controls['category'];
+        if (event.value === '0'){
+            category.enable();
+        } else {
+            category.disable();
+        }
+    }
+
+    public getErrorMessageName() {
+        if (this.flyerNameCtrl.hasError('required')) {
+            return 'You must enter a value';
+        } else {
+            if (this.flyerNameCtrl.hasError('flyerName')) {
+                return 'Not a valid flyer name';
+            }
+        }
     }
 }

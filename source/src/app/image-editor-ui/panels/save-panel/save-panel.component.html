@@ -1,56 +1,71 @@
 <form (ngSubmit)="save()" [formGroup]="saveForm"  ngNativeValidate>
     <div class="input-container name-input-container">
         <label for="flyerName" trans>Flyer name</label>
-        <input type="text" id="flyerName" name="flyerName" formControlName="flyerName" value="{{flyerName}}">
+        <input 
+            type="text" 
+            id="flyerName" 
+            name="flyerName" 
+            formControlName="flyerName" 
+            value="{{flyerName}}"
+            >
+        <mat-error *ngIf="flyerNameCtrl.invalid">
+            {{getErrorMessageName()}}
+        </mat-error>
     </div>
     <mat-label>Save as</mat-label>
     <mat-radio-group 
-        [(ngModel)]="optSelected"
         formControlName="saveType" 
         required 
-        (change)="typeChange($event)">
-        <mat-radio-button *ngFor="let type of types" [value]="">
-            {{ type }}
+        (change)="typeChange($event)"
+        [(ngModel)]="optSelected">
+        <mat-radio-button 
+            *ngFor="let type of types | keyvalue" 
+            [value]="type.key">
+            {{ type.value }}
         </mat-radio-button>
     </mat-radio-group>
     <!--
         <mat-radio-button [checked]="saveType==='draft'" value="1">Draft</mat-radio-button>
         <mat-radio-button [checked]="saveType==='completed'" value="0">Completed</mat-radio-button>
         -->
-    <mat-label>Category</mat-label>
-    <mat-select formControlName="category" [(value)]="selected" disabled='true'>
-        <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
-            <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
-                {{subcategory.name}}
-            </mat-option>
-        </mat-optgroup>
-    </mat-select>
-    <!--<mat-label>Assign to</mat-label>
-    <mat-form-field class="chip-list">
-        <mat-chip-list #chipList>
-            <mat-chip
-            *ngFor="let agent of agents"
-            [selectable]="selectable"
-            [removable]="removable"
-            (removed)="remove(agent)">
-            {{agent}}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <input disabled='true'
-            #agentInput
-            formControlName = "agentCtrl"
-            [matAutocomplete]="auto"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (matChipInputTokenEnd)="add($event)">
-        </mat-chip-list>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent">
-            {{agent}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>-->
+    <div *ngIf="isAdmin">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" [(value)]="selected">
+            <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
+                <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
+                    {{subcategory.name}}
+                </mat-option>
+            </mat-optgroup>
+        </mat-select>
+        <div *ngIf="optSelected==='0'">
+            <mat-label>Assign to</mat-label>
+            <mat-form-field class="chip-list">
+                <mat-chip-list #chipList>
+                    <mat-chip
+                    *ngFor="let agent of agents"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(agent)">
+                    {{agent}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input disabled='true'
+                    #agentInput
+                    formControlName = "agentCtrl"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent">
+                    {{agent}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
     <button mat-stroked-button mat-dialog-close color="primary" class="save-button" trans>Close</button>
     <button mat-flat-button color="primary" class="save-button" trans>Save</button>
 </form>
