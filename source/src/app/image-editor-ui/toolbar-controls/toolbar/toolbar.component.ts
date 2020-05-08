@@ -18,6 +18,7 @@ import {HistoryState} from '../../state/history/history.state';
 import {EditorMode} from '../../../image-editor/enums/editor-mode.enum';
 import {startCase} from '../../../../common/core/utils/start-case';
 import { SampleImage } from 'app/image-editor-ui/panels/open-sample-image-panel/sample-image';
+import { DrawerName } from '../drawers/drawer-name.enum';
 
 @Component({
     selector: 'toolbar',
@@ -30,7 +31,7 @@ export class ToolbarComponent implements AfterViewInit {
     @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
     @Select(EditorState.mode) mode$: Observable<EditorMode>;
     @Select(EditorState.zoom) zoom$: Observable<number>;
-    // @Select(EditorState.activePanel) activePanel$: Observable<string>;
+    @Select(EditorState.activePanel) activePanel$: Observable<DrawerName>;
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);

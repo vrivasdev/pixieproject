@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {ApplyChanges, CancelChanges} from '../../image-editor/state/editor-state-actions';
 import {ControlPosition} from '../../image-editor/enums/control-positions.enum';
 import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
+import { DrawerName } from './drawers/drawer-name.enum';
 
 @Component({
     selector: 'editor-controls',
@@ -31,7 +32,7 @@ import {BreakpointsService} from '../../../common/core/ui/breakpoints.service';
 export class EditorControlsComponent {
     public isAdmin: boolean;
 
-    // @Select(EditorState.activePanel) activePanel$: Observable<string>;
+    @Select(EditorState.activePanel) activePanel$: Observable<DrawerName>;
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
     @Select(EditorState.dirty) dirty$: Observable<boolean>;

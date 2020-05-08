@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {OpenFilterControls} from '../../../state/filter/filter.actions';
 import {FilterState} from '../../../state/filter/filter.state';
 import {startCase} from '../../../../../common/core/utils/start-case';
+import { DrawerName } from '../drawer-name.enum';
 
 @Component({
     selector: 'filter-drawer',
@@ -17,7 +18,7 @@ import {startCase} from '../../../../../common/core/utils/start-case';
     host: {'class': 'controls-drawer'},
 })
 export class FilterDrawerComponent {
-    // @Select(EditorState.activePanel) forePanel$: Observable<string>;
+    @Select(EditorState.activePanel) forePanel$: Observable<DrawerName>;
     @Select(FilterState.activeFilters) activeFilters$: Observable<string[]>;
     @Select(FilterState.selectedFilter) selectedFilter$: Observable<string|null>;
     @Select(FilterState.dirty) dirty$: Observable<boolean>;
