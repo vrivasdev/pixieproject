@@ -80,10 +80,16 @@ export class SavePanelComponent {
         }
         
         this.isAdmin = this.config.get('pixie.profile.isAdmin');
+
         this.categories$ = this.savePanel.get();
-        this.filteredAgents = this.agentCtrl.valueChanges.pipe(
-            startWith(null),
-            map((fruit: string | null) => fruit ? this._filter(fruit) : this.allAgents.slice()));
+        this.filteredAgents = this.agentCtrl
+                                  .valueChanges
+                                  .pipe(
+                                      startWith(null),
+                                      map((fruit: string | null) => fruit ? 
+                                         this._filter(fruit) : 
+                                         this.allAgents.slice())
+                                    );
     }
 
     public save() {

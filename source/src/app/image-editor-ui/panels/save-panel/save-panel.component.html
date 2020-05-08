@@ -24,10 +24,6 @@
             {{ type.value }}
         </mat-radio-button>
     </mat-radio-group>
-    <!--
-        <mat-radio-button [checked]="saveType==='draft'" value="1">Draft</mat-radio-button>
-        <mat-radio-button [checked]="saveType==='completed'" value="0">Completed</mat-radio-button>
-        -->
     <div *ngIf="isAdmin">
         <mat-label>Category</mat-label>
         <mat-select formControlName="category" [(value)]="selected">
@@ -49,7 +45,7 @@
                     {{agent}}
                     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                     </mat-chip>
-                    <input disabled='true'
+                    <input
                     #agentInput
                     formControlName = "agentCtrl"
                     [matAutocomplete]="auto"
