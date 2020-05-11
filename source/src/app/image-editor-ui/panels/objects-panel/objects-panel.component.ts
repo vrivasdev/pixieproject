@@ -28,6 +28,8 @@ import { ActiveObjectService } from 'app/image-editor/canvas/active-object/activ
 export class ObjectsPanelComponent {
     @Select(EditorState.activeObjId) activeObjId$: Observable<string>;
     @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
+
+    public isAdmin: boolean;
         
     constructor(
         public objects: ObjectsService,
@@ -38,6 +40,7 @@ export class ObjectsPanelComponent {
         private config: Settings,
         private active: ActiveObjectService
     ) {
+        this.isAdmin = config.get('pixie.profile.isAdmin');
     }
 
     public getIcon(object: Object): string {

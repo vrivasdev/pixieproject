@@ -26,9 +26,9 @@
             <div class="drag-placeholder" *cdkDragPlaceholder>
                 <div class="placeholder-inner"></div>
             </div>
-            <ng-container *ngIf="object.type==='i-text'" >                
+            <ng-container *ngIf="object.type==='i-text' && isAdmin" > 
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'s'] === 'style'" [ngIfElse]="tStyle" >
-                  <img class="block-open"  [src]="getImageUrl('icons/individual/block-textstyle.svg')" (click)="blockSelectedObject(object, 'style')" matTooltip="Unlock Text Style">
+                  <img class="block-open" [src]="getImageUrl('icons/individual/block-textstyle.svg')" (click)="blockSelectedObject(object, 'style')" matTooltip="Unlock Text Style">
                   </ng-template>
                 <ng-template #tStyle>
                     <img class="block-open"  [src]="getImageUrl('icons/individual/textstyle.svg')" (click)="blockSelectedObject(object, 'style')" matTooltip="Lock Text Style">
@@ -58,7 +58,7 @@
                   <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'xmappingtext')" matTooltip="Lock Text mapping">
                 </ng-template>
             </ng-container>
-            <ng-container *ngIf="object.type==='image'">
+            <ng-container *ngIf="object.type==='image' && isAdmin">
               <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'i'] === 'image'" [ngIfElse]="tImage" >
                 <img class="block-open"  [src]="getImageUrl('icons/individual/block-image.svg')" (click)="blockSelectedObject(object, 'image')" matTooltip="Unlock image">
               </ng-template>
@@ -72,18 +72,20 @@
                   <img class="block-open"  [src]="getImageUrl('icons/individual/mapping.svg')" (click)="blockSelectedObject(object, 'ymappingimage')" matTooltip="">
               </ng-template>
             </ng-container>
-            <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
-              <img class="block-open"  [src]="getImageUrl('icons/individual/block-size.svg')" (click)="blockSelectedObject(object, 'size')" matTooltip="Unlock size">
-            </ng-template>
-            <ng-template #tSize>
-                <img class="block-open"  [src]="getImageUrl('icons/individual/size.svg')" (click)="blockSelectedObject(object, 'size')" matTooltip="Lock size">
-            </ng-template>
-            <ng-template [ngIf]="object.lockMovementX || object.lockMovementY || object.lockRotation" [ngIfElse]="tPosition" >
-              <img class="block-open"  [src]="getImageUrl('icons/individual/block-position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Unlock position">
-            </ng-template>
-            <ng-template #tPosition>
-                <img class="block-open"  [src]="getImageUrl('icons/individual/position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Lock position">
-            </ng-template>            
+            <ng-container *ngIf="isAdmin">
+              <ng-template [ngIf]="object.lockScalingX || object.lockScalingY" [ngIfElse]="tSize" >
+                <img class="block-open"  [src]="getImageUrl('icons/individual/block-size.svg')" (click)="blockSelectedObject(object, 'size')" matTooltip="Unlock size">
+              </ng-template>
+              <ng-template #tSize>
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/size.svg')" (click)="blockSelectedObject(object, 'size')" matTooltip="Lock size">
+              </ng-template>
+              <ng-template [ngIf]="object.lockMovementX || object.lockMovementY || object.lockRotation" [ngIfElse]="tPosition" >
+                <img class="block-open"  [src]="getImageUrl('icons/individual/block-position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Unlock position">
+              </ng-template>
+              <ng-template #tPosition>
+                  <img class="block-open"  [src]="getImageUrl('icons/individual/position.svg')" (click)="blockSelectedObject(object, 'position')" matTooltip="Lock position">
+              </ng-template>
+            </ng-container>
         </div>
     </div>
 </div>

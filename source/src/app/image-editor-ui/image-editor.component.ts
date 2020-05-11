@@ -55,7 +55,9 @@ export class ImageEditorComponent implements OnInit {
         private importToolService: ImportToolService,
         private mappingService: TextMappingService
     ) {
-        this.isAdmin = config.get('pixie.isAdmin');
+        if (config.get('pixie.id')) {
+            this.isAdmin = config.get('pixie.profile.isAdmin');
+        }
     }
 
     ngOnInit() {

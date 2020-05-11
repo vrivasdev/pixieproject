@@ -24,6 +24,6 @@
 
         <button class="apply-button" mat-raised-button color="accent" (click)="applyChanges()" [disabled]="!(dirty$ | async)" trans>Apply</button>
     </div>
-
     <floating-object-controls *ngIf="((activeObjId$ | async) || (breakpoints.isMobile$ | async)) && isAdmin"></floating-object-controls>
+
 </ng-container>

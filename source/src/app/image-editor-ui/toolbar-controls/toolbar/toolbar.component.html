@@ -30,8 +30,7 @@
     <div class="left">
         <button mat-button (click)="executeOpenButtonAction()" [class.invisible]="config.get('pixie.ui.toolbar.hideOpenButton')" class="open-button">
             <span class="mat-menu-trigger" [matMenuTriggerFor]="openMenu"></span>
-            <mat-icon svgIcon="photo-library"></mat-icon>
-            <span class="name" trans>Main</span>
+            <mat-icon svgIcon="photo-library"></mat-icon> 
         </button>
         <button mat-button (click)="saveProject()" [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" class="export-button">
             <mat-icon svgIcon="file-download"></mat-icon>
@@ -54,20 +53,22 @@
             <mat-icon svgIcon="add"></mat-icon>
         </button>
     </div>
-    <div class="right" *ngIf="isAdmin" >
-        <button mat-icon-button [disabled]="!(canUndo$ | async)" (click)="history.undo()">
+    <div class="right">
+        <button mat-icon-button [disabled]="!(canUndo$ | async)" (click)="history.undo()" *ngIf="isAdmin" >
             <mat-icon svgIcon="undo"></mat-icon>
         </button>
-        <button mat-icon-button [disabled]="!(canRedo$ | async)" (click)="history.redo()">
+        <button mat-icon-button [disabled]="!(canRedo$ | async)" (click)="history.redo()" *ngIf="isAdmin" >
             <mat-icon svgIcon="redo"></mat-icon>
         </button>
-        <button class="toggle-history-button" mat-icon-button (click)="panels.toggleHistory()">
+        <button class="toggle-history-button" mat-icon-button (click)="panels.toggleHistory()" *ngIf="isAdmin" >
             <mat-icon svgIcon="history"></mat-icon>
         </button>
         <button mat-icon-button (click)="panels.toggleObjects()">
             <mat-icon svgIcon="layers"></mat-icon>
         </button>
-        <button mat-icon-button class="close-button" (click)="closeEditor()" *ngIf="(mode$ | async) === 'overlay' && !config.get('pixie.ui.toolbar.hideCloseButton')">
+        <button mat-icon-button class="close-button" 
+            (click)="closeEditor()" 
+            *ngIf="(mode$ | async) === 'overlay' && !config.get('pixie.ui.toolbar.hideCloseButton') && isAdmin">
             <mat-icon svgIcon="close"></mat-icon>
         </button>
     </div>
@@ -76,7 +77,7 @@
 <mat-menu #openMenu="matMenu" [overlapTrigger]="false">
     <button *ngIf="isAdmin" mat-menu-item (click)="openBackgroundImage()" trans>Background Image</button>
     <button *ngIf="isAdmin" mat-menu-item (click)="openOverlayImage()" trans>Overlay Image</button>
-    <button mat-menu-item (click)="openStateFile()" trans>Open Project File</button>
-    <button *ngIf="hasId" mat-menu-item (click)="markAsPreview()" trans>Mark as Preview</button>
+    <button *ngIf="isAdmin"  mat-menu-item (click)="openStateFile()" trans>Open Project File</button>
+    <button *ngIf="isAdmin " mat-menu-item (click)="markAsPreview()" trans>Mark as Preview</button>
     <button mat-menu-item (click)="goBack()" trans>Return</button>
 </mat-menu>
