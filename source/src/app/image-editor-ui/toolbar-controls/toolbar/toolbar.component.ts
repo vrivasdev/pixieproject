@@ -51,7 +51,7 @@ export class ToolbarComponent implements AfterViewInit {
         private store: Store,
         private importToolService: ImportToolService
     ) {
-        this.isAdmin = config.get('pixie.profile.isAdmin');
+        this.isAdmin = config.get('pixie.isAdmin');
         this.hasId     = config.get('pixie.id') ? true: false;
     }
 

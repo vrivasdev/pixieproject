@@ -79,7 +79,7 @@ export class SavePanelComponent {
             this.saveForm.controls['category'].disable();
         }
         
-        this.isAdmin = this.config.get('pixie.profile.isAdmin');
+        this.isAdmin = this.config.get('pixie.isAdmin');
 
         this.categories$ = this.savePanel.get();
         this.filteredAgents = this.agentCtrl

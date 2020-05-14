@@ -40,7 +40,7 @@ export class ObjectsPanelComponent {
         private config: Settings,
         private active: ActiveObjectService
     ) {
-        this.isAdmin = config.get('pixie.profile.isAdmin');
+        this.isAdmin = config.get('pixie.isAdmin');
     }
 
     public getIcon(object: Object): string {

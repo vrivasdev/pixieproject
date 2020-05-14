@@ -41,7 +41,7 @@
 <script>
     var base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
     var idVal = 684;
-    //var idVal = null;
+    // var idVal = null;
     var state = true;
     var i = setInterval(function() {
        if (window['Pixie'] == null) return;
@@ -55,6 +55,7 @@
             id: 684,
             flyerName: 'test001',
             saveType: 'draft',
+            isAdmin: true,
             profile : {
                 id: "340",
                 First_Name: "Jhony",
@@ -102,8 +103,8 @@
                 mode: 'inline',                
                 showExportPanel: true, 
                 openImageDialog: {
-                     show: (idVal || state)? false: true
-                     // show: true
+                     // show: (idVal || state)? false: true
+                     show: true
                 },
                 toolbar: {
                     //hideOpenButton: true,
@@ -137,7 +138,7 @@
                let idVal = 684;
               if(idVal) {
                 pixie.openMainImage('./assets/white_background.jpg');
-                fetch('./assets/blockobjects.json',                
+                fetch('./assets/frontstate2.json',                
                 {                    
                     method: 'GET',
                     headers: {
