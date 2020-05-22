@@ -59,14 +59,13 @@ export class ExportToolService {
     public getRawJson(data): Array<string> {
         let raw_json =  null;
         let raw_json_back = null;
-        //const base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-        const base = 'http://devven2.avantiway.com/vrivas/myavex.avantiway.com/design/';
+        const host = window.location.protocol + '//' + window.location.hostname;
         const tab = localStorage.getItem('tab');
-        const service = 'getJson';
+        const service = 'design/getJson';
         const type = localStorage.getItem('tab');
         const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
 
-        fetch((globalUrl !== '/') ? `${base}/${service}/${type}` : `${base}${service}/${type}`)
+        fetch((globalUrl !== '/') ? `${host}/${service}/${type}` : `${host}${service}/${type}`)
                     .then(resp => resp.json())
                     .then(json => {
                         if (!localStorage.getItem('tab')) {
@@ -87,9 +86,9 @@ export class ExportToolService {
         let data;
         let raw_json =  null;
         let raw_json_back = null;
-        const base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+        const host = window.location.protocol + '//' + window.location.hostname;
         const tab = localStorage.getItem('tab');
-        const service = 'getJson';
+        const service = 'design/getJson';
         const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
         const otherTab = tab === 'front' ? 'back' : 'front';
         
@@ -98,12 +97,12 @@ export class ExportToolService {
 
         if ( ! data) return;
 
-        localStorage.setItem('isNewDesign', 'true');
+        // localStorage.setItem('isNewDesign', 'true');
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
             this.saveTemplate(data, raw_json_back, templateName, saveType, categoryId, share);
         } else { // if user saves template with tabs change
-            fetch((globalUrl !== '/') ? `${base}/${service}/${otherTab}` : `${base}${service}/${otherTab}`)
+            fetch((globalUrl !== '/') ? `${host}/${service}/${otherTab}` : `${host}${service}/${otherTab}`)
             .then(resp => resp.json())
             .then(json => {
                 if (tab === 'front') {
@@ -161,9 +160,9 @@ export class ExportToolService {
         let data;
         let raw_json =  null;
         let raw_json_back = null;
-        const base = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+        const base = window.location.protocol + '//' + window.location.hostname;
         const tab = localStorage.getItem('tab');
-        const service = 'getJson';
+        const service = 'design/getJson';
         const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
         const otherTab = tab === 'front'? 'back': 'front';
           

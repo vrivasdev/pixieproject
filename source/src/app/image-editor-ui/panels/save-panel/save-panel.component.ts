@@ -94,7 +94,6 @@ export class SavePanelComponent {
 
     public save() {
         const val = this.saveForm.value;
-        
         if (this.id && this.config.get('pixie.isAgent') !== '1') {
             this.exportTool.update(this.id, 
                                    this.agents,
