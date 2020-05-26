@@ -94,15 +94,18 @@ export class SavePanelComponent {
 
     public save() {
         const val = this.saveForm.value;
+        const share = !this.agents.length && this.savePanel.validateEmail(val.agentCtrl)?
+                       [val.agentCtrl] : this.agents;
+        
         if (this.id && this.config.get('pixie.isAgent') !== '1') {
             this.exportTool.update(this.id, 
-                                   this.agents,
+                                   share,
                                    val.category, 
                                    val.group,
                                    val.flyerName ? val.flyerName : this.flyerName,
                                    val.saveType ? val.saveType : this.saveType);
         } else if (!this.id || this.config.get('pixie.isAgent') === '1') {
-            this.exportTool.save(this.agents, 
+            this.exportTool.save(share, 
                                  val.category, 
                                  val.group, 
                                  val.flyerName, 

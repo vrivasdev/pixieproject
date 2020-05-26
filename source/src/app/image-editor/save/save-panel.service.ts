@@ -14,6 +14,10 @@ export class SavePanelService {
         }
     }
 
+    public validateEmail(email: string): boolean {
+        return /\S+@\S+\.\S+/.test(email);
+    }
+
     public getCategory() {
         return from(fetch(
             this.config.get('pixie.getCategories'),
