@@ -220,12 +220,16 @@ export class ExportToolService {
             }
         )
         .then(res => res.json())
-        .catch(error => console.error('Error:', error))
         .then(response => {
-            console.log('Success:', response);
-            localStorage.setItem('active', 'false');
-            window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-        });
+            if (response.code === 404) {
+                document.getElementById('gif-loader').style.display = 'none';
+                alert(response.message);
+            } else {
+                localStorage.setItem('active', 'false');
+                window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 
     public get(id: number): Promise<any> {

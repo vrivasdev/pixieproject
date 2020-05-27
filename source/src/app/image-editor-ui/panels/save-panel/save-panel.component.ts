@@ -79,6 +79,7 @@ export class SavePanelComponent {
         } else {
             this.optSelected = '1'; // draft type as defatult
             this.saveForm.controls['category'].disable();
+            this.selectedOption = "63"; // Select twitter category as default
         }
         
         this.isAdmin = this.config.get('pixie.isAdmin');
