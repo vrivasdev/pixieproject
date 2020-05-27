@@ -19,7 +19,7 @@ export class SavePanelService {
     }
 
     public getCategory() {
-        return from(fetch(
+        /*return from(fetch(
             this.config.get('pixie.getCategories'),
             {
                 method: 'GET',
@@ -30,10 +30,10 @@ export class SavePanelService {
             })
             .then(resp => resp.json())
             .then(json => json.data)
-        );
-        /*return from(fetch('assets/response.json')
+        );*/
+        return from(fetch('assets/response.json')
             .then(resp => resp.json())
             .then(json => json.data)
-        );*/
+        );
     }
 }

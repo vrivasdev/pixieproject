@@ -32,6 +32,7 @@ export class SavePanelComponent {
     private id: number;
     private flyerName: string;
     private saveType: string;
+    private selectedOption: string;
     public active;
     public categories$: Observable<Categories[]>;
     public visible = true;
@@ -70,6 +71,7 @@ export class SavePanelComponent {
 
             if (config.get('pixie.saveType') === 'completed') {
                 this.optSelected = '0';
+                this.selectedOption = config.get('pixie.categoryId');
             } else {
                 this.optSelected = '1';
                 this.saveForm.controls['category'].disable();

@@ -26,7 +26,7 @@
     </mat-radio-group>
     <div *ngIf="isAdmin">
         <mat-label>Category</mat-label>
-        <mat-select formControlName="category" [(value)]="selected">
+        <mat-select formControlName="category" [(ngModel)]="selectedOption">
             <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
                 <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
                     {{subcategory.name}}
