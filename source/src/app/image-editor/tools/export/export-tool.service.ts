@@ -94,10 +94,8 @@ export class ExportToolService {
         
         data = this.getJsonState();
         this.watermark.remove();
-
+        
         if ( ! data) return;
-
-        // localStorage.setItem('isNewDesign', 'true');
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
             this.saveTemplate(data, raw_json_back, templateName, saveType, categoryId, share);
@@ -130,12 +128,12 @@ export class ExportToolService {
                 'parent_template': this.config.get('pixie.isAgent') === '1'? this.config.get('pixie.id') : null 
             };
             const temp = (this.config.get('pixie.isAgent') === '1') ? '' : 'template_';
+            const profile = this.config.get('pixie.profileView');
     
             params[`${temp}name`] = templateName;
-            params[`${temp}type`] = '3';
-
+            
             fetch(
-                this.config.get('pixie.saveUrl'),
+                `${this.config.get('pixie.saveUrl')}/${profile}`,
                 {
                     method: 'POST',
                     cache: 'no-cache',
@@ -197,7 +195,20 @@ export class ExportToolService {
         }
     }
 
-    private updateService(id: number, raw_json: string, raw_json_back: string, templateName: string, category: number, saveType: number, share: string[]) {
+    private updateService(id: number, raw_json: string, raw_json_back: string, template_name: string, category_id: number, draft: number, share: string[]) {
+        
+        const data = {
+            id,
+            raw_json,
+            raw_json_back,
+            template_name,
+            'template_type': '3',
+            draft,
+            'svg': this.getSVG()};
+
+        if (category_id) data['category_id'] = category_id;
+        if (share.length) data['share'] = share;
+        
         fetch(
             this.config.get('pixie.updateUrl'),
             {
@@ -206,16 +217,7 @@ export class ExportToolService {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                                        'id': id,
-                                        'raw_json': raw_json,
-                                        'raw_json_back': raw_json_back,
-                                        'template_name': templateName,
-                                        'template_type': '3',
-                                        'category_id': category,
-                                        'draft': saveType,
-                                        'svg': this.getSVG(),
-                                        'share': share}),
+                body: JSON.stringify(data),
                 mode: 'no-cors'
             }
         )
@@ -226,6 +228,7 @@ export class ExportToolService {
                 alert(response.message);
             } else {
                 localStorage.setItem('active', 'false');
+                console.log('redirect')
                 window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
             }
         })
@@ -236,7 +239,7 @@ export class ExportToolService {
         return new Promise((resolve, reject) => {
             if (this.config.get('pixie.getUrl')) {
                 fetch(
-                    this.config.get('pixie.getUrl') + '/' + id,
+                    `${this.config.get('pixie.getUrl')}/${id}/${this.config.get('pixie.profileType')}`,
                     {
                         method: 'GET',
                         headers: {

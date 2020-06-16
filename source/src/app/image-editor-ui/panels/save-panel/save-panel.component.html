@@ -8,9 +8,9 @@
             formControlName="flyerName" 
             value="{{flyerName}}"
             >
-        <mat-error *ngIf="flyerNameCtrl.invalid">
-            {{getErrorMessageName()}}
-        </mat-error>
+        <div *ngIf="submitted && fControls.flyerName.errors" class="invalid-feedback">
+            <div *ngIf="fControls.flyerName.errors.required">You must enter a value</div>
+        </div>
     </div>
     <mat-label>Save as</mat-label>
     <mat-radio-group 
@@ -25,15 +25,18 @@
         </mat-radio-button>
     </mat-radio-group>
     <div *ngIf="isAdmin">
-        <mat-label>Category</mat-label>
-        <mat-select formControlName="category" [(ngModel)]="selectedOption">
-            <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
-                <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
-                    {{subcategory.name}}
-                </mat-option>
-            </mat-optgroup>
-        </mat-select>
         <div *ngIf="optSelected==='0'">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category" [(ngModel)]="selectedOption" required>
+                <mat-optgroup *ngFor="let category of (categories$ | async)" [label]="category.name">
+                    <mat-option *ngFor="let subcategory of category.subCategories" value="{{subcategory.id}}">
+                        {{subcategory.name}}
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+            <div *ngIf="submitted && fControls.category.errors" class="invalid-feedback">
+                <div *ngIf="fControls.category.errors.required">You must enter a value</div>
+            </div>
             <mat-label>Assign to</mat-label>
             <mat-form-field class="chip-list">
                 <mat-chip-list #chipList>

@@ -43,18 +43,11 @@ export class SavePanelComponent {
     public filteredAgents: Observable<string[]>;
     public agents: string[] = [];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     public allAgents: string[] = ['everyone', 'rrondon@avantiway.com']
-    public flyerNameCtrl =  new FormControl('', [Validators.required])
-    public categoryCtrl = new FormControl();
-    public saveForm = new FormGroup({
-        flyerName: this.flyerNameCtrl,
-        saveType: new FormControl(),
-        category: this.categoryCtrl,
-        group: new FormControl(),
-        agentCtrl: new FormControl()
-    });
     public types = ['completed', 'draft'];
     public optSelected: string;
     public isAdmin: boolean;
+    public submitted = false;
+    public saveForm: FormGroup;
 
     @ViewChild('agentInput') agentInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -64,10 +57,25 @@ export class SavePanelComponent {
         private exportTool: ExportToolService,
         private savePanel: SavePanelService
     ) {
+        let group: any = {
+            flyerName: new FormControl('', [Validators.required]),
+            saveType: new FormControl(),
+            group: new FormControl(),
+            agentCtrl: new FormControl()
+        };
+
+        if (this.config.get('pixie.isAgent') !== '1') {
+            group['category'] =  new FormControl('', [Validators.required]);
+        }
+
+        this.saveForm = new FormGroup(group);
+
         if (config.get('pixie.id')) {
             this.id = config.get('pixie.id');
             this.flyerName = config.get('pixie.flyerName');
             this.saveType = config.get('pixie.saveType');
+
+            this.saveForm.controls.flyerName.setValue(this.flyerName);
 
             if (config.get('pixie.saveType') === 'completed') {
                 this.optSelected = '0';
@@ -79,7 +87,7 @@ export class SavePanelComponent {
         } else {
             this.optSelected = '1'; // draft type as defatult
             this.saveForm.controls['category'].disable();
-            this.selectedOption = "63"; // Select twitter category as default
+            //this.selectedOption = "63"; // Select twitter category as default
         }
         
         this.isAdmin = this.config.get('pixie.isAdmin');
@@ -99,6 +107,12 @@ export class SavePanelComponent {
         const val = this.saveForm.value;
         const share = !this.agents.length && this.savePanel.validateEmail(val.agentCtrl)?
                        [val.agentCtrl] : this.agents;
+
+        this.submitted = true;
+
+        if (this.saveForm.invalid) {
+            return;
+        }
         
         if (this.id && this.config.get('pixie.isAgent') !== '1') {
             this.exportTool.update(this.id, 
@@ -166,13 +180,8 @@ export class SavePanelComponent {
         }
     }
 
-    public getErrorMessageName() {
-        if (this.flyerNameCtrl.hasError('required')) {
-            return 'You must enter a value';
-        } else {
-            if (this.flyerNameCtrl.hasError('flyerName')) {
-                return 'Not a valid flyer name';
-            }
-        }
+    get fControls() {
+        console.log(this.saveForm.controls);
+        return this.saveForm.controls; 
     }
 }
