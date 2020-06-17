@@ -27,10 +27,22 @@
 
 <ng-template #desktopToolbar>
     <div class="left">
-        <button mat-button (click)="executeOpenButtonAction()" [class.invisible]="config.get('pixie.ui.toolbar.hideOpenButton')" class="open-button">
+        <button 
+            *ngIf="profileView === 'admin'" 
+            mat-button (click)="executeOpenButtonAction()" 
+            [class.invisible]="config.get('pixie.ui.toolbar.hideOpenButton')" 
+            class="open-button">
             <span class="mat-menu-trigger" [matMenuTriggerFor]="openMenu"></span>
             <mat-icon svgIcon="photo-library"></mat-icon> 
             <span class="name" trans>Main</span>
+        </button>
+        <button 
+            *ngIf="profileView === 'agent'"
+            mat-button (click)="goBack()" 
+            [class.invisible]="config.get('pixie.ui.toolbar.hideOpenButton')" 
+            class="open-button"
+        >
+            <span class="name" trans>Return</span>
         </button>
         <button mat-button (click)="saveProject()" [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" class="export-button">
             <mat-icon svgIcon="file-download"></mat-icon>

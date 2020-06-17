@@ -37,6 +37,7 @@ export class ToolbarComponent implements AfterViewInit {
     public compactMode = new BehaviorSubject(false);
     private isAdmin: boolean;
     private hasId: boolean;
+    public profileView: string;
 
     constructor(
         public history: HistoryToolService,
@@ -52,7 +53,8 @@ export class ToolbarComponent implements AfterViewInit {
         private importToolService: ImportToolService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
-        this.hasId     = config.get('pixie.id') ? true: false;
+        this.hasId = config.get('pixie.id') ? true: false;
+        this.profileView = config.get('pixie.profileView');
     }
 
     ngAfterViewInit() {
