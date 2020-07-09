@@ -16,6 +16,7 @@ import { ObjectName } from 'app/image-editor-ui/state/objects-panel/objects-pane
 import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 import {Settings} from 'common/core/config/settings.service';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
+import { HistoryToolService } from 'app/image-editor/history/history-tool.service';
 
 @Component({
     selector: 'objects-panel',
@@ -30,7 +31,7 @@ export class ObjectsPanelComponent {
     @Select(ObjectPanelState.blockedObject) blockedObject$: Observable<ObjectsPanelStateModel>;
 
     public isAdmin: boolean;
-        
+
     constructor(
         public objects: ObjectsService,
         public panelRef: OverlayPanelRef,
@@ -38,8 +39,10 @@ export class ObjectsPanelComponent {
         private canvasState: CanvasStateService,
         private store: Store,
         private config: Settings,
-        private active: ActiveObjectService
+        private active: ActiveObjectService,
+        private history: HistoryToolService,
     ) {
+        
         this.isAdmin = config.get('pixie.isAdmin');
     }
 
@@ -52,6 +55,19 @@ export class ObjectsPanelComponent {
         if ( ! this.store.selectSnapshot(EditorState.dirty)) {
             this.store.dispatch(new OpenPanel(DrawerName.OBJECT_SETTINGS));
         }
+    }
+
+    public openInput(object: Object) {
+        this.objects.setRename(object.data.id, true);
+    }
+
+    public isRename(object: Object) {
+        return this.objects.isRename(object.data.id);
+    }
+
+    public updateName(object: Object, event: Event) {
+        this.objects.setName(object.data.id, event.target['value']);
+        this.objects.setRename(object.data.id, false);
     }
 
     public blockSelectedObject(object: Object, type: string) {
@@ -106,7 +122,7 @@ export class ObjectsPanelComponent {
     }
 
     public getObjectDisplayName(object: Object): string {
-        const name = object.name;
+        const name = 'rename' in object ? object['rename'] : object.name
         return name ? name.replace(/([A-Z])/g, ' $1') : '';
     }
 

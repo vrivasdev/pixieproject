@@ -16,12 +16,16 @@
     >
         <div class="floating-panel-item"
              (click)="selectObject(object)"
+             (dblclick)="openInput(object)"
              [class.disabled]="shouldDisableObject(object)"
              [class.active]="(activeObjId$ | async) === object.data.id"
              [attr.data-id]="object.data.id"
         >
-            <mat-icon [svgIcon]="getIcon(object)" class="list-icon"></mat-icon>
-            <div class="name" trans>{{getObjectDisplayName(object)}}</div>
+            <!--<mat-icon [svgIcon]="getIcon(object)" class="list-icon"></mat-icon>-->
+            <div class="name" trans *ngIf="!isRename(object)">{{getObjectDisplayName(object)}}</div>
+            <div class="name" trans *ngIf="isRename(object)">
+              <input type="text" (keydown.enter)="updateName(object, $event)">
+            </div>
             <div class="drag-preview" *cdkDragPreview></div>
             <div class="drag-placeholder" *cdkDragPlaceholder>
                 <div class="placeholder-inner"></div>

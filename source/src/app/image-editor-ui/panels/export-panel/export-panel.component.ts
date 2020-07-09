@@ -18,7 +18,7 @@ export class ExportPanelComponent implements OnInit {
         format: new FormControl(this.config.get('pixie.tools.export.defaultFormat')),
         quality: new FormControl(this.config.get('pixie.tools.export.defaultQuality')),
     });
-
+    private loader = document.getElementById('gif-loader').style;
     constructor(
         private config: Settings,
         private exportTool: ExportToolService,
@@ -40,6 +40,9 @@ export class ExportPanelComponent implements OnInit {
 
     public export() {
         const val = this.exportForm.value;
-        this.exportTool.export(val.name, val.format, val.quality);
+        
+        this.loader.display = 'block';  
+        this.exportTool
+            .export(val.name, val.format, val.quality);
     }
 }
