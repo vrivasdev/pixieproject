@@ -27,6 +27,7 @@ import { ObjectPanelItem } from './objectPanel-item.interface';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
 import { MappingState } from '../state/mapping-state';
 import { TextMappingService } from '../tools/mapping/text-mapping.service';
+import { Settings } from 'common/core/config/settings.service';
 
 @Injectable()
 export class HistoryToolService {
@@ -39,7 +40,8 @@ export class HistoryToolService {
         private textTool: TextToolService,
         private store: Store,
         private actions$: Actions,
-        private mappingService: TextMappingService
+        private mappingService: TextMappingService,
+        public config: Settings
     ) {
         this.actions$.pipe(ofActionSuccessful(ContentLoaded), take(1))
             .subscribe(() => {
@@ -125,7 +127,8 @@ export class HistoryToolService {
                this.mappingService
                    .mapProfileVariables(canvas.objects)
                    .then(objects => {
-                        canvas.objects = objects;
+                        if (!this.config.get('pixie.isAdmin')) canvas.objects = objects;
+
                         this.canvas.fabric().loadFromJSON(canvas, () => {
                             this.canvas.zoom.set(1);
                             // resize canvas if needed
