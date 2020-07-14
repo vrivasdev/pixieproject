@@ -43,6 +43,7 @@
                   <ng-template #tColors>
                       <img class="block-open"  [src]="getImageUrl('icons/individual/colors.svg')" (click)="blockSelectedObject(object, 'color')" matTooltip="Lock Color">
                 </ng-template>
+                
                 <ng-template [ngIf]="(blockedObject$ | async)[object.data.id.trim()+'t'] === 'textsize'" [ngIfElse]="tTextsize" >
                   <img class="block-open"  [src]="getImageUrl('icons/individual/block-textsize.svg')" (click)="blockSelectedObject(object, 'textsize')" matTooltip="Unlock Color">
                 </ng-template>

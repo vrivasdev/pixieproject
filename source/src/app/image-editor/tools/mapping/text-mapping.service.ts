@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Settings } from 'common/core/config/settings.service';
+import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
+import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 
 @Injectable()
 export class TextMappingService {
@@ -46,5 +48,28 @@ export class TextMappingService {
             obj.set('tmpText', text);
             obj.set('text', newText);
         }
+    }
+
+    public mapProfileVariables(textObjects: any): any {
+        return new Promise(resolve => {
+            const newObjects = [];
+            textObjects.forEach(object => {
+                if (object.type === 'i-text') {
+                    let oldText = object.text;
+                    if (oldText) {
+                        this.getVarContent(oldText,
+                                        this.filterWords(oldText)
+                                            .map(value => value.slice(1, -1)))
+                                            .then(text =>{
+                                                newObjects.push({...object, text})
+                                            });
+                        
+                    }
+                } else {
+                    newObjects.push({...object})
+                }
+            });
+            resolve(newObjects);
+        });   
     }
 }

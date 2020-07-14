@@ -26,6 +26,7 @@ import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/object
 import { ObjectPanelItem } from './objectPanel-item.interface';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
 import { MappingState } from '../state/mapping-state';
+import { TextMappingService } from '../tools/mapping/text-mapping.service';
 
 @Injectable()
 export class HistoryToolService {
@@ -38,6 +39,7 @@ export class HistoryToolService {
         private textTool: TextToolService,
         private store: Store,
         private actions$: Actions,
+        private mappingService: TextMappingService
     ) {
         this.actions$.pipe(ofActionSuccessful(ContentLoaded), take(1))
             .subscribe(() => {
@@ -118,36 +120,40 @@ export class HistoryToolService {
            this.store.dispatch(new UpdatePointerById(item.id));
 
            this.googleFonts.loadIntoDom(item.editor.fonts).then(() => {
-               this.canvas.fabric().loadFromJSON(item.canvas, () => {
-                   this.canvas.zoom.set(1);
-
-                   // resize canvas if needed
-                   if (item.canvasWidth && item.canvasHeight) {
-                       this.canvas.resize(item.canvasWidth, item.canvasHeight);
-                   }
-
-                   // init or remove canvas frame
-                   if (item.editor.frame) {
-                       this.frameTool.add(item.editor.frame.name);
-                   } else {
-                       this.frameTool.remove();
-                   }
-
-                   // prepare fabric.js and canvas
-                   this.canvas.render();
-                   this.canvas.fabric().calcOffset();
-                   this.canvas.state.loading = false;
-                   this.canvas.zoom.fitToScreen();
-
-                   this.objects.syncObjects();
-                   this.store.dispatch(new HistoryChanged());
-                   resolve();
-               }, obj => {
-                   // reapply any filters object used to have
-                   if (obj.hasOwnProperty('applyFilters')) {
-                       (obj as Image).applyFilters();
-                   }
-               });
+               const canvas: any = item.canvas;
+               // Get map variables and transform them into profile data
+               this.mappingService
+                   .mapProfileVariables(canvas.objects)
+                   .then(objects => {
+                        canvas.objects = objects;
+                        this.canvas.fabric().loadFromJSON(canvas, () => {
+                            this.canvas.zoom.set(1);
+                            // resize canvas if needed
+                            if (item.canvasWidth && item.canvasHeight) {
+                                this.canvas.resize(item.canvasWidth, item.canvasHeight);
+                            }
+                            // init or remove canvas frame
+                            if (item.editor.frame) {
+                                this.frameTool.add(item.editor.frame.name);
+                            } else {
+                                this.frameTool.remove();
+                            }
+                            // prepare fabric.js and canvas
+                            this.canvas.render();
+                            this.canvas.fabric().calcOffset();
+                            this.canvas.state.loading = false;
+                            this.canvas.zoom.fitToScreen();
+         
+                            this.objects.syncObjects();
+                            this.store.dispatch(new HistoryChanged());
+                            resolve();
+                        }, obj => {
+                            // reapply any filters object used to have
+                            if (obj.hasOwnProperty('applyFilters')) {
+                                (obj as Image).applyFilters();
+                            }
+                        });   
+                    });
            });
        });
     }

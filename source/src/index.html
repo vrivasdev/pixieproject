@@ -58,7 +58,7 @@
             categoryId: "53",
             saveType: 'completed',
             isAdmin: true,
-            profileView: 'agent',
+            profileView: 'admin',
             profile : {
                 id: "340",
                 First_Name: "Jhony",
@@ -107,7 +107,7 @@
                 showExportPanel: true, 
                 openImageDialog: {
                      // show: (idVal || state)? false: true
-                     show: true
+                     show: false
                 },
                 toolbar: {
                     //hideOpenButton: true,
@@ -141,7 +141,7 @@
                let idVal = 684;
               if(idVal) {
                 pixie.openMainImage('./assets/white_background.jpg');
-                fetch('./assets/frontstate2.json',                
+                fetch('./assets/blockobjects.json',                
                 {                    
                     method: 'GET',
                     headers: {

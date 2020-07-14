@@ -22,7 +22,7 @@ export class ExportToolService {
         private config: Settings,
         private http: HttpClient,
         private watermark: WatermarkToolService,
-        private toast: Toast,
+        private toast: Toast
     ) {}
 
     public getDefault(key: 'name'|'format'|'quality') {
@@ -32,27 +32,37 @@ export class ExportToolService {
     /**
      * Export current editor state in specified format.
      */
-    public export(name?: string, format?: ValidFormats, quality?: number) {
-        if ( ! name) name = this.getDefault('name');
-        if ( ! format) format = this.getDefault('format');
-        if ( ! quality) quality = this.getDefault('quality');
+    public export(name?: string, format?: ValidFormats, quality?: number): Promise<Boolean> {
+        return new Promise((resolve, reject) => {
+            try {
+                if ( ! name) name = this.getDefault('name');
+                if ( ! format) format = this.getDefault('format');
+                if ( ! quality) quality = this.getDefault('quality');
+                
+                const filename = name + '.' + format; 
+                let data;
+                
+                this.applyWaterMark();
 
-        const filename = name + '.' + format; let data;
-        
-        this.applyWaterMark();
+                if (format === 'json') {
+                    data = this.getJsonState();
+                } else {
+                    data = this.getDataUrl(name, format, quality);
+                }
 
-        if (format === 'json') {
-            data = this.getJsonState();
-        } else {
-            data = this.getDataUrl(name, format, quality);
-        }
+                this.watermark.remove();
+                
+                resolve(true);
 
-        this.watermark.remove();
+                if ( ! data) return;
 
-        if ( ! data) return;
-
-        this.getCanvasBlob(format, data).then(blob => {
-            saveAs(blob, filename);
+                this.getCanvasBlob(format, data).then(blob => {
+                    saveAs(blob, filename);
+                });
+            } catch(error) {
+                console.log(`Export tool service error:${error.message}`);
+                reject(false);
+            }
         });
     }
 
@@ -94,7 +104,10 @@ export class ExportToolService {
         
         data = this.getJsonState();
         this.watermark.remove();
-        
+
+        console.log(data);
+        debugger;
+
         if ( ! data) return;
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
@@ -166,6 +179,13 @@ export class ExportToolService {
           
         data = this.getJsonState();
         this.watermark.remove();
+
+        console.log('___________ get json state ____________');
+        console.log(this.canvas.fabric().toJSON());
+        console.log('__________ get objects _______________');
+        console.log(this.canvas.fabric().getObjects());
+        console.log('_______________________');
+        debugger;
         
         if ( ! data) return;
 
@@ -265,7 +285,6 @@ export class ExportToolService {
                 data = data.replace(/data:image\/([a-z]*)?;base64,/, '');
                 blob = (b64toBlob as any)(data, contentType);
             }
-
             resolve(blob);
         });
     }
@@ -304,6 +323,7 @@ export class ExportToolService {
                 error : (e) => console.log( 'Error:', e),
                 success : (response) => {                    
                     saveAs(`data:image/jpeg;base64, ${response.data}`, `${name}.${format}`);
+                    document.getElementById('gif-loader').style.display = 'none';
                 }
             });
         } catch (e) {

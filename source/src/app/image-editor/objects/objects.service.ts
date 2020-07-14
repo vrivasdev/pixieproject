@@ -38,6 +38,42 @@ export class ObjectsService {
         return this.objects.find(obj => obj.data.id === id);
     }
 
+    public setName(id: string, name: string) {
+        const updatedObjects: Object[] = [];
+
+        this.objects.forEach(obj => {
+            if (obj.data.id === id ){
+                this.canvas.fabric().remove(obj);
+                obj['rename'] = name;
+                // obj['name'] = name;
+                // this.canvas.fabric().add(obj);
+                /*this.canvas.fabric().setActiveObject(obj);
+                this.canvas.render();*/
+            }
+            updatedObjects.push(obj);
+        });
+
+        this.objects = updatedObjects;
+    }
+
+    public isRename(id: string): Boolean {
+        const obj = this.objects.find(obj => (obj.data.id === id) && obj['isRename']); 
+        return obj ? obj['isRename'] : false; 
+    }
+
+    public setRename(id: string, isRename: Boolean) {
+        const updatedObjects: Object[] = [];
+
+        this.objects.forEach(obj => {
+            if (obj.data.id === id ){
+                obj['isRename'] = isRename;
+            }
+            updatedObjects.push(obj);
+        });
+        
+        this.objects = updatedObjects;
+    }
+
     public isActive(object: Object): boolean {
         return this.activeObject.getId() === object.data.id;
     }
