@@ -28,14 +28,14 @@ export class TextMappingService {
                 } else {
                     hasUpperCase = false;
                 }
-
                 if (mlsVars.includes(index) && profile['mls'].length > 0 ) {// MLS: only the first mls
                     variables = this.mapVariables(profile['mls']); // one or more mls
                     row = variables[0][index];
                 } else { // Profile: get row
                     row = profile[index];
                 }
-                newText = newText.split(`[${index}]`).join(row);
+                // if text has parenthesis convert it into uppercase
+                newText = newText.split(`[${index}]`).join(hasUpperCase? row.toUpperCase() : row);
             });
             resolve(newText);
         });
