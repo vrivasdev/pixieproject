@@ -17,7 +17,18 @@ export class TextMappingService {
             let variables;
             let row;
             let newText = text;
+            let hasUpperCase = false;
+
             vars.forEach(index => {
+                if (this.hasUppercase(index)) {
+                    index = index.slice(1,-1);
+                    hasUpperCase = true;
+                    newText = newText.replace('(','')
+                                     .replace(')','');
+                } else {
+                    hasUpperCase = false;
+                }
+
                 if (mlsVars.includes(index) && profile['mls'].length > 0 ) {// MLS: only the first mls
                     variables = this.mapVariables(profile['mls']); // one or more mls
                     row = variables[0][index];
@@ -36,8 +47,13 @@ export class TextMappingService {
         return merged;
     }
 
+    private hasUppercase(text: string): boolean {
+        return  /^(\()(\w+)(\))$/g.test(text);
+    }
+
     public filterWords(text: string): Array<string> {
-        return text.match(/\[(\w+)\]/g) ? text.match(/\[(\w+)\]/g) : [];
+        const pattern = /\[(\()?(\w+)(\))?\]/g;
+        return text.match(pattern) ? text.match(pattern) : [];
     }
 
     public toggleText(obj: any, text: string, newText: string): void {
@@ -58,12 +74,9 @@ export class TextMappingService {
                     let oldText = object.text;
                     if (oldText) {
                         this.getVarContent(oldText,
-                                        this.filterWords(oldText)
-                                            .map(value => value.slice(1, -1)))
-                                            .then(text =>{
-                                                newObjects.push({...object, text})
-                                            });
-                        
+                                           this.filterWords(oldText)
+                                               .map(value => value.slice(1, -1)))
+                                               .then(text => newObjects.push({...object, text}));
                     }
                 } else {
                     newObjects.push({...object})
