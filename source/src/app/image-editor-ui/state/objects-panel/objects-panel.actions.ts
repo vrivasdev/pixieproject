@@ -9,4 +9,4 @@ export class BlockObject {
 export class AddObjectPanelItem {
     public static readonly type = '[Object Panel] Add Item';
     constructor(public item: ObjectPanelItem) {}
-  }
+}

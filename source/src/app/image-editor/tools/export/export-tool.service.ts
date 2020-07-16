@@ -105,9 +105,6 @@ export class ExportToolService {
         data = this.getJsonState();
         this.watermark.remove();
 
-        console.log(data);
-        debugger;
-
         if ( ! data) return;
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
@@ -179,13 +176,6 @@ export class ExportToolService {
           
         data = this.getJsonState();
         this.watermark.remove();
-
-        console.log('___________ get json state ____________');
-        console.log(this.canvas.fabric().toJSON());
-        console.log('__________ get objects _______________');
-        console.log(this.canvas.fabric().getObjects());
-        console.log('_______________________');
-        debugger;
         
         if ( ! data) return;
 

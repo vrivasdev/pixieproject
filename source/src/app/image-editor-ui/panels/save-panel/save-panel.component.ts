@@ -107,7 +107,6 @@ export class SavePanelComponent {
         const val = this.saveForm.value;
         const share = !this.agents.length && this.savePanel.validateEmail(val.agentCtrl)?
                        [val.agentCtrl] : this.agents;
-
         this.submitted = true;
 
         if (this.saveForm.invalid) {

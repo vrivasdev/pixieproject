@@ -28,6 +28,7 @@ import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-pan
 import { MappingState } from '../state/mapping-state';
 import { TextMappingService } from '../tools/mapping/text-mapping.service';
 import { Settings } from 'common/core/config/settings.service';
+import { SetMapping } from '../state/mapping-state-actions';
 
 @Injectable()
 export class HistoryToolService {
@@ -83,6 +84,10 @@ export class HistoryToolService {
         this.store.dispatch(new BlockObject(object.id, object.objectId, object.state, 'max' in object ? object.max : null ));
     }
 
+    public addMapping(object: any) {
+        this.store.dispatch(new SetMapping(object.objectId, object.type, object.field, object.map));
+    }
+
     public addFromJson(json: string|SerializedCanvas) {
         const initial = !this.store.selectSnapshot(HistoryState.items).length,
             name = initial ? HistoryNames.INITIAL : HistoryNames.LOADED_STATE;
@@ -93,6 +98,10 @@ export class HistoryToolService {
 
     public addFromJsonObjectPanel(json: string) {
         JSON.parse(json).objectsPanel.forEach(object => this.addObjectPanel(object));
+    }
+
+    public addFromJsonMapping(json: string) {
+        JSON.parse(json).mapping.forEach(object => this.addMapping(object));
     }
 
     public getCurrentCanvasState(): SerializedCanvas {
@@ -163,7 +172,7 @@ export class HistoryToolService {
 
     private createHistoryItem(name: string, icon: string|null = null, state?: SerializedCanvas): HistoryItem {
         if ( ! state) state = this.getCurrentCanvasState();
-
+        debugger;
         return Object.assign(state, {
             name: name,
             id: randomString(15),

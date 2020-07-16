@@ -3,9 +3,10 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { SetMapping } from './mapping-state-actions';
 import { Map } from './map.enum';
 
-interface MappingStateModel {
+export interface MappingStateModel {
     objects: [{'objectId': String, 'type': MappingType, 'field': String, 'map': Map}];
 }
+
 
 @State({
     name: 'mapping',

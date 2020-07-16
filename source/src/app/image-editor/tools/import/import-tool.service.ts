@@ -105,6 +105,12 @@ export class ImportToolService {
         });
     }
 
+    public openStateMappingFile(data: string): Promise<any> {
+        return this.resetEditor().then(() => {
+            return this.history.addFromJsonMapping(data);
+        });
+    }
+
     public resetEditor(params: {preserveHistory?: boolean} = {}): Promise<any> {
         // reset UI
         this.canvas.fabric().clear();
