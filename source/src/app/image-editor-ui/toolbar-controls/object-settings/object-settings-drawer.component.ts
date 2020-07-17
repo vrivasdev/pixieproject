@@ -66,7 +66,7 @@ export class ObjectSettingsDrawerComponent implements OnInit, OnDestroy {
     public openPanel(name: string) {
         this.store.dispatch(new OpenObjectSettingsPanel(name));
     }
-
+    
     public imageUpdate() {
         this.importTool.openUploadDialog().then(obj => {
             let active;

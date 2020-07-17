@@ -7,7 +7,6 @@ export interface MappingStateModel {
     objects: [{'objectId': String, 'type': MappingType, 'field': String, 'map': Map}];
 }
 
-
 @State({
     name: 'mapping',
     defaults: {

@@ -172,7 +172,6 @@ export class HistoryToolService {
 
     private createHistoryItem(name: string, icon: string|null = null, state?: SerializedCanvas): HistoryItem {
         if ( ! state) state = this.getCurrentCanvasState();
-        debugger;
         return Object.assign(state, {
             name: name,
             id: randomString(15),

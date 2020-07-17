@@ -22,6 +22,7 @@ import { ObjectPanelState } from './state/objects-panel/objects-panel.state';
 import { ImportToolService } from 'app/image-editor/tools/import/import-tool.service';
 import {delay} from 'rxjs/operators';
 import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
+import { MappingState } from 'app/image-editor/state/mapping-state';
 
 @Component({
     selector: 'image-editor',
@@ -192,5 +193,19 @@ export class ImageEditorComponent implements OnInit {
                 }
             }).catch(error => console.log('Error:', error));
         }
-      }
+    }
+
+    @HostListener('dblclick', ['$event.target'])
+    doubleClick(event: MouseEvent) {
+        const active: any = this.activeObject.get();
+        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects); 
+        if (active.type === 'image' && 
+            mappedObjects.some(object => object.objectId === active.data.id)) {
+                this.importToolService
+                    .openUploadDialog()
+                    .then(obj => {
+                        console.log("Open up modal");
+                });
+        }
+    }
 }
