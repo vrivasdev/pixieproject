@@ -136,6 +136,7 @@ export class HistoryToolService {
                this.mappingService
                    .mapProfileVariables(canvas.objects)
                    .then(objects => {
+                       
                         if (!this.config.get('pixie.isAdmin')) canvas.objects = objects;
 
                         this.canvas.fabric().loadFromJSON(canvas, () => {

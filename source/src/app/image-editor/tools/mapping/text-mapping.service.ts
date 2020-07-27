@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { Settings } from 'common/core/config/settings.service';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 import { CanvasService } from 'app/image-editor/canvas/canvas.service';
+import { Store } from '@ngxs/store';
+import { MappingState } from 'app/image-editor/state/mapping-state';
 
 @Injectable()
 export class TextMappingService {
+    private 
     constructor(
-        private config: Settings
+        private config: Settings,
+        private store: Store
     ) {}
 
     public getVarContent(text: string, vars: Array<string>): Promise<any> {
@@ -78,11 +82,35 @@ export class TextMappingService {
                                                .map(value => value.slice(1, -1)))
                                                .then(text => newObjects.push({...object, text}));
                     }
-                } else {
-                    newObjects.push({...object})
+                }
+                else if(object.type === 'image'){
+                    const objects = this.store.selectSnapshot(MappingState.getMappingObjects);
+                    const found: any = objects.filter(obj => obj.objectId === object.data.id);
+                    const base = `${window.location.protocol}//${window.location.hostname}`;
+                    const img = this.config.get('pixie.profile.Image');
+
+                    if (found.length && img) {
+                        newObjects.push({...object, 
+                                         src: `${base}/${img}`});
+                    } else {
+                        newObjects.push({...object});
+                    }
+                }
+                else {
+                    newObjects.push({...object});
                 }
             });
+            debugger;
             resolve(newObjects);
         });   
     }
+
+    public getImageOrFallback(path, fallback) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.src = path;
+            img.onload = () => resolve(path);
+            img.onerror = () => resolve(fallback);
+        });
+    };
 }

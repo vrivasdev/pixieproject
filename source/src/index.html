@@ -61,12 +61,16 @@
             profileView: 'admin',
             profile : {
                 id: "340",
-                First_Name: "Jhony",
-                Last_Name: "Ferreira Marques",
-                Phone_Number: "+582123335566",
+                Cell_Number: "0416-6123164",
+                Company_Email: "jhonyfm@avantiway.com",
                 Email: "jhonyfm@gmail.com",
-                Image: "img/profile/user/340/img_agent_340.png",
-                isAdmin: false,
+                First_Name: "Jhony",
+                Image: "img/profile/user/340/img_a,gent_340.jpg",
+                Last_Name: "Ferreira Marques",
+                Phone_Number: "",
+                id: "340",
+                isAdmin: true,
+                isAgent: false,
                 mls: [
                     [{baths: '4'},
                      {street_number: "1645", 
@@ -131,44 +135,48 @@
                 },
                 crop: {
                     cropzone: {
-                        //selectable: false,
-                        //hasControls: false,
-                        //hasBorders: false,
+                        selectable: true,
+                        hasControls: true,
+                        hasBorders: true,
                     }
                 }
             },
             onLoad: function() {
-               let idVal = 684;
-              if(idVal) {
-                pixie.openMainImage('./assets/white_background.jpg');
-                fetch('./assets/blockobjects.json',                
-                {                    
-                    method: 'GET',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    mode: 'no-cors'
-                })
-                .then(resp => resp.json())
-                .then(data => {                                
-                    pixie.getTool('import').openStateObjectPanelFile(JSON.stringify({objectsPanel:data.objectsPanel}));
-                    delete data.objectsPanel;
-                    pixie.getTool('import').openStateFile(JSON.stringify(data));
-                })
-                .catch(error => console.log('Error:', error));
-                //.then(data => {console.log(JSON.stringify(data))})
-              }
-              else if(state) {
-                pixie.openMainImage('./assets/white_background.jpg')
-                fetch('./assets/frontstate2.json')
-                    .then(resp => resp.json())
-                    .then(frontstate => {
-                        console.log('frontState:', frontstate)
-                        pixie.getTool('import').openStateFile(JSON.stringify(frontstate))
+                let idVal = 684;
+                if(idVal) {
+                    pixie.openMainImage('./assets/white_background.jpg');
+                    fetch('./assets/blockobjects.json',                
+                    {                    
+                        method: 'GET',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        mode: 'no-cors'
                     })
-              } else {
-                document.getElementById('loading').style.display = 'none';
-              }
+                    .then(resp => resp.json())
+                    .then(data => {                    
+                        pixie.getTool('import').openStateObjectPanelFile(JSON.stringify({objectsPanel:data.objectsPanel}));
+                        delete data.objectsPanel;
+
+                        pixie.getTool('import').openStateMappingFile(JSON.stringify({mapping:data.objectsMapping}));
+                        delete data.objectsMapping;
+
+                        pixie.getTool('import').openStateFile(JSON.stringify(data));
+                    })
+                    .catch(error => console.log('Error:', error));
+                    //.then(data => {console.log(JSON.stringify(data))})
+                }
+                else if(state) {
+                    pixie.openMainImage('./assets/white_background.jpg')
+                    fetch('./assets/frontstate2.json')
+                        .then(resp => resp.json())
+                        .then(frontstate => {
+                            console.log('frontState:', frontstate)
+                            pixie.getTool('import').openStateFile(JSON.stringify(frontstate))
+                        })
+                } else {
+                    document.getElementById('loading').style.display = 'none';
+                }
             },
         });
 

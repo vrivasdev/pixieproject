@@ -1,6 +1,6 @@
 import { MappingType } from './mapping-type.enum';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { SetMapping } from './mapping-state-actions';
+import { SetMapping, UpdateObjectId } from './mapping-state-actions';
 import { Map } from './map.enum';
 
 export interface MappingStateModel {
@@ -32,6 +32,26 @@ export class MappingState {
             objects.push(action);
         }
 
+        ctx.patchState({objects: objects});
+    }
+
+    @Action(UpdateObjectId)
+    updateObjectId(ctx: StateContext<MappingStateModel>, action: UpdateObjectId){
+        const objectsState = ctx.getState().objects;
+        const tempObject = objectsState.filter(object => object.objectId === action.objectId);
+        let objects: any;
+        
+        if (tempObject.length) {
+            objects = objectsState.filter(object => object.objectId !== action.objectId);
+            objects.push(
+                {
+                   objectId: action.id,
+                   type:  tempObject[0].type,
+                   field: tempObject[0].field,
+                   map: tempObject[0].map
+                }
+            );
+        }
         ctx.patchState({objects: objects});
     }
 }

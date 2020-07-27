@@ -13,6 +13,7 @@ import {Store} from '@ngxs/store';
 import {ContentLoaded} from '../state/editor-state-actions';
 import {ObjectNames} from '../objects/object-names.enum';
 import {normalizeObjectProps} from '../utils/normalize-object-props';
+import { rejects } from 'assert';
 
 @Injectable()
 export class CanvasService {
@@ -165,40 +166,57 @@ export class CanvasService {
     /**
      * Open image at given url in canvas.
      */
-    public openImage(url): Promise<Image> {
-        return new Promise(resolve => {
+    public openImage(url, validate:boolean = false): Promise<Image> {
+        return new Promise((resolve, reject) => {
             fabric.util.loadImage(url, image => {
                 if ( ! image) return;
 
                 const object = new fabric.Image(image);
-                object.name = ObjectNames.image.name;
+                const active = this.fabric().getActiveObject();
 
-                // use either main image or canvas dimensions as outter boundaries for scaling new image
-                const maxWidth  = this.state.original.width,
-                    maxHeight = this.state.original.height;
-
-                // if image is wider or higher then the current canvas, we'll scale it down
-                if (object.width >= maxWidth || object.height >= maxHeight) {
-
-                    // calc new image dimensions (main image height - 10% and width - 10%)
-                    const newWidth  = maxWidth - (0.1 * maxWidth),
-                        newHeight = maxHeight - (0.1 * maxHeight),
-                        scale     = 1 / (Math.min(newHeight / object.getScaledHeight(), newWidth / object.getScaledWidth()));
-
-                    // scale newly uploaded image to the above dimensions
-                    object.scaleX = object.scaleX * (1 / scale);
-                    object.scaleY = object.scaleY * (1 / scale);
+                if (active){
+                    if (validate && (object.height < active.height) || (object.width < active.width)) {
+                        alert(`Image must have this resolution: ${active.width} x ${active.height}`);
+                        reject(object);
+                    } else {
+                        if (validate) alert(`For better results image should have this resolution ${active.width} x ${active.height}`);
+                        resolve(this.addImage(object));
+                    }
+                } else {
+                    if (validate) alert(`For better results image should have this resolution ${active.width} x ${active.height}`);
+                    resolve(this.addImage(object));
                 }
-
-                // center and render newly uploaded image on the canvas
-                this.state.fabric.add(object);
-                object.viewportCenter();
-                object.setCoords();
-                this.render();
-                this.zoom.fitToScreen();
-                resolve(object);
             });
         });
+    }
+
+    public addImage(object: any): any {
+        object.name = ObjectNames.image.name;
+        // use either main image or canvas dimensions as outter boundaries for scaling new image
+        const maxWidth  = this.state.original.width,
+            maxHeight = this.state.original.height;
+
+        // if image is wider or higher then the current canvas, we'll scale it down
+        if (object.width >= maxWidth || object.height >= maxHeight) {
+
+            // calc new image dimensions (main image height - 10% and width - 10%)
+            const newWidth  = maxWidth - (0.1 * maxWidth),
+                newHeight = maxHeight - (0.1 * maxHeight),
+                scale     = 1 / (Math.min(newHeight / object.getScaledHeight(), newWidth / object.getScaledWidth()));
+
+            // scale newly uploaded image to the above dimensions
+            object.scaleX = object.scaleX * (1 / scale);
+            object.scaleY = object.scaleY * (1 / scale);
+        }
+
+        // center and render newly uploaded image on the canvas
+        this.state.fabric.add(object);
+        object.viewportCenter();
+        object.setCoords();
+        this.render();
+        this.zoom.fitToScreen();
+
+        return object;
     }
 
     /**

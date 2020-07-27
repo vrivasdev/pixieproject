@@ -27,16 +27,17 @@ export class ImportToolService {
     /**
      * Open upload dialog, import selected file and open it in editor.
      */
-    public openUploadDialog(options: {type?: 'image'|'state', backgroundImage?: boolean} = {type: 'image'}): Promise<any> {
+    public openUploadDialog(options: {type?: 'image'|'state', backgroundImage?: boolean, validate?: true | false} = {type: 'image'}): Promise<any> {
         const accept = this.getUploadAcceptString(options.type);
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             openUploadWindow({extensions: accept}).then(files => {
                 this.validateAndGetData(files[0]).then(file => {
                     this.executeOnFileOpenCallback(files[0]);
                     if (options.backgroundImage && file.extension !== 'json') {
                         this.openBackgroundImage(file.data).then(obj => resolve(obj));
                     } else {
-                        this.openFile(file.data, file.extension).then(obj => resolve(obj));
+                        this.openFile(file.data, file.extension, options.validate? true : false)
+                            .then(obj => resolve(obj));
                     }
                 }, () => {});
             });
@@ -129,13 +130,13 @@ export class ImportToolService {
     /**
      * Open specified data or image element in editor.
      */
-    public openFile(data: string|HTMLImageElement, extension: string = 'png'): Promise<Image|void> {
+    public openFile(data: string|HTMLImageElement, extension: string = 'png', validate: boolean = false): Promise<Image|void> {
         if (data instanceof HTMLImageElement) data = data.src;
 
         if (extension === 'json') {
             return this.openStateFile(data);
         } else {
-            return this.canvas.openImage(data);
+            return this.canvas.openImage(data, validate); 
         }
     }
 

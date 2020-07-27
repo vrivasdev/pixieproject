@@ -23,6 +23,7 @@ import { ImportToolService } from 'app/image-editor/tools/import/import-tool.ser
 import {delay} from 'rxjs/operators';
 import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
 import { MappingState } from 'app/image-editor/state/mapping-state';
+import { UpdateObjectId } from 'app/image-editor/state/mapping-state-actions';
 
 @Component({
     selector: 'image-editor',
@@ -198,13 +199,28 @@ export class ImageEditorComponent implements OnInit {
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
         const active: any = this.activeObject.get();
-        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects); 
+        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+
         if (active.type === 'image' && 
             mappedObjects.some(object => object.objectId === active.data.id)) {
                 this.importToolService
-                    .openUploadDialog()
+                    .openUploadDialog({validate: true})
                     .then(obj => {
-                        console.log("Open up modal");
+                        const active = this.canvas.fabric().getActiveObject();
+                        if ( ! obj) return;
+                        
+                        obj.height = active.height;
+                        obj.left = active.left;
+                        obj.top = active.top;
+                        obj.width = active.width;
+                        obj.scaleX = active.scaleX;
+                        obj.scaleY = active.scaleY;
+
+                        this.canvas.fabric().remove(active);
+                        this.canvas.fabric().setActiveObject(obj);
+
+                        this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
+                        //this.history.add(HistoryNames.OVERLAY_IMAGE);
                 });
         }
     }
