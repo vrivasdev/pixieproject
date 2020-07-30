@@ -141,7 +141,7 @@ export class ExportToolService {
             const profile = this.config.get('pixie.profileView');
     
             params[`${temp}name`] = templateName;
-            
+
             fetch(
                 `${this.config.get('pixie.saveUrl')}/${profile}`,
                 {
@@ -205,8 +205,13 @@ export class ExportToolService {
         }
     }
 
-    private updateService(id: number, raw_json: string, raw_json_back: string, template_name: string, category_id: number, draft: number, share: string[]) {
-        
+    private updateService(id: number, 
+                          raw_json: string, 
+                          raw_json_back: string, 
+                          template_name: string, 
+                          category_id: number, 
+                          draft: number, 
+                          share: string[]) {
         const data = {
             id,
             raw_json,

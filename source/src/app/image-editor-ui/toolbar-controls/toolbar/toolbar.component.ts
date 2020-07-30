@@ -156,6 +156,7 @@ export class ToolbarComponent implements AfterViewInit {
     }
     public goBack() {
       localStorage.setItem('active', 'false');
+      localStorage.setItem('pixie-return', 'true');
       location.reload();
     }
 
