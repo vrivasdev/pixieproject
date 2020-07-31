@@ -13,10 +13,9 @@
             cdkDragBoundary=".items-list"
             cdkDragLockAxis="y"
             [cdkDragDisabled]="shouldDisableObject(object)"
-    >
+    >   <!-- (dblclick)="openInput(object)" -->
         <div class="floating-panel-item"
              (click)="selectObject(object)"
-             (dblclick)="openInput(object)"
              [class.disabled]="shouldDisableObject(object)"
              [class.active]="(activeObjId$ | async) === object.data.id"
              [attr.data-id]="object.data.id"
