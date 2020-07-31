@@ -128,12 +128,17 @@ export class ImageEditorComponent implements OnInit {
     }
 
     public onObjectSelection(fabricEvent) {
+        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+        const exist = mappedObjects.some(object => object.objectId === fabricEvent.target.data.id)
+        
+        if (!this.config.get('pixie.isAdmin') && !exist) this.activeObject.deselect();
+
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
             this.config.get('pixie.isAdmin')
         ));
     }
-
+    
     private fitCanvasToScreenOnResize() {
         fromEvent(window, 'resize')
             .pipe(debounceTime(200), distinctUntilChanged())
@@ -195,7 +200,7 @@ export class ImageEditorComponent implements OnInit {
             }).catch(error => console.log('Error:', error));
         }
     }
-
+    // if agent double clicks on any layer maped as image
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
         const active: any = this.activeObject.get();

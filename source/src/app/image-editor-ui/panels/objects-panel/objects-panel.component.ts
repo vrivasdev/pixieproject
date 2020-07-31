@@ -121,12 +121,16 @@ export class ObjectsPanelComponent {
       object.lockRotation  = object.lockRotation ? false : true;
     }
 
-    public getObjectDisplayName(object: Object): string {
-        const name = 'rename' in object ? object['rename'] : object.name
-        return name ? name.replace(/([A-Z])/g, ' $1') : '';
+    public getObjectDisplayName(object: any): string {
+        const name = 'rename' in object ? object['rename'] : object.name;
+        const text = name ? name.replace(/([A-Z])/g, ' $1') : '';
+        
+        return !this.config.get('pixie.isAdmin') && object.type === 'i-text'? object.text : text;
     }
 
     public reorderObjects(e: CdkDragDrop<string>) {
+        if (!this.config.get('pixie.isAdmin')) return;
+        
         moveItemInArray(this.objects.getAll(), e.previousIndex, e.currentIndex);
         // pixie and canvas object orders are reversed, need to
         // reverse newIndex given by cdk drag and drop
