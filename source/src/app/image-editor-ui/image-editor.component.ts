@@ -131,7 +131,8 @@ export class ImageEditorComponent implements OnInit {
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
         const exist = mappedObjects.some(object => object.objectId === fabricEvent.target.data.id)
         
-        if (!this.config.get('pixie.isAdmin') && !exist) this.activeObject.deselect();
+        // TODO: User must select each layers without get lost
+        //if (!this.config.get('pixie.isAdmin') && !exist) this.activeObject.deselect();
 
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
