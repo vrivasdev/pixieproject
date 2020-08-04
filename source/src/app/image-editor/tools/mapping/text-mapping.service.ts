@@ -16,6 +16,7 @@ export class TextMappingService {
     public getVarContent(text: string, vars: Array<string>): Promise<any> {
         return new Promise(resolve => {
             const profile = this.config.get('pixie.profile');
+
             const mlsVars = ['baths', 'street_number', 'street_name', 'apartment', 'zipcode',
                              'city', 'state', 'country', 'address', 'description', 'type', 'bedrooms', 'price'];
             let variables;
@@ -85,7 +86,8 @@ export class TextMappingService {
                 }
                 else if(object.type === 'image'){
                     const objects = this.store.selectSnapshot(MappingState.getMappingObjects);
-                    const found: any = objects.filter(obj => obj.objectId === object.data.id);
+                    const found: any = objects.filter(obj => obj.type === 'profile' && 
+                                                             obj.objectId === object.data.id);
                     const base = `${window.location.protocol}//${window.location.hostname}`;
                     const img = this.config.get('pixie.profile.Image');
 
@@ -100,7 +102,6 @@ export class TextMappingService {
                     newObjects.push({...object});
                 }
             });
-            debugger;
             resolve(newObjects);
         });   
     }
