@@ -14,6 +14,8 @@ import {ContentLoaded} from '../state/editor-state-actions';
 import {ObjectNames} from '../objects/object-names.enum';
 import {normalizeObjectProps} from '../utils/normalize-object-props';
 import { rejects } from 'assert';
+import { MatDialog } from '@angular/material';
+import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message';
 
 @Injectable()
 export class CanvasService {
@@ -27,6 +29,7 @@ export class CanvasService {
         public activeObject: ActiveObjectService,
         private config: Settings,
         private store: Store,
+        public dialog: MatDialog
     ) {}
 
     public render() {
@@ -174,19 +177,31 @@ export class CanvasService {
                 const object = new fabric.Image(image);
                 const active = this.fabric().getActiveObject();
 
-                if (active){
-                    if (validate && (object.height < active.height) || (object.width < active.width)) {
-                        alert(`Image must have this resolution: ${active.width} x ${active.height}`);
-                        reject(object);
+                if (!this.config.get('pixie.isAdmin')) {
+                    if (active){
+                        if (validate && (object.height < active.height) || (object.width < active.width)) {
+                            this.openDialog(`Image must have this resolution: ${active.width} x ${active.height}`, 
+                                            true);
+                            reject(object);
+                        } else {
+                            if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
+                            resolve(this.addImage(object));
+                        }
                     } else {
-                        if (validate) alert(`For better results image should have this resolution ${active.width} x ${active.height}`);
+                        if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
                         resolve(this.addImage(object));
                     }
                 } else {
-                    if (validate) alert(`For better results image should have this resolution ${active.width} x ${active.height}`);
                     resolve(this.addImage(object));
                 }
             });
+        });
+    }
+
+   public openDialog(message: string, error: boolean = false): void {
+        this.dialog.open(DialogMessage, {
+            width: '250px',
+            data: {message: message, errorFound: error}
         });
     }
 

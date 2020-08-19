@@ -66,6 +66,7 @@ export class TextControlsDrawerComponent {
             else if (e.value === 'right') sing = 1;
 
             obj.set({left: obj.left + (sing)*(obj.aCoords.tr.x - obj.aCoords.tl.x)})
+            console.log(obj);
         }
     }
 }
