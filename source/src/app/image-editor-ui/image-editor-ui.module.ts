@@ -36,7 +36,8 @@ import { SavePanelComponent } from './panels/save-panel/save-panel.component';
 import { TextMappingPanelComponent } from './panels/text-mapping-panel/text-mapping-panel.component';
 import { ImageMappingPanelComponent } from './panels/image-mapping-panel/image-mapping-panel.component';
 import { LoaderComponent } from './loader/loader.component';
-import { DialogMessage } from './dialog/dialog-message';
+import { DialogMessage } from './dialog/dialog-message/dialog-message';
+import { DialogQuestion } from './dialog/dialog-question/dialog-question';
 
 export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: DomSanitizer) {
     return () => {
@@ -82,7 +83,8 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         TextMappingPanelComponent,
         ImageMappingPanelComponent,
         LoaderComponent,
-        DialogMessage
+        DialogMessage,
+        DialogQuestion
     ],
     entryComponents: [
         OpenSampleImagePanelComponent,
@@ -93,12 +95,16 @@ export function init_icons(config: Settings, icons: MatIconRegistry, sanitizer: 
         TextMappingPanelComponent,
         ImageMappingPanelComponent,
         LoaderComponent,
-        DialogMessage
+        DialogMessage,
+        DialogQuestion
     ],
     exports: [
         ImageEditorComponent,
     ],
-    bootstrap: [DialogMessage],
+    bootstrap: [
+        DialogMessage,
+        DialogQuestion
+    ],
     providers: [
         {
             provide: APP_INITIALIZER,

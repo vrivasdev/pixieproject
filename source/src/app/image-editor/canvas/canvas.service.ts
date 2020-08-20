@@ -15,7 +15,7 @@ import {ObjectNames} from '../objects/object-names.enum';
 import {normalizeObjectProps} from '../utils/normalize-object-props';
 import { rejects } from 'assert';
 import { MatDialog } from '@angular/material';
-import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message';
+import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message/dialog-message';
 
 @Injectable()
 export class CanvasService {

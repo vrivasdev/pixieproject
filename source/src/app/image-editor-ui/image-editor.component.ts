@@ -24,6 +24,9 @@ import {delay} from 'rxjs/operators';
 import { TextMappingService } from 'app/image-editor/tools/mapping/text-mapping.service';
 import { MappingState } from 'app/image-editor/state/mapping-state';
 import { UpdateObjectId } from 'app/image-editor/state/mapping-state-actions';
+import { MatDialog } from '@angular/material';
+import { DialogMessage } from './dialog/dialog-message/dialog-message';
+import { DialogQuestion } from './dialog/dialog-question/dialog-question';
 
 @Component({
     selector: 'image-editor',
@@ -55,7 +58,8 @@ export class ImageEditorComponent implements OnInit {
         private store: Store,
         private i18n: Translations,
         private importToolService: ImportToolService,
-        private mappingService: TextMappingService
+        private mappingService: TextMappingService,
+        public dialog: MatDialog
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -130,9 +134,6 @@ export class ImageEditorComponent implements OnInit {
     public onObjectSelection(fabricEvent) {
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
         const exist = mappedObjects.some(object => object.objectId === fabricEvent.target.data.id)
-        
-        // TODO: User must select each layers without get lost
-        //if (!this.config.get('pixie.isAdmin') && !exist) this.activeObject.deselect();
 
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
@@ -204,30 +205,39 @@ export class ImageEditorComponent implements OnInit {
     // if agent double clicks on any layer maped as image
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
-        const active: any = this.activeObject.get();
-        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+        const dialogRef  = this.dialog.open(DialogQuestion, {
+            width: '300px',
+            data: {message: 'Are you sure you want to upload an image?'}
+        });
 
-        if (active.type === 'image' && 
-            mappedObjects.some(object => object.objectId === active.data.id)) {
-                this.importToolService
-                    .openUploadDialog({validate: true})
-                    .then(obj => {
-                        const active = this.canvas.fabric().getActiveObject();
-                        if ( ! obj) return;
-                        
-                        obj.height = active.height;
-                        obj.left = active.left;
-                        obj.top = active.top;
-                        obj.width = active.width;
-                        obj.scaleX = active.scaleX;
-                        obj.scaleY = active.scaleY;
+        dialogRef.afterClosed().subscribe(upload => {  
+            if (upload) {
+                const active: any = this.activeObject.get();
+                const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
-                        this.canvas.fabric().remove(active);
-                        this.canvas.fabric().setActiveObject(obj);
+                if (active.type === 'image' && 
+                    mappedObjects.some(object => object.objectId === active.data.id)) {
+                        this.importToolService
+                            .openUploadDialog({validate: true})
+                            .then(obj => {
+                                const active = this.canvas.fabric().getActiveObject();
+                                if ( ! obj) return;
+                                
+                                obj.height = active.height;
+                                obj.left = active.left;
+                                obj.top = active.top;
+                                obj.width = active.width;
+                                obj.scaleX = active.scaleX;
+                                obj.scaleY = active.scaleY;
 
-                        this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
-                        //this.history.add(HistoryNames.OVERLAY_IMAGE);
-                });
-        }
+                                this.canvas.fabric().remove(active);
+                                this.canvas.fabric().setActiveObject(obj);
+
+                                this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
+                                //this.history.add(HistoryNames.OVERLAY_IMAGE);
+                        });
+                }
+            }
+        });
     }
 }
