@@ -205,39 +205,40 @@ export class ImageEditorComponent implements OnInit {
     // if agent double clicks on any layer maped as image
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
-        const dialogRef  = this.dialog.open(DialogQuestion, {
-            width: '300px',
-            data: {message: 'Are you sure you want to upload an image?'}
-        });
+        const active: any = this.activeObject.get();
+        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
-        dialogRef.afterClosed().subscribe(upload => {  
-            if (upload) {
-                const active: any = this.activeObject.get();
-                const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
-
-                if (active.type === 'image' && 
-                    mappedObjects.some(object => object.objectId === active.data.id)) {
+        if (active.type === 'image' && 
+            mappedObjects.some(object => object.objectId === active.data.id)) {
+                
+                const dialogRef  = this.dialog.open(DialogQuestion, {
+                    width: '300px',
+                    data: {message: 'Are you sure you want to upload an image?'}
+                });
+                
+                dialogRef.afterClosed().subscribe(upload => {
+                    if (upload) {
                         this.importToolService
-                            .openUploadDialog({validate: true})
-                            .then(obj => {
-                                const active = this.canvas.fabric().getActiveObject();
-                                if ( ! obj) return;
-                                
-                                obj.height = active.height;
-                                obj.left = active.left;
-                                obj.top = active.top;
-                                obj.width = active.width;
-                                obj.scaleX = active.scaleX;
-                                obj.scaleY = active.scaleY;
-
-                                this.canvas.fabric().remove(active);
-                                this.canvas.fabric().setActiveObject(obj);
-
-                                this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
-                                //this.history.add(HistoryNames.OVERLAY_IMAGE);
+                        .openUploadDialog({validate: true})
+                        .then(obj => {
+                            const active = this.canvas.fabric().getActiveObject();
+                            if ( ! obj) return;
+                            
+                            obj.height = active.height;
+                            obj.left = active.left;
+                            obj.top = active.top;
+                            obj.width = active.width;
+                            obj.scaleX = active.scaleX;
+                            obj.scaleY = active.scaleY;
+    
+                            this.canvas.fabric().remove(active);
+                            this.canvas.fabric().setActiveObject(obj);
+    
+                            this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
+                            //this.history.add(HistoryNames.OVERLAY_IMAGE);
                         });
-                }
-            }
-        });
+                    }
+                });
+        }
     }
 }
