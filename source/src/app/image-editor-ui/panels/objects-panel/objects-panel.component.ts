@@ -17,6 +17,13 @@ import { ObjectPanelState, ObjectsPanelStateModel } from 'app/image-editor-ui/st
 import {Settings} from 'common/core/config/settings.service';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 import { HistoryToolService } from 'app/image-editor/history/history-tool.service';
+import { MappingState } from 'app/image-editor/state/mapping-state';
+
+enum ImageType{
+    MLS = 'Main Property Image',
+    PROFILE = 'Agent Profile Image',
+    OTHER = 'Template Locked Image'
+}
 
 @Component({
     selector: 'objects-panel',
@@ -124,8 +131,27 @@ export class ObjectsPanelComponent {
     public getObjectDisplayName(object: any): string {
         const name = 'rename' in object ? object['rename'] : object.name;
         const text = name ? name.replace(/([A-Z])/g, ' $1') : '';
-        
-        return !this.config.get('pixie.isAdmin') && object.type === 'i-text'? object.text : text;
+
+        if (!this.config.get('pixie.isAdmin')){
+            if (object.type === 'i-text') {
+                return object.text;
+            } else if (object.type === 'image') {
+                const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+                if (mappedObjects.length) {
+                    if (mappedObjects.some(obj => obj.objectId === object.data.id)){
+                        if (mappedObjects.some(obj => (obj.objectId === object.data.id) && obj.type === 'mls')) {
+                            return ImageType.MLS;
+                        } else {
+                            return ImageType.PROFILE;
+                        }
+                    } else {
+                        return ImageType.OTHER;
+                    }
+                }
+            }
+        }
+        return text;
+        //return !this.config.get('pixie.isAdmin') && object.type === 'i-text'? object.text : text;
     }
 
     public reorderObjects(e: CdkDragDrop<string>) {
