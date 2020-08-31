@@ -82,11 +82,15 @@ export class SavePanelComponent {
                 this.selectedOption = config.get('pixie.categoryId');
             } else {
                 this.optSelected = '1';
-                this.saveForm.controls['category'].disable();
+                if (this.config.get('pixie.isAdmin')) {
+                    this.saveForm.controls['category'].disable();
+                }
             }
         } else {
             this.optSelected = '1'; // draft type as defatult
-            this.saveForm.controls['category'].disable();
+            if (this.config.get('pixie.isAdmin')) {
+                this.saveForm.controls['category'].disable();
+            }
             //this.selectedOption = "63"; // Select twitter category as default
         }
         
@@ -172,10 +176,12 @@ export class SavePanelComponent {
 
     public typeChange(event: MatRadioChange) {
         const category = this.saveForm.controls['category'];
-        if (event.value === '0'){
-            category.enable();
-        } else {
-            category.disable();
+        if (this.config.get('pixie.isAdmin')) {
+            if (event.value === '0'){
+                category.enable();
+            } else {
+                category.disable();
+            }
         }
     }
 
