@@ -223,9 +223,11 @@ export class ExportToolService {
 
         if (category_id) data['category_id'] = category_id;
         if (share.length) data['share'] = share;
+
+        const profile = this.config.get('pixie.profileView');
         
         fetch(
-            this.config.get('pixie.updateUrl'),
+            `${this.config.get('pixie.updateUrl')}/${profile}`,
             {
                 method: 'POST',
                 cache: 'no-cache',

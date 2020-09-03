@@ -117,7 +117,9 @@ export class SavePanelComponent {
             return;
         }
         
-        if (this.id && this.config.get('pixie.isAgent') !== '1') {
+        if ((this.id && this.config.get('pixie.isAgent') !== '1') ||
+            (this.config.get('pixie.isAgent') === '1' && 
+            localStorage.getItem('main-tab') !== '#thumbnails')) {
             this.exportTool.update(this.id, 
                                    share,
                                    val.category, 
