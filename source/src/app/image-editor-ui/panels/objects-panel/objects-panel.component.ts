@@ -134,7 +134,8 @@ export class ObjectsPanelComponent {
 
         if (!this.config.get('pixie.isAdmin')){
             if (object.type === 'i-text') {
-                return object.text;
+                const words = object.text.split(" ");
+                return words.length ? `${words[0]} ${words[1]} ...` : object.text;
             } else if (object.type === 'image') {
                 const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
                 if (mappedObjects.length) {
@@ -151,7 +152,6 @@ export class ObjectsPanelComponent {
             }
         }
         return text;
-        //return !this.config.get('pixie.isAdmin') && object.type === 'i-text'? object.text : text;
     }
 
     public reorderObjects(e: CdkDragDrop<string>) {
