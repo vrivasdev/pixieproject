@@ -19,6 +19,8 @@ import {EditorMode} from '../../../image-editor/enums/editor-mode.enum';
 import {startCase} from '../../../../common/core/utils/start-case';
 import { SampleImage } from 'app/image-editor-ui/panels/open-sample-image-panel/sample-image';
 import { DrawerName } from '../drawers/drawer-name.enum';
+import { DialogQuestion } from 'app/image-editor-ui/dialog/dialog-question/dialog-question';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'toolbar',
@@ -50,7 +52,8 @@ export class ToolbarComponent implements AfterViewInit {
         private canvas: CanvasService,
         private floatingPanels: FloatingPanelsService,
         private store: Store,
-        private importToolService: ImportToolService
+        private importToolService: ImportToolService,
+        public dialog: MatDialog
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
         this.hasId = config.get('pixie.id') ? true: false;
@@ -155,9 +158,18 @@ export class ToolbarComponent implements AfterViewInit {
         }
     }
     public goBack() {
-      localStorage.setItem('active', 'false');
-      localStorage.setItem('pixie-return', 'true');
-      location.reload();
+        const dialogRef  = this.dialog.open(DialogQuestion, {
+            width: '300px',
+            data: {message: 'Are you sure you want to return?'}
+        });
+
+        dialogRef.afterClosed().subscribe(goback => {
+            if (goback) {
+                localStorage.setItem('active', 'false');
+                localStorage.setItem('pixie-return', 'true');
+                location.reload();
+            }
+        });
     }
 
     public markAsPreview() {
