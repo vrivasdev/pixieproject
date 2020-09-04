@@ -27,6 +27,8 @@ import { UpdateObjectId } from 'app/image-editor/state/mapping-state-actions';
 import { MatDialog } from '@angular/material';
 import { DialogMessage } from './dialog/dialog-message/dialog-message';
 import { DialogQuestion } from './dialog/dialog-question/dialog-question';
+import {moveItemInArray} from '@angular/cdk/drag-drop';
+import { ObjectsService } from 'app/image-editor/objects/objects.service';
 
 @Component({
     selector: 'image-editor',
@@ -59,7 +61,9 @@ export class ImageEditorComponent implements OnInit {
         private i18n: Translations,
         private importToolService: ImportToolService,
         private mappingService: TextMappingService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        public objects: ObjectsService,
+        private canvasState: CanvasStateService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -206,6 +210,7 @@ export class ImageEditorComponent implements OnInit {
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
         if (!this.config.get('pixie.isAdmin')) {
+
             const active: any = this.activeObject.get();
             const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
@@ -223,8 +228,10 @@ export class ImageEditorComponent implements OnInit {
                             .openUploadDialog({validate: true})
                             .then(obj => {
                                 const active = this.canvas.fabric().getActiveObject();
+                                const position = this.objects.getAll().findIndex(obj => obj.data.id === active.data.id);
+
                                 if ( ! obj) return;
-                                
+
                                 obj.height = active.height;
                                 obj.left = active.left;
                                 obj.top = active.top;
@@ -236,7 +243,14 @@ export class ImageEditorComponent implements OnInit {
                                 this.canvas.fabric().setActiveObject(obj);
         
                                 this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
-                                //this.history.add(HistoryNames.OVERLAY_IMAGE);
+                                moveItemInArray(this.objects.getAll(), 0, position);
+                                const index = this.objects.getAll()
+                                                  .slice().reverse().findIndex(obj => obj.data.id === obj.data.id);
+                                
+                                const allObj = this.objects.getAll();
+                                
+                                this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
+                                this.canvasState.fabric.requestRenderAll();
                             });
                         }
                     });
