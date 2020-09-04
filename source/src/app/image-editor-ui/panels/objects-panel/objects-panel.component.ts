@@ -18,6 +18,7 @@ import {Settings} from 'common/core/config/settings.service';
 import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
 import { HistoryToolService } from 'app/image-editor/history/history-tool.service';
 import { MappingState } from 'app/image-editor/state/mapping-state';
+import { ObjectsState } from 'app/image-editor-ui/state/objects/objects.state';
 
 enum ImageType{
     MLS = 'Main Property Image',
@@ -49,7 +50,6 @@ export class ObjectsPanelComponent {
         private active: ActiveObjectService,
         private history: HistoryToolService,
     ) {
-        
         this.isAdmin = config.get('pixie.isAdmin');
     }
 
@@ -173,5 +173,31 @@ export class ObjectsPanelComponent {
 
     public getImageUrl(url: string) {
       return this.config.getAssetUrl(url);
+    }
+
+    public isBlocked(object: Object): boolean {
+        if (!this.config.get('pixie.isAdmin')) {
+            const name = 'rename' in object ? object['rename'] : object.name;
+
+            if (!this.config.get('pixie.isAdmin')){
+                if (object.type === 'i-text') {
+                    return false;
+                } else if (object.type === 'image') {
+                    const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+                    if (mappedObjects.length) {
+                        if (mappedObjects.some(obj => obj.objectId === object.data.id)){
+                            if (mappedObjects.some(obj => (obj.objectId === object.data.id) && obj.type === 'mls')) {
+                                return false;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return true
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

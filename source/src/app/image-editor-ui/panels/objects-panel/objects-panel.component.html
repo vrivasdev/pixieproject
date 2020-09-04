@@ -19,6 +19,7 @@
              [class.disabled]="shouldDisableObject(object)"
              [class.active]="(activeObjId$ | async) === object.data.id"
              [attr.data-id]="object.data.id"
+             *ngIf="!isBlocked(object)"
         >
             <!--<mat-icon [svgIcon]="getIcon(object)" class="list-icon"></mat-icon>-->
             <div class="name" trans *ngIf="!isRename(object)">{{getObjectDisplayName(object)}}</div>
