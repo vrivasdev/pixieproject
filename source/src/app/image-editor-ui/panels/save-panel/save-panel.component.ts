@@ -91,7 +91,6 @@ export class SavePanelComponent {
             if (this.config.get('pixie.isAdmin')) {
                 this.saveForm.controls['category'].disable();
             }
-            //this.selectedOption = "63"; // Select twitter category as default
         }
         
         this.isAdmin = this.config.get('pixie.isAdmin');

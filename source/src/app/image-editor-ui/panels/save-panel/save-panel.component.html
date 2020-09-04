@@ -21,7 +21,7 @@
         <mat-radio-button 
             *ngFor="let type of types | keyvalue" 
             [value]="type.key">
-            {{ type.value }}
+            {{ type.value === 'completed'? 'My Designs' : 'My Drafts' }}
         </mat-radio-button>
     </mat-radio-group>
     <div *ngIf="isAdmin">

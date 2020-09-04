@@ -135,7 +135,7 @@ export class ObjectsPanelComponent {
         if (!this.config.get('pixie.isAdmin')){
             if (object.type === 'i-text') {
                 const words = object.text.split(" ");
-                return words.length ? `${words[0]} ${words[1]} ...` : object.text;
+                return words.length >= 2 ? `${words[0]} ${words[1]} ...` : object.text;
             } else if (object.type === 'image') {
                 const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
                 if (mappedObjects.length) {
