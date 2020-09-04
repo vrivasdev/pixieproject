@@ -136,6 +136,10 @@ export class SavePanelComponent {
         document.getElementById('gif-loader')
                 .style
                 .display = 'flex';
+        
+        localStorage.setItem('active', 'false');
+        localStorage.setItem('pixie-return', 'true');
+        location.reload();
     }
 
     public add(event: MatChipInputEvent): void {
