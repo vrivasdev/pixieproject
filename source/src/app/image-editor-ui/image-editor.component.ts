@@ -243,4 +243,16 @@ export class ImageEditorComponent implements OnInit {
             }
         }
     }
+    // if agent clicks on canvas
+    @HostListener('click', ['$event.target'])
+    onClick(event: MouseEvent) {
+        if (!this.config.get('pixie.isAdmin')) {
+            const element:any = event;
+            if (element.tagName === 'CANVAS') {
+                if (!this.floatingPanels.panelIsOpen('objects')) {
+                    this.floatingPanels.toggleObjects();
+                }
+            }
+        }
+    }
 }
