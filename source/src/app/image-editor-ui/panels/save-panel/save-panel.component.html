@@ -12,18 +12,20 @@
             <div *ngIf="fControls.flyerName.errors.required">You must enter a value</div>
         </div>
     </div>
-    <mat-label>Save as</mat-label>
-    <mat-radio-group 
-        formControlName="saveType" 
-        required 
-        (change)="typeChange($event)"
-        [(ngModel)]="optSelected">
-        <mat-radio-button 
-            *ngFor="let type of types | keyvalue" 
-            [value]="type.key">
-            {{ type.value === 'completed'? 'My Designs' : 'My Drafts' }}
-        </mat-radio-button>
-    </mat-radio-group>
+    <div *ngIf="type !== 'saveas'">
+        <mat-label>Save as</mat-label>
+        <mat-radio-group 
+            formControlName="saveType" 
+            required 
+            (change)="typeChange($event)"
+            [(ngModel)]="optSelected">
+            <mat-radio-button 
+                *ngFor="let type of types | keyvalue" 
+                [value]="type.key">
+                {{ type.value === 'completed'? 'My Designs' : 'My Drafts' }}
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
     <div *ngIf="isAdmin">
         <div *ngIf="optSelected==='0'">
             <mat-label>Category</mat-label>

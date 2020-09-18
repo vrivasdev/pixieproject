@@ -10,6 +10,9 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import {Settings} from '../../../../common/core/config/settings.service';
 import {ExportToolService} from '../../../image-editor/tools/export/export-tool.service';
 import { SavePanelService } from 'app/image-editor/save/save-panel.service';
+import { Type } from 'app/image-editor-ui/state/save/save.enum';
+import { Store } from '@ngxs/store';
+import { SaveState } from 'app/image-editor-ui/state/save/save.state';
 
 interface SubCategory {
     id: string,
@@ -41,13 +44,15 @@ export class SavePanelComponent {
     public separatorKeysCodes: number[] = [ENTER, COMMA, SPACE, TAB];
     public agentCtrl = new FormControl();
     public filteredAgents: Observable<string[]>;
-    public agents: string[] = ['everyone'];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    public agents: string[] = [];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     public allAgents: string[] = ['everyone', 'rrondon@avantiway.com']
     public types = ['completed', 'draft'];
     public optSelected: string;
     public isAdmin: boolean;
     public submitted = false;
     public saveForm: FormGroup;
+    public type: Type;
+
 
     @ViewChild('agentInput') agentInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -55,7 +60,8 @@ export class SavePanelComponent {
     constructor(
         private config: Settings,
         private exportTool: ExportToolService,
-        private savePanel: SavePanelService
+        private savePanel: SavePanelService,
+        private store: Store,
     ) {
         let group: any = {
             flyerName: new FormControl('', [Validators.required]),
@@ -63,6 +69,12 @@ export class SavePanelComponent {
             group: new FormControl(),
             agentCtrl: new FormControl()
         };
+
+        // Type of save 
+        if (!this.config.get('pixie.isAdmin') && 
+            localStorage.getItem('main-tab') !== '#thumbnails') {
+            this.type = this.store.selectSnapshot(SaveState.getType);
+        }
 
         if (this.config.get('pixie.isAgent') !== '1') {
             group['category'] =  new FormControl('', [Validators.required]);
@@ -100,10 +112,13 @@ export class SavePanelComponent {
                                   .valueChanges
                                   .pipe(
                                       startWith(null),
-                                      map((fruit: string | null) => fruit ? 
-                                         this._filter(fruit) : 
+                                      map((agent: string | null) => agent ? 
+                                         this._filter(agent) : 
                                          this.allAgents.slice())
                                     );
+        if (this.isAdmin) {
+            this.agents.push('everyone');
+        }
     }
 
     public save() {
@@ -115,16 +130,25 @@ export class SavePanelComponent {
         if (this.saveForm.invalid) {
             return;
         }
-        
         if ((this.id && this.config.get('pixie.isAgent') !== '1') ||
             (this.config.get('pixie.isAgent') === '1' && 
             localStorage.getItem('main-tab') !== '#thumbnails')) {
-            this.exportTool.update(this.id, 
-                                   share,
-                                   val.category, 
-                                   val.group,
-                                   val.flyerName ? val.flyerName : this.flyerName,
-                                   val.saveType ? val.saveType : this.saveType);
+                if (this.type === 'saveas') {
+                    const draft = localStorage.getItem('main-tab') === "#user-templates"?
+                                  0 : 1;
+                    this.exportTool.saveAs(share, 
+                        val.category, 
+                        val.group, 
+                        val.flyerName, 
+                        draft);
+                } else {
+                    this.exportTool.update(this.id,
+                        share,
+                        val.category, 
+                        val.group,
+                        val.flyerName ? val.flyerName : this.flyerName,
+                        val.saveType ? val.saveType : this.saveType);
+                }
         } else if (!this.id || this.config.get('pixie.isAgent') === '1') {
             this.exportTool.save(share, 
                                  val.category, 
@@ -139,7 +163,7 @@ export class SavePanelComponent {
         
         localStorage.setItem('active', 'false');
         localStorage.setItem('pixie-return', 'true');
-        location.reload();
+        //location.reload();
     }
 
     public add(event: MatChipInputEvent): void {
@@ -191,7 +215,6 @@ export class SavePanelComponent {
     }
 
     get fControls() {
-        console.log(this.saveForm.controls);
         return this.saveForm.controls; 
     }
 }

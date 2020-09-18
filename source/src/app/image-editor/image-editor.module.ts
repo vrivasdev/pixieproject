@@ -54,6 +54,7 @@ import {ObjectPanelState} from 'app/image-editor-ui/state/objects-panel/objects-
 import {MappingState} from './state/mapping-state';
 import { TextMappingService } from './tools/mapping/text-mapping.service';
 import { SavePanelService } from './save/save-panel.service';
+import { SaveState } from 'app/image-editor-ui/state/save/save.state';
 
 export function init_app(settings, mergedConfig) {
     return () => {
@@ -94,7 +95,8 @@ export function init_app(settings, mergedConfig) {
             CornersState,
             BackgroundState,
             HistoryState,
-            ObjectPanelState
+            ObjectPanelState,
+            SaveState,
         ], {developmentMode: !environment.production}),
     ],
     exports: [

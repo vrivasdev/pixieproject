@@ -186,6 +186,14 @@ export class ImageEditorComponent implements OnInit {
                 }
             }
         }
+        if (!this.config.get('pixie.getAdmin')) {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                if (event.key === 'ArrowRight') obj.cropX += 20;
+                else if (event.key === 'ArrowLeft') obj.cropX -= 20;
+    
+                this.canvasState.fabric.requestRenderAll();
+            }
+        }   
     }
 
     @HostListener('document:keydown.control.v', ['$event'])

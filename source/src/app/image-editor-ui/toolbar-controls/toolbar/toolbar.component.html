@@ -48,6 +48,15 @@
             <mat-icon svgIcon="file-download"></mat-icon>
             <span class="name" trans>Save</span>
         </button>
+        <button 
+        mat-button 
+        (click)="saveAsProject()" 
+        [class.invisible]="config.get('pixie.ui.toolbar.hideSaveButton')" 
+        *ngIf="!config.get('pixie.isAdmin') && type === 'saveas'"
+        class="export-button">
+            <mat-icon svgIcon="file-download"></mat-icon>
+            <span class="name" trans>Save as</span>
+        </button>
         <button mat-button (click)="exportImage()" [class.invisible]="config.get('pixie.ui.toolbar.hideExportButton')" class="export-button">
             <mat-icon svgIcon="file-download"></mat-icon>
             <span class="name" trans>Export</span>

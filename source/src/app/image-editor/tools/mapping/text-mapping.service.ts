@@ -102,6 +102,8 @@ export class TextMappingService {
                     newObjects.push({...object});
                 }
             });
+            console.log('____ objects ____');
+            console.log(newObjects);
             resolve(newObjects);
         });   
     }

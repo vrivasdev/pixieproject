@@ -21,6 +21,9 @@ import { SampleImage } from 'app/image-editor-ui/panels/open-sample-image-panel/
 import { DrawerName } from '../drawers/drawer-name.enum';
 import { DialogQuestion } from 'app/image-editor-ui/dialog/dialog-question/dialog-question';
 import { MatDialog } from '@angular/material';
+import { Save } from 'app/image-editor-ui/state/save/save.actions';
+import { Type } from 'app/image-editor-ui/state/save/save.enum';
+import { SaveState } from 'app/image-editor-ui/state/save/save.state';
 
 @Component({
     selector: 'toolbar',
@@ -40,6 +43,7 @@ export class ToolbarComponent implements AfterViewInit {
     private isAdmin: boolean;
     private hasId: boolean;
     public profileView: string;
+    public type: Type;
 
     constructor(
         public history: HistoryToolService,
@@ -58,6 +62,13 @@ export class ToolbarComponent implements AfterViewInit {
         this.isAdmin = config.get('pixie.isAdmin');
         this.hasId = config.get('pixie.id') ? true: false;
         this.profileView = config.get('pixie.profileView');
+
+         // Type of save 
+         if (!this.config.get('pixie.isAdmin') && 
+            localStorage.getItem('main-tab') !== '#user-templates') {
+            this.type = Type.SAVEAS;
+            console.log(this.type);
+        }
     }
 
     ngAfterViewInit() {
@@ -86,6 +97,12 @@ export class ToolbarComponent implements AfterViewInit {
     }
 
     public saveProject() {
+        this.store.dispatch(new Save(Type.SAVE));
+        this.panels.openSavePanel();
+    }
+
+    public saveAsProject() {
+        this.store.dispatch(new Save(Type.SAVEAS));
         this.panels.openSavePanel();
     }
 

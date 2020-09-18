@@ -38,7 +38,7 @@ export class ExportToolService {
                 if ( ! name) name = this.getDefault('name');
                 if ( ! format) format = this.getDefault('format');
                 if ( ! quality) quality = this.getDefault('quality');
-                
+
                 const filename = name + '.' + format; 
                 let data;
                 
@@ -124,6 +124,24 @@ export class ExportToolService {
             })
             .catch(error => console.log(`Error: ${error}`));
         }
+    }
+
+    public saveAs(share: string[], categoryId: number, group: number, templateName: string, saveType: number) {
+        let data;
+        let raw_json =  null;
+        let raw_json_back = null;
+        const host = window.location.protocol + '//' + window.location.hostname;
+        const tab = localStorage.getItem('tab');
+        const service = 'design/getJson';
+        const globalUrl = window.location.pathname.split('')[window.location.pathname.length - 1];
+        const otherTab = tab === 'front' ? 'back' : 'front';
+        
+        data = this.getJsonState();
+        this.watermark.remove();
+
+        if ( ! data) return;
+
+        this.saveTemplate(data, raw_json_back, templateName, saveType, categoryId, share);
     }
 
     public saveTemplate(raw_json, raw_json_back, templateName, saveType, categoryId , share) {
@@ -240,16 +258,17 @@ export class ExportToolService {
         )
         .then(res => res.json())
         .then(response => {
+            console.log('___ UPDATE SUCCESS _______');
             if (response.code === 404) {
                 document.getElementById('gif-loader').style.display = 'none';
                 alert(response.message);
             } else {
                 localStorage.setItem('active', 'false');
-                console.log('redirect')
+                console.log('____redirect______')
                 window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('________UPDATE Error: _____', error));
     }
 
     public get(id: number): Promise<any> {
