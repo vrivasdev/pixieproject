@@ -27,8 +27,9 @@ import { UpdateObjectId } from 'app/image-editor/state/mapping-state-actions';
 import { MatDialog } from '@angular/material';
 import { DialogMessage } from './dialog/dialog-message/dialog-message';
 import { DialogQuestion } from './dialog/dialog-question/dialog-question';
-import {moveItemInArray} from '@angular/cdk/drag-drop';
 import { ObjectsService } from 'app/image-editor/objects/objects.service';
+import { DialogImages } from './dialog/dialog-images/dialog-images';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'image-editor',
@@ -224,7 +225,7 @@ export class ImageEditorComponent implements OnInit {
 
             if (active.type === 'image' && 
                 mappedObjects.some(object => object.objectId === active.data.id)) {
-                    
+
                     const dialogRef  = this.dialog.open(DialogQuestion, {
                         width: '300px',
                         data: {message: 'Are you sure you want to upload an image?'}
@@ -232,34 +233,42 @@ export class ImageEditorComponent implements OnInit {
                     
                     dialogRef.afterClosed().subscribe(upload => {
                         if (upload) {
-                            this.importToolService
-                            .openUploadDialog({validate: true})
-                            .then(obj => {
-                                const active = this.canvas.fabric().getActiveObject();
-                                const position = this.objects.getAll().findIndex(obj => obj.data.id === active.data.id);
+                            if (mappedObjects.some(object => (object.objectId === active.data.id) 
+                                                          && (object.type === 'profile'))) {
+                                this.dialog.open(DialogImages, {
+                                    width: '250px',
+                                    data: {images: this.config.get('pixie.profile.images')}
+                                });
+                            } else {
+                                this.importToolService
+                                    .openUploadDialog({validate: true})
+                                    .then(obj => {
+                                        const active = this.canvas.fabric().getActiveObject();
+                                        const position = this.objects.getAll().findIndex(obj => obj.data.id === active.data.id);
 
-                                if ( ! obj) return;
+                                        if ( ! obj) return;
 
-                                obj.height = active.height;
-                                obj.left = active.left;
-                                obj.top = active.top;
-                                obj.width = active.width;
-                                obj.scaleX = active.scaleX;
-                                obj.scaleY = active.scaleY;
-        
-                                this.canvas.fabric().remove(active);
-                                this.canvas.fabric().setActiveObject(obj);
-        
-                                this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
-                                moveItemInArray(this.objects.getAll(), 0, position);
-                                const index = this.objects.getAll()
-                                                  .slice().reverse().findIndex(obj => obj.data.id === obj.data.id);
-                                
-                                const allObj = this.objects.getAll();
-                                
-                                this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
-                                this.canvasState.fabric.requestRenderAll();
-                            });
+                                        obj.height = active.height;
+                                        obj.left = active.left;
+                                        obj.top = active.top;
+                                        obj.width = active.width;
+                                        obj.scaleX = active.scaleX;
+                                        obj.scaleY = active.scaleY;
+                
+                                        this.canvas.fabric().remove(active);
+                                        this.canvas.fabric().setActiveObject(obj);
+                
+                                        this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
+                                        moveItemInArray(this.objects.getAll(), 0, position);
+                                        const index = this.objects.getAll()
+                                                        .slice().reverse().findIndex(obj => obj.data.id === obj.data.id);
+                                        
+                                        const allObj = this.objects.getAll();
+                                        
+                                        this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
+                                        this.canvasState.fabric.requestRenderAll();
+                                    });
+                            }
                         }
                     });
             }

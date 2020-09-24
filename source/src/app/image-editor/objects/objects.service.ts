@@ -4,6 +4,8 @@ import {CanvasService} from '../canvas/canvas.service';
 import {ActiveObjectService} from '../canvas/active-object/active-object.service';
 import {Store} from '@ngxs/store';
 import {ObjectsSynced} from '../state/editor-state-actions';
+import { UpdateObjectId } from '../state/mapping-state-actions';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Injectable()
 export class ObjectsService {
@@ -12,7 +14,7 @@ export class ObjectsService {
     constructor(
         private canvas: CanvasService,
         private activeObject: ActiveObjectService,
-        private store: Store,
+        private store: Store
     ) {
         this.init();
     }
@@ -123,5 +125,24 @@ export class ObjectsService {
                 this.syncObjects();
             });
         });
+    }
+
+    public getDir(str): string {
+        let dir: string;
+        switch(str.length) {
+            case 1:
+                dir = `000${str}`
+            break;
+            case 2:
+                dir = `00${str}`
+            break;
+            case 3:
+                dir = `0${str}`
+            break;
+            case 4: 
+                dir = `${str}`
+            break;
+        }
+        return dir;
     }
 }

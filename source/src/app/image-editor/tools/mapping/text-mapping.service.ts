@@ -4,13 +4,14 @@ import { ActiveObjectService } from 'app/image-editor/canvas/active-object/activ
 import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 import { Store } from '@ngxs/store';
 import { MappingState } from 'app/image-editor/state/mapping-state';
+import { ObjectsService } from 'app/image-editor/objects/objects.service';
 
 @Injectable()
-export class TextMappingService {
-    private 
+export class TextMappingService { 
     constructor(
         private config: Settings,
-        private store: Store
+        private store: Store,
+        private objects: ObjectsService
     ) {}
 
     public getVarContent(text: string, vars: Array<string>): Promise<any> {
@@ -89,7 +90,7 @@ export class TextMappingService {
                     const found: any = objects.filter(obj => obj.type === 'profile' && 
                                                              obj.objectId === object.data.id);
                     const base = `${window.location.protocol}//${window.location.hostname}`;
-                    const img = this.config.get('pixie.profile.Image');
+                    const img = this.getProfileImage();
 
                     if (found.length && img) {
                         newObjects.push({...object, 
@@ -102,10 +103,16 @@ export class TextMappingService {
                     newObjects.push({...object});
                 }
             });
-            console.log('____ objects ____');
-            console.log(newObjects);
             resolve(newObjects);
         });   
+    }
+
+    public getProfileImage(): string {
+        const profileImages = this.config.get('pixie.profile.images');
+        /*const img = profileImages.length ? `img/mc-data/admin/${this.objects.getDir(this.config.get('pixie.profile.id'))}/${profileImages[0].T_Employees_Profile_Result.img}` :
+                                           this.config.get('pixie.profile.Image');*/
+        const img = this.config.get('pixie.profile.Image');
+        return img;
     }
 
     public getImageOrFallback(path, fallback) {

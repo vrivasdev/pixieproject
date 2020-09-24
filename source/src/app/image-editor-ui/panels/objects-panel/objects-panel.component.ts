@@ -156,7 +156,7 @@ export class ObjectsPanelComponent {
 
     public reorderObjects(e: CdkDragDrop<string>) {
         if (!this.config.get('pixie.isAdmin')) return;
-        debugger;
+        
         moveItemInArray(this.objects.getAll(), e.previousIndex, e.currentIndex);
         // pixie and canvas object orders are reversed, need to
         // reverse newIndex given by cdk drag and drop

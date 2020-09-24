@@ -16,6 +16,7 @@ import {normalizeObjectProps} from '../utils/normalize-object-props';
 import { rejects } from 'assert';
 import { MatDialog } from '@angular/material';
 import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message/dialog-message';
+import { UpdateObjectId } from '../state/mapping-state-actions';
 
 @Injectable()
 export class CanvasService {
@@ -29,7 +30,8 @@ export class CanvasService {
         public activeObject: ActiveObjectService,
         private config: Settings,
         private store: Store,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private canvasState: CanvasStateService
     ) {}
 
     public render() {
@@ -146,6 +148,40 @@ export class CanvasService {
                 this.render();
             });
         }
+    }
+
+    public updateProfileImage(active: any, url: string): Promise<string>{
+        return new Promise((resolve, reject) => {
+            if ('_originalElement' in active ) {
+                this.fabric().remove(active);
+                fabric.Image.fromURL(url, (img) => {
+                    img.set({
+                        left: active.left,
+                        top: active.top,
+                        scaleX: active.scaleX,
+                        scaleY: active.scaleY,
+                        type: 'image',
+                        name: 'image'
+                    });
+    
+                    img.setSrc(url);
+                    // resize
+                    img.scaleToHeight(active.height * active.scaleY);
+                    img.scaleToWidth(active.width * active.scaleX);
+    
+                    this.fabric().add(img);
+                    this.fabric().setActiveObject(img);
+    
+                    // Update Object ID on mapping state
+                    this.store.dispatch(new UpdateObjectId(active.data.id, img.data.id));
+                    this.render();
+
+                    resolve(img.data.id.toString());
+                });
+            } else {
+                reject(null);
+            }
+        })
     }
     /**
      * Create a blank canvas with specified dimensions.
