@@ -231,12 +231,12 @@ export class ImageEditorComponent implements OnInit {
                         data: {message: 'Are you sure you want to upload an image?'}
                     });
                     
-                    dialogRef.afterClosed().subscribe(upload => {
-                        if (upload) {
+                    dialogRef.afterClosed().subscribe(answer => {
+                        if (answer) { // yes
                             if (mappedObjects.some(object => (object.objectId === active.data.id) 
                                                           && (object.type === 'profile'))) {
                                 this.dialog.open(DialogImages, {
-                                    width: '250px',
+                                    width: '300px',
                                     data: {images: this.config.get('pixie.profile.images')}
                                 });
                             } else {
