@@ -44,6 +44,7 @@ export class ToolbarComponent implements AfterViewInit {
     private hasId: boolean;
     public profileView: string;
     public type: Type;
+    public title: string;
 
     constructor(
         public history: HistoryToolService,
@@ -62,6 +63,8 @@ export class ToolbarComponent implements AfterViewInit {
         this.isAdmin = config.get('pixie.isAdmin');
         this.hasId = config.get('pixie.id') ? true: false;
         this.profileView = config.get('pixie.profileView');
+        this.title = localStorage.getItem('flyerName')? 
+                     localStorage.getItem('flyerName') : '' ;
 
          // Type of save 
          if (!this.config.get('pixie.isAdmin') && 
