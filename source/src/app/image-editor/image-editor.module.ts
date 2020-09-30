@@ -55,6 +55,7 @@ import {MappingState} from './state/mapping-state';
 import { TextMappingService } from './tools/mapping/text-mapping.service';
 import { SavePanelService } from './save/save-panel.service';
 import { SaveState } from 'app/image-editor-ui/state/save/save.state';
+import { UploadState } from './state/upload-state';
 
 export function init_app(settings, mergedConfig) {
     return () => {
@@ -97,6 +98,7 @@ export function init_app(settings, mergedConfig) {
             HistoryState,
             ObjectPanelState,
             SaveState,
+            UploadState
         ], {developmentMode: !environment.production}),
     ],
     exports: [

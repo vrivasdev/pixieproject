@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Settings } from 'common/core/config/settings.service';
-import { ActiveObjectService } from 'app/image-editor/canvas/active-object/active-object.service';
-import { CanvasService } from 'app/image-editor/canvas/canvas.service';
 import { Store } from '@ngxs/store';
 import { MappingState } from 'app/image-editor/state/mapping-state';
 import { ObjectsService } from 'app/image-editor/objects/objects.service';
+import { UploadState } from 'app/image-editor/state/upload-state';
 
 @Injectable()
 export class TextMappingService { 
@@ -90,11 +89,12 @@ export class TextMappingService {
                     const found: any = objects.filter(obj => obj.type === 'profile' && 
                                                              obj.objectId === object.data.id);
                     const base = `${window.location.protocol}//${window.location.hostname}`;
-                    const img = this.getProfileImage();
+                    const profileImg: any = !this.store.selectSnapshot(UploadState.getUploadProfile) ? 
+                                             this.getProfileImage() : false;
 
-                    if (found.length && img) {
+                    if (found.length && profileImg) {
                         newObjects.push({...object, 
-                                         src: `${base}/${img}`});
+                                         src: `${base}/${profileImg}`});
                     } else {
                         newObjects.push({...object});
                     }

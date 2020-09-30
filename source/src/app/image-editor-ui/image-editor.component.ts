@@ -12,7 +12,7 @@ import {CanvasStateService} from '../image-editor/canvas/canvas-state.service';
 import {Settings} from 'common/core/config/settings.service';
 import {BreakpointsService} from '../../common/core/ui/breakpoints.service';
 import {Select, Store} from '@ngxs/store';
-import {ObjectDeselected, ObjectSelected, OpenPanel} from '../image-editor/state/editor-state-actions';
+import {ObjectDeselected, ObjectSelected, OpenPanel } from '../image-editor/state/editor-state-actions';
 import {EditorState} from '../image-editor/state/editor-state';
 import {ControlPosition} from '../image-editor/enums/control-positions.enum';
 import {DrawerName} from './toolbar-controls/drawers/drawer-name.enum';
@@ -235,7 +235,7 @@ export class ImageEditorComponent implements OnInit {
                         if (answer) { // yes
                             if (mappedObjects.some(object => (object.objectId === active.data.id) 
                                                           && (object.type === 'profile'))) {
-                                this.dialog.open(DialogImages, {
+                                const imagesRef = this.dialog.open(DialogImages, {
                                     width: '300px',
                                     data: {images: this.config.get('pixie.profile.images')}
                                 });

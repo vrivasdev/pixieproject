@@ -1,0 +1,15 @@
+<div mat-dialog-content>
+  <p>Profile images</p>
+  <mat-select>
+    <mat-option 
+    *ngFor="let image of data.images" 
+    value="{{image.T_Employees_Profile_Result.img}}"
+    (click)="updateImage(image.T_Employees_Profile_Result.img)"
+    >
+      {{image.T_Employees_Profile_Result.variable}}
+    </mat-option>
+  </mat-select>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-button [mat-dialog-close]="true">Ok</button>
+</div>

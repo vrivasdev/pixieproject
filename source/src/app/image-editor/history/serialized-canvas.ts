@@ -11,4 +11,8 @@ export interface SerializedCanvas {
     canvasHeight: number;
     objectsPanel: any;
     objectsMapping: any;
+    uploadFiles: {
+        uploadProfile: any,
+        uploadMLS: any
+    }
 }

@@ -45,6 +45,7 @@ interface EditorStateModel {
     activeObjIsShape?: boolean;
     activeObjId?: string;
     zoom: number;
+    uploadProfile?: boolean;
 }
 
 @State<EditorStateModel>({

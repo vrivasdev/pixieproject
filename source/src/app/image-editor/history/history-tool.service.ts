@@ -29,6 +29,8 @@ import { MappingState } from '../state/mapping-state';
 import { TextMappingService } from '../tools/mapping/text-mapping.service';
 import { Settings } from 'common/core/config/settings.service';
 import { SetMapping } from '../state/mapping-state-actions';
+import { UploadState } from '../state/upload-state';
+import { UploadMLS, UploadProfile } from '../state/upload-state-actions';
 
 @Injectable()
 export class HistoryToolService {
@@ -88,6 +90,11 @@ export class HistoryToolService {
         this.store.dispatch(new SetMapping(object.objectId, object.type, object.field, object.map));
     }
 
+    public addUpload(object: any) {
+        this.store.dispatch(new UploadProfile(object.uploadFiles.uploadProfile));
+        this.store.dispatch(new UploadMLS(object.uploadFiles.upload));
+    }
+
     public addFromJson(json: string|SerializedCanvas) {
         const initial = !this.store.selectSnapshot(HistoryState.items).length,
             name = initial ? HistoryNames.INITIAL : HistoryNames.LOADED_STATE;
@@ -104,10 +111,15 @@ export class HistoryToolService {
         JSON.parse(json).mapping.forEach(object => this.addMapping(object));
     }
 
+    public addFromJsonUpload(json: string) {
+        const object: any = JSON.parse(json);
+        if ('uploadFiles' in object) {
+            this.addUpload(object);
+        }
+    }
+
     public getCurrentCanvasState(): SerializedCanvas {
-        console.log('____ Get Current Canvas State _____');
         console.log(this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']));
-        debugger;
         
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),
@@ -115,7 +127,11 @@ export class HistoryToolService {
             canvasWidth: this.canvas.state.original.width,
             canvasHeight: this.canvas.state.original.height,
             objectsPanel: this.store.selectSnapshot(ObjectPanelState.allObjects),
-            objectsMapping: this.store.selectSnapshot(MappingState.getMappingObjects)
+            objectsMapping: this.store.selectSnapshot(MappingState.getMappingObjects),
+            uploadFiles: {
+                uploadProfile: this.store.selectSnapshot(UploadState.getUploadProfile),
+                uploadMLS: this.store.selectSnapshot(UploadState.getUploadMls)
+            }
         };
     }
 

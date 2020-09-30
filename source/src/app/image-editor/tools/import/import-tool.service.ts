@@ -112,6 +112,14 @@ export class ImportToolService {
         });
     }
 
+    public openStateUpload(data: string): Promise<any> {
+        console.log('______ DATA _______');
+        console.log(data);
+        return this.resetEditor().then(() => {
+            return this.history.addFromJsonUpload(data);
+        });
+    }
+
     public resetEditor(params: {preserveHistory?: boolean} = {}): Promise<any> {
         // reset UI
         this.canvas.fabric().clear();
