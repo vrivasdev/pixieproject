@@ -40,6 +40,11 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class ImageEditorComponent implements OnInit {
     private isAdmin: boolean;
+    private xMove: number;
+    private yMove: number;
+    private isMoveDown: boolean = false;
+    private lastX: number = null;
+
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.toolbarHidden) toolbarHidden$: Observable<boolean>;
     @Select(EditorState.contentLoaded) contentLoaded$: Observable<boolean>;
@@ -188,12 +193,22 @@ export class ImageEditorComponent implements OnInit {
             }
         }
         if (!this.config.get('pixie.getAdmin')) {
-            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-                if (event.key === 'ArrowRight') obj.cropX -= 20;
-                else if (event.key === 'ArrowLeft') obj.cropX += 20;
-    
-                this.canvasState.fabric.requestRenderAll();
+            const amount: number = 20;
+            switch(event.key) {
+                case 'ArrowRight':
+                    obj.cropX -= amount;
+                break;
+                case 'ArrowLeft':
+                    obj.cropX += amount;
+                break;
+                case 'ArrowDown':
+                    obj.cropY -= amount;
+                break;
+                case 'ArrowUp':
+                    obj.cropY += amount;
+                break;
             }
+            this.canvasState.fabric.requestRenderAll()
         }   
     }
 
@@ -274,11 +289,11 @@ export class ImageEditorComponent implements OnInit {
             }
         }
     }
-    // if agent clicks on canvas
     @HostListener('click', ['$event.target'])
     onClick(event: MouseEvent) {
         if (!this.config.get('pixie.isAdmin')) {
             const element:any = event;
+            // if agent clicks on canvas
             if (element.tagName === 'CANVAS') {
                 if (!this.floatingPanels.panelIsOpen('objects')) {
                     this.floatingPanels.toggleObjects();
@@ -286,4 +301,37 @@ export class ImageEditorComponent implements OnInit {
             }
         }
     }
+
+    @HostListener('document:mousedown', ['$event'])
+    onMouseDown(event) {
+        this.xMove = event.pageX;
+        this.yMove = event.pageY;
+        this.isMoveDown = true;
+    }
+
+    @HostListener('document:mouseup', ['$event'])
+    onMouseUp() {
+        this.isMoveDown = false;
+    }
+
+    @HostListener('document:mousemove', ['$event'])
+    onMouseMove(event) {
+        const active: any = this.activeObject.get();
+        const amount: number = 20;
+        const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+
+        if (mappedObjects.some(object => // if was mapped on admin side
+            (object.objectId === active.data.id) && 
+            (object.type === 'profile' || object.type === 'mls'))) {
+                if (this.isMoveDown) {
+                    // FIXME: Image change if cursor's direction change
+                    if (this.lastX !== this.xMove) this.lastX = this.xMove;
+        
+                    active.cropX = (event.pageX > this.xMove) ? active.cropX - amount : active.cropX + amount;
+                    active.cropY = (event.pageY > this.yMove) ? active.cropY - amount : active.cropY + amount;
+                    
+                    this.canvasState.fabric.requestRenderAll();
+                }
+            }
+        }
 }
