@@ -320,17 +320,19 @@ export class ImageEditorComponent implements OnInit {
         const amount: number = 20;
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
-        if (mappedObjects.some(object => // if was mapped on admin side
-            (object.objectId === active.data.id) && 
-            (object.type === 'profile' || object.type === 'mls'))) {
-                if (this.isMoveDown) {
-                    // FIXME: Image change if cursor's direction change
-                    if (this.lastX !== this.xMove) this.lastX = this.xMove;
-        
-                    active.cropX = (event.pageX > this.xMove) ? active.cropX - amount : active.cropX + amount;
-                    active.cropY = (event.pageY > this.yMove) ? active.cropY - amount : active.cropY + amount;
-                    
-                    this.canvasState.fabric.requestRenderAll();
+        if (!this.config.get('pixie.isAdmin')) {
+            if (mappedObjects.some(object => // if was mapped on admin side
+                (object.objectId === active.data.id) && 
+                (object.type === 'profile' || object.type === 'mls'))) {
+                    if (this.isMoveDown) {
+                        // FIXME: Image change if cursor's direction change
+                        if (this.lastX !== this.xMove) this.lastX = this.xMove;
+            
+                        active.cropX = (event.pageX > this.xMove) ? active.cropX - amount : active.cropX + amount;
+                        active.cropY = (event.pageY > this.yMove) ? active.cropY - amount : active.cropY + amount;
+                        
+                        this.canvasState.fabric.requestRenderAll();
+                    }
                 }
             }
         }
