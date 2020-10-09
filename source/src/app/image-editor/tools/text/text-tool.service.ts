@@ -83,7 +83,15 @@ export class TextToolService {
             .filter(obj => obj.type === 'i-text')
             .map((obj: IText) => {
                 const family = obj.fontFamily;
-                return this.fontsPaginator.original.find(f => f.family === family);
+                const fonts = this.fontsPaginator.original.find(f => f.family === family);
+                if (fonts) {
+                    return fonts;
+                } else {
+                    const items = this.config.get('pixie.tools.text.items', []);
+                    const defaultFamily = 'family' in items? items.family : null;
+                    
+                    return defaultFamily === family ? items.family: false;
+                }
             }).filter(font => {
                 return font && font.type !== 'basic';
             });

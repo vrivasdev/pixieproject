@@ -126,7 +126,7 @@ export class SavePanelComponent {
         const share = !this.agents.length && this.savePanel.validateEmail(val.agentCtrl)?
                        [val.agentCtrl] : this.agents;
         this.submitted = true;
-
+        
         if (this.saveForm.invalid) {
             return;
         }
@@ -155,6 +155,13 @@ export class SavePanelComponent {
                                  val.group, 
                                  val.flyerName, 
                                  val.saveType);
+        }
+
+        if ((this.config.get('pixie.isAgent') === '1' && 
+             localStorage.getItem('main-tab') === '#thumbnails')) {
+                localStorage.setItem('main-tab', 
+                                     val.saveType === '0'? '#user-templates': 
+                                                           '#draft');
         }
 
         document.getElementById('gif-loader')

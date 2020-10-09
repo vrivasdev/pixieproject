@@ -119,8 +119,7 @@ export class HistoryToolService {
     }
 
     public getCurrentCanvasState(): SerializedCanvas {
-        console.log(this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']));
-        
+        debugger;
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),
             editor: {frame: this.frameTool.getActive(), fonts: this.textTool.getUsedFonts()},

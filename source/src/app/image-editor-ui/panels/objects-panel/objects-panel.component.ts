@@ -22,7 +22,7 @@ import { ObjectsState } from 'app/image-editor-ui/state/objects/objects.state';
 
 enum ImageType{
     MLS = 'Main Property Image',
-    PROFILE = 'Agent Profile Image',
+    PROFILE = 'Agent Profile Image (Double click)',
     OTHER = 'Template Locked Image'
 }
 

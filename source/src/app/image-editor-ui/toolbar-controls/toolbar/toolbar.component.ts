@@ -65,12 +65,10 @@ export class ToolbarComponent implements AfterViewInit {
         this.profileView = config.get('pixie.profileView');
         this.title = localStorage.getItem('flyerName')? 
                      localStorage.getItem('flyerName') : '' ;
-
+        const tab = localStorage.getItem('main-tab');
          // Type of save 
-         if (!this.config.get('pixie.isAdmin') && 
-            localStorage.getItem('main-tab') !== '#user-templates') {
+         if (!this.config.get('pixie.isAdmin') && tab === '#user-templates') {
             this.type = Type.SAVEAS;
-            console.log(this.type);
         }
     }
 
