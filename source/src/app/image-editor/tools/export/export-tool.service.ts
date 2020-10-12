@@ -327,6 +327,7 @@ export class ExportToolService {
                                      `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)
                               .replace(/\"/g, '\'')
                               .replace(/(\r\n|\n|\r|\b|\f|\t)/gm, '');
+            debugger;
             $.ajax({
                 url : this.config.get('pixie.renderize'),
                 type : 'post',

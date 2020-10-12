@@ -306,7 +306,10 @@ export class ImageEditorComponent implements OnInit {
     onMouseDown(event) {
         this.xMove = event.pageX;
         this.yMove = event.pageY;
-        this.isMoveDown = true;
+
+        if (event.target.className.trim() === "upper-canvas") {
+            this.isMoveDown = true;
+        }
     }
 
     @HostListener('document:mouseup', ['$event'])
@@ -325,12 +328,21 @@ export class ImageEditorComponent implements OnInit {
                 (object.objectId === active.data.id) && 
                 (object.type === 'profile' || object.type === 'mls'))) {
                     if (this.isMoveDown) {
-                        // FIXME: Image change if cursor's direction change
                         if (this.lastX !== this.xMove) this.lastX = this.xMove;
-            
-                        active.cropX = (event.pageX > this.xMove) ? active.cropX - amount : active.cropX + amount;
-                        active.cropY = (event.pageY > this.yMove) ? active.cropY - amount : active.cropY + amount;
-                        
+
+                        if (event.pageX > this.xMove) {
+                            const difX = active.cropX - amount;
+                            if (difX >= 0) active.cropX = difX;
+                        } else {
+                            active.cropX = active.cropX + amount;
+                        }
+
+                        if (event.pageY > this.yMove) {
+                            const difY = active.cropY - amount;
+                            if (difY >= 0) active.cropY = difY;
+                        } else {
+                            active.cropY = active.cropY + amount;
+                        }
                         this.canvasState.fabric.requestRenderAll();
                     }
                 }

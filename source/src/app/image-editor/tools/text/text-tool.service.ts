@@ -55,7 +55,6 @@ export class TextToolService {
         }
 
         text.viewportCenter();
-        console.log('Text:', text);
 
         // push text down, if it intersects with another text object
         this.canvas.fabric().getObjects('i-text').forEach(obj => {
@@ -90,7 +89,7 @@ export class TextToolService {
                     const items = this.config.get('pixie.tools.text.items', []);
                     const defaultFamily = 'family' in items? items.family : null;
                     
-                    return defaultFamily === family ? items.family: false;
+                    return defaultFamily === family ? items: false;
                 }
             }).filter(font => {
                 return font && font.type !== 'basic';
