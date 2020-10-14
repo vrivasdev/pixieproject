@@ -320,7 +320,7 @@ export class ImageEditorComponent implements OnInit {
     @HostListener('document:mousemove', ['$event'])
     onMouseMove(event) {
         const active: any = this.activeObject.get();
-        const amount: number = 20;
+        const amount: number = 10;
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
         if (!this.config.get('pixie.isAdmin')) {
