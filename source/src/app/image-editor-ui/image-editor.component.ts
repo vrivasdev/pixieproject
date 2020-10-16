@@ -1,5 +1,5 @@
 import { Text } from './../../../fabric-types/fabric-impl.d';
-import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, HostListener} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, HostListener, AfterViewInit} from '@angular/core';
 import {CanvasService} from '../image-editor/canvas/canvas.service';
 import {HistoryToolService} from '../image-editor/history/history-tool.service';
 import {fromEvent, Observable, BehaviorSubject} from 'rxjs';
@@ -69,7 +69,8 @@ export class ImageEditorComponent implements OnInit {
         private mappingService: TextMappingService,
         public dialog: MatDialog,
         public objects: ObjectsService,
-        private canvasState: CanvasStateService
+        private canvasState: CanvasStateService,
+        private elementRef:ElementRef
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -323,7 +324,7 @@ export class ImageEditorComponent implements OnInit {
         const amount: number = 10;
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
-        if (!this.config.get('pixie.isAdmin')) {
+        if (!this.config.get('pixie.isAdmin') && active) {
             if (mappedObjects.some(object => // if was mapped on admin side
                 (object.objectId === active.data.id) && 
                 (object.type === 'profile' || object.type === 'mls'))) {
@@ -345,7 +346,7 @@ export class ImageEditorComponent implements OnInit {
                         }
                         this.canvasState.fabric.requestRenderAll();
                     }
-                }
             }
         }
+    }
 }
