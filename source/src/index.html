@@ -52,25 +52,31 @@
             //     width: 800,
             //     height: 600,
             // },
-            id: 684,
-            isAgent: "0",
+            // id: 684,
+            isAgent: "1",
             flyerName: 'test001',
             categoryId: "53",
             saveType: 'completed',
             isAdmin: false,
-            profileView: 'admin',
+            profileView: 'agent',
             profile : {
                 Cell_Number: "0416-6123164",
                 Company_Email: "jhonyfm@avantiway.com",
                 Email: "jhonyfm@gmail.com",
                 First_Name: "Jhony",
-                Image: "img/profile/user/340/img_agent_340.jpg",
+                Image: "img/profile/profile-design.png",
+                //Image: "",
                 Last_Name: "Ferreira Marques",
                 Phone_Number: "",
-                id: "340",
+                id: "57",
                 isAdmin: false,
-                isAgent: false,
-                mls: []
+                mls: [],
+                images: [
+                    {T_Employees_Profile_Result: {img: "883hGxadVh.jpeg", variable: "profilepic1250x1100"}},
+                    {T_Employees_Profile_Result: {img: "57_leftpic1250x1100_jdoyxhma34.png", variable: "leftpic1250x1100"}},
+                    {T_Employees_Profile_Result: {img: "57_profilepic1250x1100_jietmub1l3.png", variable: "rightpic1250x1100"}},
+                    {T_Employees_Profile_Result: {img: "57_rightpic1250x1100_dt67bz25e1.png", variable: "halfbodypic1250x1100"}}
+                ]
             },
             ui: {
                 mode: 'inline',                
@@ -105,6 +111,17 @@
                         hasControls: true,
                         hasBorders: true,
                     }
+                },
+                text: {
+                    items: {
+                        "family":"Lato",
+                        "category":"sans-serif",
+                        "type":"google",
+                        "subsets":[
+                        "latin",
+                        "latin-ext"
+                        ]
+                    }
                 }
             },
             onLoad: function() {
@@ -126,6 +143,9 @@
 
                         pixie.getTool('import').openStateMappingFile(JSON.stringify({mapping:data.objectsMapping}));
                         delete data.objectsMapping;
+
+                        pixie.getTool('import').openStateUpload(JSON.stringify({uploadFiles:data.uploadFiles}));
+                        delete data.uploadFiles;
 
                         pixie.getTool('import').openStateFile(JSON.stringify(data));
                     })
