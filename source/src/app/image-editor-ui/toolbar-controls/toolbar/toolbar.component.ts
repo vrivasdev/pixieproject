@@ -40,7 +40,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     public compactMode = new BehaviorSubject(false);
-    private isAdmin: boolean;
+    public isAdmin: boolean;
     private hasId: boolean;
     public profileView: string;
     public type: Type;

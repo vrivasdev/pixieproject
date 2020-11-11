@@ -108,11 +108,12 @@ export class TextMappingService {
     }
 
     public getProfileImage(): string {
-        // TODO: Default picture must be the first one. Resize it
-        /* const profileImages = this.config.get('pixie.profile.images');
-        const img = profileImages.length ? `img/mc-data/admin/${this.objects.getDir(this.config.get('pixie.profile.id'))}/${profileImages[0].T_Employees_Profile_Result.img}` :
-                                           this.config.get('pixie.profile.Image');*/
-        const img = this.config.get('pixie.profile.Image');
+        const profileId = this.objects.getDir(this.config.get('pixie.profile.id'));
+        const profileImages = this.config.get('pixie.profile.images');
+        const img = profileImages.length ? `img/mc-data/admin/${profileId}/${profileImages[0].T_Employees_Profile_Result.img}` :
+                                           this.config.get('pixie.profile.Image');
+        // const img = this.config.get('pixie.profile.Image');
+        console.log(img);
         return img;
     }
 

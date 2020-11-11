@@ -1,5 +1,10 @@
+<h1 mat-dialog-title>
+  {{data.title}}
+</h1>
 <div mat-dialog-content>
-  <p>{{data.message}}</p>
+  <p>
+    {{data.message}}<a href={{data.link}}>{{data.textLink}}</a>
+  </p>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Ok</button>

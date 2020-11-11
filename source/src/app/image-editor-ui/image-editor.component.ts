@@ -39,7 +39,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
     encapsulation: ViewEncapsulation.None
 })
 export class ImageEditorComponent implements OnInit {
-    private isAdmin: boolean;
+    public isAdmin: boolean;
     private xMove: number;
     private yMove: number;
     private isMoveDown: boolean = false;
@@ -251,12 +251,28 @@ export class ImageEditorComponent implements OnInit {
                         if (answer) { // yes
                             if (mappedObjects.some(object => (object.objectId === active.data.id) 
                                                           && (object.type === 'profile'))) {
-                                const imagesRef = this.dialog.open(DialogImages, {
+                                this.dialog.open(DialogImages, {
                                     width: '300px',
                                     data: {images: this.config.get('pixie.profile.images')}
                                 });
                             } else {
-                                this.importToolService
+                                const size = localStorage.getItem('is_digital') !== 'true'? 
+                                             {x: 2800, y: 3700} : {x: 1500, y: 1080};
+                                const msgRef = this.dialog.open(
+                                    DialogMessage, 
+                                    {
+                                        width: '300px',
+                                        data: {
+                                            title: 'Important',
+                                            message: `Please make sure that the image is at least ${size.x} x ${size.y} in size or it will not be uploaded. Use this tool to crop and resize your image as needed: `,
+                                            link: 'https://www.picmonkey.com',
+                                            textLink: 'picmonkey.com'
+                                        }
+                                    }
+                                );
+
+                                msgRef.afterClosed().subscribe(() => {
+                                    this.importToolService
                                     .openUploadDialog({validate: true})
                                     .then(obj => {
                                         const active = this.canvas.fabric().getActiveObject();
@@ -284,6 +300,7 @@ export class ImageEditorComponent implements OnInit {
                                         this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
                                         this.canvasState.fabric.requestRenderAll();
                                     });
+                                });                                
                             }
                         }
                     });

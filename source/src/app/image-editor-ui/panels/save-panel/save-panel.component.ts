@@ -33,7 +33,7 @@ interface Categories {
 })
 export class SavePanelComponent {
     private id: number;
-    private flyerName: string;
+    public flyerName: string;
     private saveType: string;
     private selectedOption: string;
     public active;

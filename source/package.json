@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot --host 0.0.0.0",
-    "build": "ng build --prod --source-map --deploy-url=assets/",
+    "start": "ng serve --host 0.0.0.0",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -32,7 +32,7 @@
     "core-js": "^2.6.2",
     "deepmerge": "^3.0.0",
     "dot-object": "^1.7.1",
-    "fabric": "^2.6.0",
+    "fabric": "^2.7.0",
     "file-saver": "^2.0.0",
     "hammerjs": "^2.0.8",
     "hex-rgb": "^3.0.0",

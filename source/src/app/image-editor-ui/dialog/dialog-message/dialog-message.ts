@@ -3,7 +3,10 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 export interface DialogData {
     message: string,
-    errorFound: boolean
+    title: string,
+    errorFound: boolean,
+    link: string,
+    textLink: string
 }
 
 @Component({
@@ -12,8 +15,8 @@ export interface DialogData {
 })
 export class DialogMessage {
     message: string;
+    title: string;
     errorFound: boolean;
-
     constructor(
         public dialogRef: MatDialogRef<DialogMessage>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
