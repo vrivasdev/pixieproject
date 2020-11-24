@@ -24,6 +24,7 @@ import { MatDialog } from '@angular/material';
 import { Save } from 'app/image-editor-ui/state/save/save.actions';
 import { Type } from 'app/image-editor-ui/state/save/save.enum';
 import { SaveState } from 'app/image-editor-ui/state/save/save.state';
+import { ActiveObjectService } from '../../../image-editor/canvas/active-object/active-object.service';
 
 @Component({
     selector: 'toolbar',
@@ -58,7 +59,8 @@ export class ToolbarComponent implements AfterViewInit {
         private floatingPanels: FloatingPanelsService,
         private store: Store,
         private importToolService: ImportToolService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private activeObject: ActiveObjectService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
         this.hasId = config.get('pixie.id') ? true: false;
@@ -97,12 +99,15 @@ export class ToolbarComponent implements AfterViewInit {
         }
     }
 
-    public saveProject() {
+    public saveProject() {        
         this.store.dispatch(new Save(Type.SAVE));
         this.panels.openSavePanel();
+
+        if (this.activeObject.get()) this.activeObject.deselect();
     }
 
     public saveAsProject() {
+        const active = '';
         this.store.dispatch(new Save(Type.SAVEAS));
         this.panels.openSavePanel();
     }
