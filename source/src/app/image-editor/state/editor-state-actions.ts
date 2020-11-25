@@ -52,3 +52,8 @@ export class SetZoom {
     static readonly type = '[Editor] Set Zoom';
     constructor(public zoom: number) {}
 }
+
+export class SetProfilePicture {
+    static readonly type = '[Editor] Set Profile Picture';
+    constructor(public profilePicture: boolean) {}
+}

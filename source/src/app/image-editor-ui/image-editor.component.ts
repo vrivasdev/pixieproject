@@ -12,7 +12,7 @@ import {CanvasStateService} from '../image-editor/canvas/canvas-state.service';
 import {Settings} from 'common/core/config/settings.service';
 import {BreakpointsService} from '../../common/core/ui/breakpoints.service';
 import {Select, Store} from '@ngxs/store';
-import {ObjectDeselected, ObjectSelected, OpenPanel } from '../image-editor/state/editor-state-actions';
+import {ObjectDeselected, ObjectSelected, OpenPanel, SetProfilePicture } from '../image-editor/state/editor-state-actions';
 import {EditorState} from '../image-editor/state/editor-state';
 import {ControlPosition} from '../image-editor/enums/control-positions.enum';
 import {DrawerName} from './toolbar-controls/drawers/drawer-name.enum';
@@ -311,6 +311,16 @@ export class ImageEditorComponent implements OnInit {
     onClick(event: MouseEvent) {
         if (!this.config.get('pixie.isAdmin')) {
             const element:any = event;
+            const active: any = this.activeObject.get();
+            const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+            let isProfile: boolean = false;
+            // if agent clicks on profile image
+            if (active.type === 'image' && 
+                mappedObjects.some(object => object.type === 'profile' && 
+                                             object.objectId === active.data.id)) { 
+                isProfile = true;
+            }
+            this.store.dispatch(new SetProfilePicture(isProfile));
             // if agent clicks on canvas
             if (element.tagName === 'CANVAS') {
                 if (!this.floatingPanels.panelIsOpen('objects')) {

@@ -40,6 +40,8 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(EditorState.activePanel) activePanel$: Observable<DrawerName>;
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
+    @Select(EditorState.profilePicture) profilePicture$: Observable<boolean>;
+
     public compactMode = new BehaviorSubject(false);
     public isAdmin: boolean;
     private hasId: boolean;
@@ -197,5 +199,18 @@ export class ToolbarComponent implements AfterViewInit {
 
     public markAsPreview() {
         this.exportTool.createPreview();
+    }
+    
+    public deleteImage() {
+        if (this.activeObject.get()) {
+            const dialogRef  = this.dialog.open(DialogQuestion, {
+                width: '300px',
+                data: {message: 'Are you sure you want to delete it?'}
+            });
+
+            dialogRef.afterClosed().subscribe(answer => {
+                if (answer) this.activeObject.delete();
+            });                        
+        }
     }
 }

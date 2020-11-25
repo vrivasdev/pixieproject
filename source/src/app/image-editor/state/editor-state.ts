@@ -7,7 +7,8 @@ import {
     ObjectSelected,
     OpenEditor,
     OpenPanel,
-    SetZoom
+    SetZoom,
+    SetProfilePicture
 } from './editor-state-actions';
 import {ObjectsState, ObjectsStateModel} from '../../image-editor-ui/state/objects/objects.state';
 import {DrawerName} from '../../image-editor-ui/toolbar-controls/drawers/drawer-name.enum';
@@ -46,6 +47,7 @@ interface EditorStateModel {
     activeObjId?: string;
     zoom: number;
     uploadProfile?: boolean;
+    profilePicture?: boolean;
 }
 
 @State<EditorStateModel>({
@@ -63,6 +65,7 @@ interface EditorStateModel {
         activeObjIsShape: false,
         activeObjId: null,
         zoom: 100,
+        profilePicture: false
     },
     children: [
         FilterState,
@@ -146,6 +149,11 @@ export class EditorState implements NgxsOnInit {
         return state.activeObjId;
     }
 
+    @Selector()
+    static profilePicture(state: EditorStateModel) {
+        return state.profilePicture;
+    }
+
     constructor(
         private config: Settings,
         private breakpoints: BreakpointsService,
@@ -225,6 +233,11 @@ export class EditorState implements NgxsOnInit {
     @Action(SetZoom)
     setZoom(ctx: StateContext<EditorStateModel>, {zoom}: SetZoom) {
         ctx.patchState({zoom});
+    }
+
+    @Action(SetProfilePicture)
+    setProfilePicture(ctx: StateContext<EditorStateModel>, {profilePicture}: SetProfilePicture) {
+        ctx.patchState({profilePicture});
     }
 
     private executeCallback(name: 'onClose'|'onOpen') {
