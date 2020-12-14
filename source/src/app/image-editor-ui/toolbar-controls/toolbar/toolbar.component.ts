@@ -48,6 +48,7 @@ export class ToolbarComponent implements AfterViewInit {
     public profileView: string;
     public type: Type;
     public title: string;
+    private tmpZoom: number;
 
     constructor(
         public history: HistoryToolService,
@@ -69,6 +70,7 @@ export class ToolbarComponent implements AfterViewInit {
         this.profileView = config.get('pixie.profileView');
         this.title = localStorage.getItem('flyerName')? 
                      localStorage.getItem('flyerName') : '' ;
+        this.tmpZoom = 0;
         const tab = localStorage.getItem('main-tab');
          // Type of save 
          if (!this.config.get('pixie.isAdmin') && tab === '#user-templates') {
@@ -212,5 +214,18 @@ export class ToolbarComponent implements AfterViewInit {
                 if (answer) this.activeObject.delete();
             });                        
         }
+    }
+
+    public zoomImage(event: any) {
+        const active: any = this.activeObject.get();
+        
+        active.enableCache(false);
+
+        if (event.value > this.tmpZoom) active.zoomIn();
+        else active.zoomOut(); 
+
+        this.tmpZoom = event.value;
+        
+        this.canvas.render();
     }
 }

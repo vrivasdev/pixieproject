@@ -69,18 +69,10 @@ export class CanvasZoomService {
     }
 
     private bindMouseWheel() {
-        const zoomStep = 0.05;
-
-        this.state.fabric.on('mouse:wheel', opt => {
+        this.state.fabric.on('mouse:wheel', opt => {        
             opt.e.preventDefault();
             opt.e.stopPropagation();
 
-            if (opt.e.deltaY < 0) {
-                this.set(this.currentZoom + zoomStep);
-            } else {
-                this.set(this.currentZoom - zoomStep);
-            }
-            
             this.pan.set();
             this.state.fabric.requestRenderAll();
         });

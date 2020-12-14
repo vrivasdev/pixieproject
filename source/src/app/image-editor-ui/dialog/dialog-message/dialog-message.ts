@@ -24,4 +24,7 @@ export class DialogMessage {
     onNoClick(): void {
         this.dialogRef.close();
     }
+    openNewWindow() {
+        window.open(this.data.link);
+    }
 }

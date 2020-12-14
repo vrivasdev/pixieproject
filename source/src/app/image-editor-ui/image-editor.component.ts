@@ -144,7 +144,6 @@ export class ImageEditorComponent implements OnInit {
 
     public onObjectSelection(fabricEvent) {
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
-        const exist = mappedObjects.some(object => object.objectId === fabricEvent.target.data.id)
 
         this.store.dispatch(new ObjectSelected(
             fabricEvent.target.name, fabricEvent.e != null &&
@@ -241,7 +240,6 @@ export class ImageEditorComponent implements OnInit {
 
             if (active.type === 'image' && 
                 mappedObjects.some(object => object.objectId === active.data.id)) {
-
                     const dialogRef  = this.dialog.open(DialogQuestion, {
                         width: '300px',
                         data: {message: 'Are you sure you want to upload an image?'}
@@ -270,36 +268,11 @@ export class ImageEditorComponent implements OnInit {
                                         }
                                     }
                                 );
-
+                                
                                 msgRef.afterClosed().subscribe(() => {
                                     this.importToolService
-                                    .openUploadDialog({validate: true})
-                                    .then(obj => {
-                                        const active = this.canvas.fabric().getActiveObject();
-                                        const position = this.objects.getAll().findIndex(obj => obj.data.id === active.data.id);
-
-                                        if ( ! obj) return;
-
-                                        obj.height = active.height;
-                                        obj.left = active.left;
-                                        obj.top = active.top;
-                                        obj.width = active.width;
-                                        obj.scaleX = active.scaleX;
-                                        obj.scaleY = active.scaleY;
-                
-                                        this.canvas.fabric().remove(active);
-                                        this.canvas.fabric().setActiveObject(obj);
-                
-                                        this.store.dispatch(new UpdateObjectId(active.data.id, obj.data.id));
-                                        moveItemInArray(this.objects.getAll(), 0, position);
-                                        const index = this.objects.getAll()
-                                                        .slice().reverse().findIndex(obj => obj.data.id === obj.data.id);
-                                        
-                                        const allObj = this.objects.getAll();
-                                        
-                                        this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
-                                        this.canvasState.fabric.requestRenderAll();
-                                    });
+                                        .openUploadDialog({validate: true, rectBorder: true})
+                                        .then(obj => this.objects.syncObjects());
                                 });                                
                             }
                         }
@@ -319,7 +292,7 @@ export class ImageEditorComponent implements OnInit {
                 mappedObjects.some(object => object.type === 'profile' && 
                                              object.objectId === active.data.id)) { 
                 isProfile = true;
-            }
+            } 
             this.store.dispatch(new SetProfilePicture(isProfile));
             // if agent clicks on canvas
             if (element.tagName === 'CANVAS') {
@@ -334,7 +307,7 @@ export class ImageEditorComponent implements OnInit {
     onMouseDown(event) {
         this.xMove = event.pageX;
         this.yMove = event.pageY;
-
+        
         if (event.target.className.trim() === "upper-canvas") {
             this.isMoveDown = true;
         }
@@ -347,32 +320,18 @@ export class ImageEditorComponent implements OnInit {
 
     @HostListener('document:mousemove', ['$event'])
     onMouseMove(event) {
-        const active: any = this.activeObject.get();
+        const active: any = this.canvas.fabric().getActiveObject();
         const amount: number = 10;
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
-
+        
         if (!this.config.get('pixie.isAdmin') && active) {
-            if (mappedObjects.some(object => // if was mapped on admin side
-                (object.objectId === active.data.id) && 
-                (object.type === 'profile' || object.type === 'mls'))) {
-                    if (this.isMoveDown) {
-                        if (this.lastX !== this.xMove) this.lastX = this.xMove;
-
-                        if (event.pageX > this.xMove) {
-                            const difX = active.cropX - amount;
-                            if (difX >= 0) active.cropX = difX;
-                        } else {
-                            active.cropX = active.cropX + amount;
-                        }
-
-                        if (event.pageY > this.yMove) {
-                            const difY = active.cropY - amount;
-                            if (difY >= 0) active.cropY = difY;
-                        } else {
-                            active.cropY = active.cropY + amount;
-                        }
+            if (this.isMoveDown) {
+                if (mappedObjects.some(object => // if was mapped on admin side
+                    (object.objectId === active.data.id) && 
+                    (object.type === 'profile' || object.type === 'mls'))) {
+                        active.moveImage(event.movementX, event.movementY);                      
                         this.canvasState.fabric.requestRenderAll();
-                    }
+                    } 
             }
         }
     }

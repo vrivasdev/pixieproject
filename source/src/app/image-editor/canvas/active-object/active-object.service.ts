@@ -62,9 +62,14 @@ export class ActiveObjectService {
 
     public get() {
         const obj = this.canvasState.fabric && this.canvasState.fabric.getActiveObject();
+        
         if ( ! obj || ! obj.name) return null;
         if (obj.name.indexOf('crop.') > -1 || obj.name.indexOf('round.') > -1) return null;
         return obj;
+    }
+
+    public getActive() {
+        return this.canvasState.fabric.getActiveObject();
     }
 
     public set(key: string|object, value?: any) {

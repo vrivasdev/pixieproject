@@ -17,6 +17,7 @@ import {
     ResetHistory,
     UpdatePointerById
 } from '../../image-editor-ui/state/history/history.actions';
+import {MappingState} from 'app/image-editor/state/mapping-state';
 import {randomString} from '../../../common/core/utils/random-string';
 import {HistoryNames} from './history-names.enum';
 import {staticObjectConfig} from '../objects/static-object-config';
@@ -25,7 +26,6 @@ import {take} from 'rxjs/operators';
 import { ObjectPanelState } from 'app/image-editor-ui/state/objects-panel/objects-panel.state';
 import { ObjectPanelItem } from './objectPanel-item.interface';
 import { BlockObject } from 'app/image-editor-ui/state/objects-panel/objects-panel.actions';
-import { MappingState } from '../state/mapping-state';
 import { TextMappingService } from '../tools/mapping/text-mapping.service';
 import { Settings } from 'common/core/config/settings.service';
 import { SetMapping } from '../state/mapping-state-actions';
@@ -119,7 +119,6 @@ export class HistoryToolService {
     }
 
     public getCurrentCanvasState(): SerializedCanvas {
-        debugger;
         return {
             canvas: this.canvas.fabric().toJSON([...Object.keys(staticObjectConfig), 'crossOrigin', 'name', 'data']),
             editor: {frame: this.frameTool.getActive(), fonts: this.textTool.getUsedFonts()},
@@ -154,7 +153,7 @@ export class HistoryToolService {
                // Get map variables and transform them into profile data
                this.mappingService
                    .mapProfileVariables(canvas.objects)
-                   .then(objects => {
+                   .then(objects => {                       
                         if (!this.config.get('pixie.isAdmin')) canvas.objects = objects;
 
                         this.canvas.fabric().loadFromJSON(canvas, () => {
@@ -168,7 +167,7 @@ export class HistoryToolService {
                                 this.frameTool.add(item.editor.frame.name);
                             } else {
                                 this.frameTool.remove();
-                            }
+                            }                                                       
                             // prepare fabric.js and canvas
                             this.canvas.render();
                             this.canvas.fabric().calcOffset();
@@ -182,8 +181,8 @@ export class HistoryToolService {
                             // reapply any filters object used to have
                             if (obj.hasOwnProperty('applyFilters')) {
                                 (obj as Image).applyFilters();
-                            }
-                        });   
+                            } 
+                        });
                     });
            });
        });
@@ -199,6 +198,7 @@ export class HistoryToolService {
             activeObjectId: this.activeObject.getId(),
         });
     }
+
 
     private createObjectPanelItem(object: any): ObjectPanelItem {
         return Object.assign({

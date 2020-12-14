@@ -12,7 +12,8 @@ import {
     MatSelectModule, 
     MatOptionModule, 
     MatFormFieldModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSliderModule
 } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
@@ -39,6 +40,7 @@ import {MatListModule} from '@angular/material/list';
         MatTabsModule,
         HttpClientModule,
         MatListModule,
+        MatSliderModule,
         NgxsReduxDevtoolsPluginModule.forRoot()
     ],
     providers: [

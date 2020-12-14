@@ -15,8 +15,10 @@ import {ObjectNames} from '../objects/object-names.enum';
 import {normalizeObjectProps} from '../utils/normalize-object-props';
 import { rejects } from 'assert';
 import { MatDialog } from '@angular/material';
-import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message/dialog-message';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UpdateObjectId } from '../state/mapping-state-actions';
+import { ObjectsService } from 'app/image-editor/objects/objects.service';
+import { DialogMessage } from '../../image-editor-ui/dialog/dialog-message/dialog-message';
 
 @Injectable()
 export class CanvasService {
@@ -183,6 +185,94 @@ export class CanvasService {
             }
         })
     }
+
+    public addRectangleImage(obj: any): any {
+        let zoomLevel = 0;
+        const zoomLevelMin = 0;
+        const zoomLevelMax = 20;
+        const active = this.fabric().getActiveObject();
+        const maxWidth  = this.state.original.width,
+        maxHeight = this.state.original.height;
+        
+        const patternCanvas = new fabric.StaticCanvas();
+        
+        patternCanvas.setDimensions({
+            width: active.width,
+            height: active.height
+        });
+        patternCanvas.add(obj);
+        patternCanvas.renderAll();
+
+        const panPoint = new fabric.Point(0, 0);
+        const zoomPoint = new fabric.Point(200, 200);
+
+        const pattern = new fabric.Pattern({
+            source: () => {
+                patternCanvas.renderAll();
+                return patternCanvas.getElement();
+            },
+            repeat: 'no-repeat',
+        });
+
+        const rect: any = new fabric.Rect({
+            left: active.left,
+            top: active.top,
+            angle: active.angle,
+            width: patternCanvas.getElement().width,
+            height: patternCanvas.getElement().height,
+            fill: pattern,
+            objectCaching: true,
+            name: 'image',
+            type: 'image'
+        });
+
+        rect.scale(1);            
+
+        rect.zoomIn = () => {
+            if (zoomLevel < zoomLevelMax) {
+                zoomLevel += 0.1;                    
+                patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+            }
+        };
+
+        rect.zoomOut = () => {
+            zoomLevel -= 0.1;
+            if (zoomLevel < 0) zoomLevel = 0;
+            if (zoomLevel >= zoomLevelMin) {
+                patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+            }
+        };
+
+        rect.moveImage = (movementX, movementY) => {            
+            patternCanvas.relativePan(new fabric.Point(movementX, movementY));
+        }
+
+        const objects = this.fabric().getObjects();         
+
+        this.fabric().remove(active);
+    
+        rect.enableCache = (isEnable) => {
+            rect.objectCaching = isEnable;
+        }
+
+        this.state.fabric.add(rect);
+        this.state.fabric.setActiveObject(rect);
+        
+        const newObj = this.fabric().getActiveObject();
+        
+        this.store.dispatch(new UpdateObjectId(active.data.id, 
+                                               newObj.data.id));
+        
+        const allObj = this.fabric().getObjects();
+        const position = allObj.findIndex(object => object.data.id === newObj.data.id);
+        
+        moveItemInArray(objects, 0, position);
+
+        allObj.find(obj => obj.data.id === allObj[position].data.id)
+              .moveTo(allObj.length - position -1);
+
+        this.canvasState.fabric.requestRenderAll();
+    }
     /**
      * Create a blank canvas with specified dimensions.
      */
@@ -205,7 +295,7 @@ export class CanvasService {
     /**
      * Open image at given url in canvas.
      */
-    public openImage(url, validate:boolean = false): Promise<Image> {
+    public openImage(url, validate:boolean = false, rectBorder: boolean = false): Promise<Image> {
         return new Promise((resolve, reject) => {
             fabric.util.loadImage(url, image => {
                 if ( ! image) return;
@@ -214,22 +304,11 @@ export class CanvasService {
                 const active = this.fabric().getActiveObject();
 
                 if (!this.config.get('pixie.isAdmin')) {
-                    if (active){
-                        if (validate && (object.height < active.height) || (object.width < active.width)) {
-                            this.openDialog(`Image must have this resolution: ${active.width} x ${active.height}`, 
-                                            true);
-                            reject(object);
-                        } else {
-                            if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
-                            resolve(this.addImage(object));
-                        }
-                    } else {
-                        if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
-                        resolve(this.addImage(object));
+                    if (validate && (object.height < active.height) || (object.width < active.width)) {
+                        this.openDialog(`Image must have this resolution: ${active.width} x ${active.height}`, true);
                     }
-                } else {
-                    resolve(this.addImage(object));
                 }
+                resolve(rectBorder? this.addRectangleImage(object):this.addImage(object));
             });
         });
     }
@@ -246,7 +325,7 @@ export class CanvasService {
         // use either main image or canvas dimensions as outter boundaries for scaling new image
         const maxWidth  = this.state.original.width,
             maxHeight = this.state.original.height;
-
+        
         // if image is wider or higher then the current canvas, we'll scale it down
         if (object.width >= maxWidth || object.height >= maxHeight) {
 

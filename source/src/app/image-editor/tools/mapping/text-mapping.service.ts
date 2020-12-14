@@ -94,7 +94,9 @@ export class TextMappingService {
 
                     if (found.length && profileImg) {
                         newObjects.push({...object, 
-                                         src: `${base}/${profileImg}`});
+                                         src: `${base}/${profileImg}`,
+                                         lockScalingX: false,
+                                         lockScalingY: false });
                     } else {
                         newObjects.push({...object});
                     }

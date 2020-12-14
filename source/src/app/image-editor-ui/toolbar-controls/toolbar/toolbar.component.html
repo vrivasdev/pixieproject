@@ -70,6 +70,10 @@
         </button>
         <span class="name design-title" trans> {{title}} </span>
     </div>
+    <div class="center">
+        <div trans>Zoom Image</div>
+        <mat-slider (input)="zoomImage($event)" min="1" max="5" step="0.5" value="1.5"></mat-slider>
+    </div> 
     <div class="center" *ngIf="config.get('pixie.ui.allowZoom')">
         <button mat-icon-button (click)="zoomOut()">
             <mat-icon svgIcon="remove"></mat-icon>
@@ -83,10 +87,10 @@
         </button>
     </div>
     <div class="right">
-        <button mat-icon-button [disabled]="!(canUndo$ | async)" (click)="history.undo()" *ngIf="isAdmin" >
+        <button mat-icon-button [disabled]="!(canUndo$ | async)" (click)="history.undo()">
             <mat-icon svgIcon="undo"></mat-icon>
         </button>
-        <button mat-icon-button [disabled]="!(canRedo$ | async)" (click)="history.redo()" *ngIf="isAdmin" >
+        <button mat-icon-button [disabled]="!(canRedo$ | async)" (click)="history.redo()">
             <mat-icon svgIcon="redo"></mat-icon>
         </button>
         <button class="toggle-history-button" mat-icon-button (click)="panels.toggleHistory()" *ngIf="isAdmin" >
