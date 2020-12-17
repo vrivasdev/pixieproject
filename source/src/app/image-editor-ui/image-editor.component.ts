@@ -257,7 +257,8 @@ export class ImageEditorComponent implements OnInit {
                                 });
                             } else {
                                 const size = localStorage.getItem('is_digital') !== 'true'? 
-                                             {x: 2800, y: 3700} : {x: 1500, y: 1080};
+                                             this.config.get('pixie.sizes.print') : 
+                                             this.config.get('pixie.sizes.digital');
                                 const msgRef = this.dialog.open(
                                     DialogMessage, 
                                     {
@@ -277,7 +278,7 @@ export class ImageEditorComponent implements OnInit {
                                     .then(obj => {
                                         const active = this.canvas.fabric().getActiveObject();
                                         const position = this.objects.getAll().findIndex(obj => obj.data.id === active.data.id);
-
+                                        
                                         if ( ! obj) return;
 
                                         obj.height = active.height;
@@ -286,7 +287,7 @@ export class ImageEditorComponent implements OnInit {
                                         obj.width = active.width;
                                         obj.scaleX = active.scaleX;
                                         obj.scaleY = active.scaleY;
-                
+
                                         this.canvas.fabric().remove(active);
                                         this.canvas.fabric().setActiveObject(obj);
                 

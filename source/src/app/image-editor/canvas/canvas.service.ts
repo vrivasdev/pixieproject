@@ -211,20 +211,16 @@ export class CanvasService {
                 if ( ! image) return;
 
                 const object = new fabric.Image(image);
-                const active = this.fabric().getActiveObject();
+                const size = localStorage.getItem('is_digital') !== 'true'? 
+                                             this.config.get('pixie.sizes.print') : 
+                                             this.config.get('pixie.sizes.digital');
 
                 if (!this.config.get('pixie.isAdmin')) {
-                    if (active){
-                        if (validate && (object.height < active.height) || (object.width < active.width)) {
-                            this.openDialog(`Image must have this resolution: ${active.width} x ${active.height}`, 
-                                            true);
-                            reject(object);
-                        } else {
-                            if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
-                            resolve(this.addImage(object));
-                        }
+                    if (validate && ((object.height < size.y) && (object.width < size.x))) {
+                        this.openDialog(`Image must have this resolution: ${size.x} x ${size.y}`, 
+                                        true);
+                        reject(object);
                     } else {
-                        if (validate) this.openDialog(`For better results image should have this resolution ${active.width} x ${active.height}`);
                         resolve(this.addImage(object));
                     }
                 } else {
