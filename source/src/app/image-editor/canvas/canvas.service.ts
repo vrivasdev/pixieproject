@@ -264,12 +264,12 @@ export class CanvasService {
                                                newObj.data.id));
         
         const allObj = this.fabric().getObjects();
-        const position = allObj.findIndex(object => object.data.id === newObj.data.id);
+        const position = allObj.findIndex(object => object.data.id === newObj.data.id) - 1;
         
         moveItemInArray(objects, 0, position);
 
-        allObj.find(obj => obj.data.id === allObj[position].data.id)
-              .moveTo(allObj.length - position -1);
+        allObj.find(obj => obj.data.id === allObj[position+1].data.id)
+              .moveTo(allObj.length - position);
 
         this.canvasState.fabric.requestRenderAll();
     }

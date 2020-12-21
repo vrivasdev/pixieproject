@@ -57,3 +57,13 @@ export class SetProfilePicture {
     static readonly type = '[Editor] Set Profile Picture';
     constructor(public profilePicture: boolean) {}
 }
+
+export class SetMlsImage {
+    static readonly type = '[Editor] Is MLS image';
+    constructor(public isMlsImage: boolean) {}
+}
+
+export class UploadImage {
+    static readonly type = '[Editor] Upload image';
+    constructor(public isUpload: boolean) {}
+}

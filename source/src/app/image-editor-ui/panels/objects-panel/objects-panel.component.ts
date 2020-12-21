@@ -19,6 +19,7 @@ import { ActiveObjectService } from 'app/image-editor/canvas/active-object/activ
 import { HistoryToolService } from 'app/image-editor/history/history-tool.service';
 import { MappingState } from 'app/image-editor/state/mapping-state';
 import { ObjectsState } from 'app/image-editor-ui/state/objects/objects.state';
+import { SetMlsImage } from 'app/image-editor/state/editor-state-actions';
 
 enum ImageType{
     MLS = 'Main Property Image',
@@ -58,8 +59,16 @@ export class ObjectsPanelComponent {
     }
 
     public selectObject(object: Object) {
+        const mappedObjs: any = this.store.selectSnapshot(MappingState.getMappingObjects);
+        
+        this.store.dispatch(new SetMlsImage(
+            mappedObjs.some(obj => obj.type === 'mls' && obj.objectId === object.data.id)?
+            true : false
+        ));
+        
         this.objects.select(object);
-        if ( ! this.store.selectSnapshot(EditorState.dirty)) {
+
+        if (!this.store.selectSnapshot(EditorState.dirty)) {
             this.store.dispatch(new OpenPanel(DrawerName.OBJECT_SETTINGS));
         }
     }

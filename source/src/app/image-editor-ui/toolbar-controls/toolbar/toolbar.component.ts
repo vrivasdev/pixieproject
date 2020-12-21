@@ -41,6 +41,8 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canUndo) canUndo$: Observable<boolean>;
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     @Select(EditorState.profilePicture) profilePicture$: Observable<boolean>;
+    @Select(EditorState.isMlsImage) isMlsImage$: Observable<boolean>;
+    @Select(EditorState.isUploadImage) isUploadImage$: Observable<boolean>;
 
     public compactMode = new BehaviorSubject(false);
     public isAdmin: boolean;

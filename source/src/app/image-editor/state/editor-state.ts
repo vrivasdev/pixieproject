@@ -8,7 +8,9 @@ import {
     OpenEditor,
     OpenPanel,
     SetZoom,
-    SetProfilePicture
+    SetProfilePicture,
+    SetMlsImage,
+    UploadImage
 } from './editor-state-actions';
 import {ObjectsState, ObjectsStateModel} from '../../image-editor-ui/state/objects/objects.state';
 import {DrawerName} from '../../image-editor-ui/toolbar-controls/drawers/drawer-name.enum';
@@ -48,6 +50,8 @@ interface EditorStateModel {
     zoom: number;
     uploadProfile?: boolean;
     profilePicture?: boolean;
+    isMlsImage?: boolean;
+    isUpload?: boolean;
 }
 
 @State<EditorStateModel>({
@@ -65,7 +69,9 @@ interface EditorStateModel {
         activeObjIsShape: false,
         activeObjId: null,
         zoom: 100,
-        profilePicture: false
+        profilePicture: false,
+        isMlsImage: false,
+        isUpload: false
     },
     children: [
         FilterState,
@@ -154,6 +160,16 @@ export class EditorState implements NgxsOnInit {
         return state.profilePicture;
     }
 
+    @Selector()
+    static isMlsImage(state: EditorStateModel) {
+        return state.isMlsImage;
+    }
+
+    @Selector()
+    static isUploadImage(state: EditorStateModel) {
+        return state.isUpload;
+    }
+
     constructor(
         private config: Settings,
         private breakpoints: BreakpointsService,
@@ -238,6 +254,16 @@ export class EditorState implements NgxsOnInit {
     @Action(SetProfilePicture)
     setProfilePicture(ctx: StateContext<EditorStateModel>, {profilePicture}: SetProfilePicture) {
         ctx.patchState({profilePicture});
+    }
+
+    @Action(SetMlsImage)
+    setMlsImage(ctx: StateContext<EditorStateModel>, {isMlsImage}: SetMlsImage) {
+        ctx.patchState({isMlsImage});
+    }
+
+    @Action(UploadImage)
+    isUploadImage(ctx: StateContext<EditorStateModel>, {isUpload}: UploadImage) {
+        ctx.patchState({isUpload});
     }
 
     private executeCallback(name: 'onClose'|'onOpen') {
