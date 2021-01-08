@@ -261,7 +261,8 @@ export class ImageEditorComponent implements OnInit {
                                 });
                             } else {
                                 const size = localStorage.getItem('is_digital') !== 'true'? 
-                                             {x: 2800, y: 3700} : {x: 1500, y: 1080};
+                                             this.config.get('pixie.sizes.print') : 
+                                             this.config.get('pixie.sizes.digital');
                                 const msgRef = this.dialog.open(
                                     DialogMessage, 
                                     {

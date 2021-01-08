@@ -91,7 +91,7 @@ export class CanvasService {
         return this.state.loaded;
     }
 
-    public initContent(): Promise<Image|{width: number, height: number}> {
+    public initContent(): Promise<Image|{width: number, height: number}|null> {
         let image = this.config.get('pixie.image');
         if (image instanceof HTMLImageElement) image = image.src;
         const size = this.config.get('pixie.blankCanvasSize');
@@ -102,7 +102,7 @@ export class CanvasService {
             return this.openNew(size.width, size.height);
         }
 
-        return new Promise(resolve => resolve());
+        return new Promise(resolve => resolve(null));
     }
 
     public resize(width: number, height: number) {
@@ -297,7 +297,8 @@ export class CanvasService {
     }
 
     public addRectangleImagefromURL(obj: any): any {
-        const source = 'http://myavex.avantiway.local/' + obj.src;
+        const origin = `${window.location.origin}/`; // 'http://myavex.avantiway.local/'
+        const source = origin + obj.src;
         fabric.Image.fromURL(source, (img) => {
             img.set({
                 left: obj.left,
@@ -466,11 +467,17 @@ export class CanvasService {
                 if ( ! image) return;
 
                 const object = new fabric.Image(image);
-                const active = this.fabric().getActiveObject();
+                const size = localStorage.getItem('is_digital') !== 'true'? 
+                                             this.config.get('pixie.sizes.print') : 
+                                             this.config.get('pixie.sizes.digital');
 
                 if (!this.config.get('pixie.isAdmin')) {
-                    if (validate && (object.height < active.height) || (object.width < active.width)) {
-                        this.openDialog(`Image must have this resolution: ${active.width} x ${active.height}`, true);
+                    if (validate && ((object.height < size.y) && (object.width < size.x))) {
+                        this.openDialog(`Image must have this resolution: ${size.x} x ${size.y}`, 
+                                        true);
+                        reject(object);
+                    } else {
+                        resolve(this.addImage(object));
                     }
                 }
                 resolve(rectBorder? this.addRectangleImage(object):this.addImage(object));
