@@ -477,10 +477,11 @@ export class CanvasService {
                                         true);
                         reject(object);
                     } else {
-                        resolve(this.addImage(object));
+                        resolve(rectBorder? this.addRectangleImage(object):this.addImage(object));
                     }
+                } else {
+                    resolve(this.addImage(object));
                 }
-                resolve(rectBorder? this.addRectangleImage(object):this.addImage(object));
             });
         });
     }
