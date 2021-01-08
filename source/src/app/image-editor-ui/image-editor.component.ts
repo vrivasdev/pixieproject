@@ -17,7 +17,8 @@ import {
     ObjectSelected, 
     OpenPanel, 
     SetProfilePicture, 
-    UploadImage 
+    UploadImage,
+    SetSliderValue
 } from '../image-editor/state/editor-state-actions';
 import {EditorState} from '../image-editor/state/editor-state';
 import {ControlPosition} from '../image-editor/enums/control-positions.enum';
@@ -240,7 +241,6 @@ export class ImageEditorComponent implements OnInit {
     @HostListener('dblclick', ['$event.target'])
     doubleClick(event: MouseEvent) {
         if (!this.config.get('pixie.isAdmin')) {
-
             const active: any = this.activeObject.get();
             const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
@@ -273,12 +273,14 @@ export class ImageEditorComponent implements OnInit {
                                             textLink: 'picmonkey.com'
                                         }
                                     }
-                                );
-                                
+                                );                                
                                 msgRef.afterClosed().subscribe(() => {
                                     this.importToolService
                                         .openUploadDialog({validate: true, rectBorder: true})
-                                        .then(obj => {
+                                        .then(obj => {                                                                                        
+                                            this.store.dispatch(new SetSliderValue(
+                                                this.canvas.getZoomLevel(obj.data.id))
+                                            );
                                             this.objects.syncObjects();
                                             this.store.dispatch(new UploadImage(true));
                                         });
@@ -332,13 +334,15 @@ export class ImageEditorComponent implements OnInit {
         const active: any = this.canvas.fabric().getActiveObject();
         const amount: number = 10;
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
-        
+
         if (!this.config.get('pixie.isAdmin') && active) {
             if (this.isMoveDown) {
                 if (mappedObjects.some(object => // if was mapped on admin side
                     (object.objectId === active.data.id) && 
                     (object.type === 'profile' || object.type === 'mls'))) {
-                        active.moveImage(event.movementX, event.movementY);                      
+                        active.enableCache(false);
+                        active.moveImage(event.movementX, event.movementY);
+
                         this.canvasState.fabric.requestRenderAll();
                     } 
             }

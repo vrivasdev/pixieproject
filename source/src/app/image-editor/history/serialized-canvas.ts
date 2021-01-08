@@ -14,5 +14,6 @@ export interface SerializedCanvas {
     uploadFiles: {
         uploadProfile: any,
         uploadMLS: any
-    }
+    },
+    zoomLayers: any
 }

@@ -103,8 +103,9 @@ export class ExportToolService {
         const otherTab = tab === 'front' ? 'back' : 'front';
         
         data = this.getJsonState();
+        
         this.watermark.remove();
-
+        
         if ( ! data) return;
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
@@ -159,6 +160,9 @@ export class ExportToolService {
             const profile = this.config.get('pixie.profileView');
     
             params[`${temp}name`] = templateName;
+
+            console.log('____SAVE PARAMS ____', JSON.stringify(params));
+            debugger;
 
             fetch(
                 `${this.config.get('pixie.saveUrl')}/${profile}`,
@@ -244,6 +248,9 @@ export class ExportToolService {
 
         const profile = this.config.get('pixie.profileView');
         
+        console.log('___ UPDATE PARAMS ____', data);
+        debugger;
+
         fetch(
             `${this.config.get('pixie.updateUrl')}/${profile}`,
             {
@@ -327,7 +334,6 @@ export class ExportToolService {
                                      `width="${this.canvas.state.original.width}" height="${this.canvas.state.original.height}"`)
                               .replace(/\"/g, '\'')
                               .replace(/(\r\n|\n|\r|\b|\f|\t)/gm, '');
-            debugger;
             $.ajax({
                 url : this.config.get('pixie.renderize'),
                 type : 'post',

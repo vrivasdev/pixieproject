@@ -630,6 +630,12 @@ interface IPatternOptions {
 	 * The source for the pattern
 	 */
 	source: string|HTMLImageElement|HTMLCanvasElement|Function;
+
+	src?: string;
+
+	scaledHeight?: any;
+
+	scaledWidth?: any;
 }
 export interface Pattern extends IPatternOptions {}
 export class Pattern  {
@@ -2996,6 +3002,11 @@ interface IRectOptions extends IObjectOptions {
 	 * Vertical border radius
 	 */
 	ry?: number;
+	// Source image
+	src?: string;
+	
+	scaledHeight?: number;
+    scaledWidth?: number;
 }
 
 export interface Rect extends IRectOptions {}

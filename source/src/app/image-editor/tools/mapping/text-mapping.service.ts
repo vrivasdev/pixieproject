@@ -114,8 +114,6 @@ export class TextMappingService {
         const profileImages = this.config.get('pixie.profile.images');
         const img = profileImages.length ? `img/mc-data/admin/${profileId}/${profileImages[0].T_Employees_Profile_Result.img}` :
                                            this.config.get('pixie.profile.Image');
-        // const img = this.config.get('pixie.profile.Image');
-        console.log(img);
         return img;
     }
 

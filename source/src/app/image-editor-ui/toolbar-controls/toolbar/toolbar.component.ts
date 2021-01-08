@@ -43,6 +43,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(EditorState.profilePicture) profilePicture$: Observable<boolean>;
     @Select(EditorState.isMlsImage) isMlsImage$: Observable<boolean>;
     @Select(EditorState.isUploadImage) isUploadImage$: Observable<boolean>;
+    @Select(EditorState.getSliderValue) sliderValue$: Observable<boolean>;
 
     public compactMode = new BehaviorSubject(false);
     public isAdmin: boolean;
@@ -51,6 +52,7 @@ export class ToolbarComponent implements AfterViewInit {
     public type: Type;
     public title: string;
     private tmpZoom: number;
+    private value: number = 1;
 
     constructor(
         public history: HistoryToolService,
@@ -72,12 +74,17 @@ export class ToolbarComponent implements AfterViewInit {
         this.profileView = config.get('pixie.profileView');
         this.title = localStorage.getItem('flyerName')? 
                      localStorage.getItem('flyerName') : '' ;
-        this.tmpZoom = 0;
+        this.tmpZoom = 1;
         const tab = localStorage.getItem('main-tab');
          // Type of save 
-         if (!this.config.get('pixie.isAdmin') && tab === '#user-templates') {
+        if (!this.config.get('pixie.isAdmin') && tab === '#user-templates') {
             this.type = Type.SAVEAS;
         }
+        /*if (!this.config.get('pixie.isAdmin')) {
+            const value = this.store.selectSnapshot(EditorState.getSliderValue);
+            this.sliderValue = value? value : this.sliderValue;
+            console.log('___ slider value ___', value);
+        }*/
     }
 
     ngAfterViewInit() {
@@ -219,15 +226,14 @@ export class ToolbarComponent implements AfterViewInit {
     }
 
     public zoomImage(event: any) {
-        const active: any = this.activeObject.get();
+        const active: any = this.activeObject.get();                
         
         active.enableCache(false);
-
+        
         if (event.value > this.tmpZoom) active.zoomIn();
         else active.zoomOut(); 
 
         this.tmpZoom = event.value;
-        
         this.canvas.render();
     }
 }

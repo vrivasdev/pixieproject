@@ -10,7 +10,15 @@ import {staticObjectConfig} from '../objects/static-object-config';
 import {CanvasStateService} from './canvas-state.service';
 import {randomString} from '../../../common/core/utils/random-string';
 import {Store} from '@ngxs/store';
-import {ContentLoaded} from '../state/editor-state-actions';
+import { ContentLoaded, 
+         SetMlsImage 
+} from '../state/editor-state-actions';
+import { 
+    SetZoomLayer, 
+    UpdateZoom,
+    UpdateMovement
+} from '../state/zoom-state-actions';
+import { ZoomState } from '../state/zoom-state'
 import {ObjectNames} from '../objects/object-names.enum';
 import {normalizeObjectProps} from '../utils/normalize-object-props';
 import { rejects } from 'assert';
@@ -187,31 +195,36 @@ export class CanvasService {
     }
 
     public addRectangleImage(obj: any): any {
-        let zoomLevel = 0;
+        let zoomLevel = 1;
         const zoomLevelMin = 0;
-        const zoomLevelMax = 20;
+        const zoomLevelMax = 2;
         const active = this.fabric().getActiveObject();
         const maxWidth  = this.state.original.width,
         maxHeight = this.state.original.height;
-        
+        const step = 0.1;
+        const isZoomOut: boolean = false;
+        const isZoomIn: boolean = false;
         const patternCanvas = new fabric.StaticCanvas();
         
         patternCanvas.setDimensions({
             width: active.width,
             height: active.height
         });
+        
         patternCanvas.add(obj);
         patternCanvas.renderAll();
 
         const panPoint = new fabric.Point(0, 0);
         const zoomPoint = new fabric.Point(200, 200);
-
         const pattern = new fabric.Pattern({
             source: () => {
-                patternCanvas.renderAll();
-                return patternCanvas.getElement();
+                if (typeof patternCanvas !== 'undefined') {
+                    patternCanvas.renderAll();
+                    return patternCanvas.getElement();
+                }
             },
             repeat: 'no-repeat',
+            src: 'currentSrc' in obj._element? obj._element.currentSrc : null
         });
 
         const rect: any = new fabric.Rect({
@@ -230,21 +243,26 @@ export class CanvasService {
 
         rect.zoomIn = () => {
             if (zoomLevel < zoomLevelMax) {
-                zoomLevel += 0.1;                    
-                patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+                zoomLevel = parseFloat((zoomLevel + step).toFixed(1));                
+                patternCanvas.zoomToPoint(zoomPoint, zoomLevel);
             }
+            this.store.dispatch( new UpdateZoom(rect.data, zoomLevel));
         };
 
         rect.zoomOut = () => {
-            zoomLevel -= 0.1;
-            if (zoomLevel < 0) zoomLevel = 0;
+            zoomLevel = parseFloat((zoomLevel - step).toFixed(1));
+
+            if (zoomLevel > 1) zoomLevel = 1;
+
             if (zoomLevel >= zoomLevelMin) {
-                patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+                patternCanvas.zoomToPoint(zoomPoint, zoomLevel);
             }
+            this.store.dispatch( new UpdateZoom(rect.data, zoomLevel));
         };
 
-        rect.moveImage = (movementX, movementY) => {            
+        rect.moveImage = (movementX, movementY) => {
             patternCanvas.relativePan(new fabric.Point(movementX, movementY));
+            this.store.dispatch(new UpdateMovement(rect.data.id, movementX, movementY));
         }
 
         const objects = this.fabric().getObjects();         
@@ -260,7 +278,7 @@ export class CanvasService {
         
         const newObj = this.fabric().getActiveObject();
         
-        this.store.dispatch(new UpdateObjectId(active.data.id, 
+        this.store.dispatch(new UpdateObjectId(active.data.id,
                                                newObj.data.id));
         
         const allObj = this.fabric().getObjects();
@@ -269,9 +287,156 @@ export class CanvasService {
         moveItemInArray(objects, 0, position);
 
         allObj.find(obj => obj.data.id === allObj[position+1].data.id)
-              .moveTo(allObj.length - position);
-
+              .moveTo(allObj.length - position - 1);
+        
+        this.setZoomLayerState(newObj, obj, zoomLevel);
+        
         this.canvasState.fabric.requestRenderAll();
+
+        return newObj;
+    }
+
+    public addRectangleImagefromURL(obj: any): any {
+        const source = 'http://myavex.avantiway.local/' + obj.src;
+        fabric.Image.fromURL(source, (img) => {
+            img.set({
+                left: obj.left,
+                top: obj.top,
+                scaleX: obj.scaleX,
+                scaleY: obj.scaleY,
+                type: 'image',
+                name: 'image'
+            });
+            img.setSrc(source);
+
+            let zoomLevel = 5;
+            const zoomLevelMin = 1;
+            const zoomLevelMax = 5;
+            const active = obj;
+            const maxWidth  = this.state.original.width,
+                maxHeight = this.state.original.height;
+            const patternCanvas = new fabric.StaticCanvas();
+            const step = 0.5;
+            
+            // if image is wider or higher then the current canvas, we'll scale it down
+            if (obj.width >= maxWidth || obj.height >= maxHeight) {
+                // scale newly uploaded image to the above dimensions
+                img.scaleX = 0.323;
+                img.scaleY = 0.323;
+            }
+            
+            patternCanvas.setDimensions({
+                width: active.width,
+                height: active.height
+            });
+
+            patternCanvas.add(img);
+            patternCanvas.renderAll();
+
+            const panPoint = new fabric.Point(0, 0);
+            const zoomPoint = new fabric.Point(200, 200);
+            const pattern = new fabric.Pattern({
+                source: () => {
+                    if (typeof patternCanvas !== 'undefined') {
+                        patternCanvas.renderAll();
+                        return patternCanvas.getElement();
+                    }
+                },
+                repeat: 'no-repeat',
+                src: source
+            });
+
+            const rect: any = new fabric.Rect({
+                left: active.left,
+                top: active.top,
+                angle: active.angle,
+                width: patternCanvas.getElement().width,
+                height: patternCanvas.getElement().height,
+                fill: pattern,
+                objectCaching: true,
+                name: 'image',
+                type: 'image'
+            });
+
+            rect.scale(1);
+            patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, obj.zoomLevel));
+
+            rect.zoomIn = () => {
+                console.log('___ zoom in ____', zoomLevel);
+                if (zoomLevel < zoomLevelMax) {
+                    zoomLevel = parseFloat((zoomLevel + step).toFixed(1));                
+                    patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+                }
+                this.store.dispatch( new UpdateZoom(rect.data, zoomLevel));
+            };
+
+            rect.zoomOut = () => {
+                console.log('___ zoom out ____', zoomLevel);
+                if (zoomLevel < 0) zoomLevel = 0;
+                if (zoomLevel >= zoomLevelMin) {
+                    zoomLevel = parseFloat((zoomLevel - step).toFixed(1));                
+                    patternCanvas.zoomToPoint(zoomPoint, Math.pow(2, zoomLevel));
+                }
+                this.store.dispatch( new UpdateZoom(rect.data, zoomLevel));
+            };
+
+            rect.moveImage = (movementX, movementY) => {            
+                patternCanvas.relativePan(new fabric.Point(movementX, movementY));
+            }
+
+            const objects = this.fabric().getObjects();         
+
+            this.fabric().remove(active);
+        
+            rect.enableCache = (isEnable) => {
+                rect.objectCaching = isEnable;
+            }
+
+            this.state.fabric.add(rect);
+            this.state.fabric.setActiveObject(rect);
+            
+            const newObj: any = this.fabric().getActiveObject();
+
+            this.store.dispatch(new UpdateObjectId(active.data.id,
+                                                newObj.data.id));
+
+            const allObj = this.fabric().getObjects();
+            const position = allObj.findIndex(object => object.data.id === newObj.data.id) - 1;
+            
+            moveItemInArray(objects, 0, position);
+
+            allObj.find(obj => obj.data.id === allObj[position+1].data.id)
+                .moveTo(allObj.length - position -1);
+        
+            this.setZoomLayerState(newObj, null, obj.zoomLevel);
+            
+            if ('movementX' in obj && 'movementY' in obj) {
+                patternCanvas.relativePan(new fabric.Point(obj.movementX, obj.movementY));
+                this.store.dispatch(new UpdateMovement(newObj.data.id, obj.movementX, obj.movementY));
+            }
+            // MLS Image variable's state as true
+            this.store.dispatch(new SetMlsImage(true));
+            this.canvasState.fabric.requestRenderAll();
+        });
+    }
+
+    private setZoomLayerState(obj: any, oldObj: any = null, zoomLevel: number): void {
+        this.store.dispatch(new SetZoomLayer(
+            obj.data,
+            zoomLevel,
+            obj.fill.src,
+            oldObj? oldObj.scaleX : obj.scaleX,
+            oldObj? oldObj.scaleY : obj.scaleY,
+            obj.width,
+            obj.height,
+            obj.left,
+            obj.top,
+            obj.angle,
+            obj.name,
+            obj.type,
+            oldObj? oldObj.movementX : obj.movementX,
+            oldObj? oldObj.movementY : obj.movementY,
+        ));
     }
     /**
      * Create a blank canvas with specified dimensions.
@@ -355,5 +520,9 @@ export class CanvasService {
     public getMainImage(): FImage {
         return this.state.fabric.getObjects()
             .find(obj => obj.name === ObjectNames.mainImage.name) as FImage;
+    }
+
+    public getZoomLevel(id: string): number | null {
+        return this.zoom.getZoomLevelById(id);
     }
 }

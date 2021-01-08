@@ -4,6 +4,7 @@ import {CanvasStateService} from './canvas-state.service';
 import {Settings} from 'common/core/config/settings.service';
 import {Store} from '@ngxs/store';
 import {SetZoom} from '../state/editor-state-actions';
+import { ZoomState } from '../state/zoom-state';
 import { ActiveObjectService } from './active-object/active-object.service';
 
 @Injectable()
@@ -98,5 +99,11 @@ export class CanvasZoomService {
             this.pan.set();
             this.state.fabric.requestRenderAll();
         });
+    }
+
+    public getZoomLevelById(id: string): number | null {
+        const found = this.store.selectSnapshot(ZoomState.getZoomLayers)
+                          .filter(layer => layer.data.id === id);
+        return found.length? found[0].zoomLevel : null;
     }
 }

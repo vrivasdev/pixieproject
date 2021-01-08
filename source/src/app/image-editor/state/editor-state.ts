@@ -10,7 +10,8 @@ import {
     SetZoom,
     SetProfilePicture,
     SetMlsImage,
-    UploadImage
+    UploadImage,
+    SetSliderValue
 } from './editor-state-actions';
 import {ObjectsState, ObjectsStateModel} from '../../image-editor-ui/state/objects/objects.state';
 import {DrawerName} from '../../image-editor-ui/toolbar-controls/drawers/drawer-name.enum';
@@ -52,6 +53,7 @@ interface EditorStateModel {
     profilePicture?: boolean;
     isMlsImage?: boolean;
     isUpload?: boolean;
+    sliderValue?: number;
 }
 
 @State<EditorStateModel>({
@@ -71,7 +73,8 @@ interface EditorStateModel {
         zoom: 100,
         profilePicture: false,
         isMlsImage: false,
-        isUpload: false
+        isUpload: false,
+        sliderValue: 5
     },
     children: [
         FilterState,
@@ -170,6 +173,11 @@ export class EditorState implements NgxsOnInit {
         return state.isUpload;
     }
 
+    @Selector()
+    static getSliderValue(state: EditorStateModel) {
+        return state.sliderValue;
+    }
+
     constructor(
         private config: Settings,
         private breakpoints: BreakpointsService,
@@ -264,6 +272,11 @@ export class EditorState implements NgxsOnInit {
     @Action(UploadImage)
     isUploadImage(ctx: StateContext<EditorStateModel>, {isUpload}: UploadImage) {
         ctx.patchState({isUpload});
+    }
+
+    @Action(SetSliderValue)
+    setSliderValue(ctx: StateContext<EditorStateModel>, {sliderValue}: SetSliderValue) {
+        ctx.patchState({sliderValue});
     }
 
     private executeCallback(name: 'onClose'|'onOpen') {

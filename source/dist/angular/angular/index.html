@@ -79,6 +79,10 @@
                     {T_Employees_Profile_Result: {img: "57_rightpic1250x1100_dt67bz25e1.png", variable: "halfbodypic1250x1100"}}*/
                 ]
             },
+            sizes: {
+                print: {x: 2800, y: 3700},
+                digital: {x: 1500, y: 1080}
+            },
             ui: {
                 mode: 'inline',                
                 showExportPanel: true, 
@@ -138,7 +142,7 @@
                         mode: 'no-cors'
                     })
                     .then(resp => resp.json())
-                    .then(data => {                    
+                    .then(data => {                                     
                         pixie.getTool('import').openStateObjectPanelFile(JSON.stringify({objectsPanel:data.objectsPanel}));
                         delete data.objectsPanel;
 
@@ -148,7 +152,17 @@
                         pixie.getTool('import').openStateUpload(JSON.stringify({uploadFiles:data.uploadFiles}));
                         delete data.uploadFiles;
 
-                        pixie.getTool('import').openStateFile(JSON.stringify(data));
+                        pixie.getTool('import')
+                             .openStateFile(JSON.stringify(data))
+                             .then(resp => {
+                                if ('zoomLayers' in data) {
+                                    if (data.zoomLayers.length) {                                        
+                                        pixie.getTool('import')
+                                             .openZoomLayers(data.zoomLayers);
+                                        delete data.zoomLayers;
+                                    }
+                                }
+                            });                  
                     })
                     .catch(error => console.log('Error:', error));
                     //.then(data => {console.log(JSON.stringify(data))})

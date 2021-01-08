@@ -5,9 +5,12 @@ import {Object} from 'fabric/fabric-impl';
 import {EditorControlsService} from '../../toolbar-controls/editor-controls.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {CanvasStateService} from '../../../image-editor/canvas/canvas-state.service';
+import {CanvasService} from '../../../image-editor/canvas/canvas.service';
 import {Select, Store} from '@ngxs/store';
 import {EditorState} from '../../../image-editor/state/editor-state';
-import {OpenPanel} from '../../../image-editor/state/editor-state-actions';
+import {OpenPanel, 
+       SetSliderValue
+} from '../../../image-editor/state/editor-state-actions';
 import {DrawerName} from '../../toolbar-controls/drawers/drawer-name.enum';
 import {ObjectNames} from '../../../image-editor/objects/object-names.enum';
 import {Observable} from 'rxjs';
@@ -50,6 +53,7 @@ export class ObjectsPanelComponent {
         private config: Settings,
         private active: ActiveObjectService,
         private history: HistoryToolService,
+        private canvas: CanvasService
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
     }
@@ -67,7 +71,10 @@ export class ObjectsPanelComponent {
         ));
         
         this.objects.select(object);
-
+        this.store.dispatch(new SetSliderValue(
+                                    this.canvas.getZoomLevel(object.data.id))
+                            );
+        
         if (!this.store.selectSnapshot(EditorState.dirty)) {
             this.store.dispatch(new OpenPanel(DrawerName.OBJECT_SETTINGS));
         }

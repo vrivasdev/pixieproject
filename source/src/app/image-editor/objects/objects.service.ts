@@ -47,10 +47,6 @@ export class ObjectsService {
             if (obj.data.id === id ){
                 this.canvas.fabric().remove(obj);
                 obj['rename'] = name;
-                // obj['name'] = name;
-                // this.canvas.fabric().add(obj);
-                /*this.canvas.fabric().setActiveObject(obj);
-                this.canvas.render();*/
             }
             updatedObjects.push(obj);
         });

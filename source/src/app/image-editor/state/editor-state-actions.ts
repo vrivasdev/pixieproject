@@ -67,3 +67,8 @@ export class UploadImage {
     static readonly type = '[Editor] Upload image';
     constructor(public isUpload: boolean) {}
 }
+
+export class SetSliderValue {
+    static readonly type = '[Editor] Set Slider value';
+    constructor(public sliderValue: number) {}
+}

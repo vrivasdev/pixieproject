@@ -10,7 +10,7 @@ import {ImportToolValidator} from './import-tool-validator';
 import {UploadedFile} from '../../../../common/uploads/uploaded-file';
 import {openUploadWindow} from '../../../../common/uploads/utils/open-upload-window';
 import {UploadInputTypes} from '../../../../common/uploads/upload-input-config';
-import SampleJson from '../../../../assets/blockobjects_.json';
+import SampleJson from '../../../../assets/blockobjects.json';
 
 @Injectable()
 export class ImportToolService {
@@ -37,7 +37,7 @@ export class ImportToolService {
                         this.openBackgroundImage(file.data).then(obj => resolve(obj));
                     } else {
                         this.openFile(file.data,
-                                      file.extension, 
+                                      file.extension,
                                       options.validate? true : false, 
                                       options.rectBorder? true: false)
                             .then(obj => resolve(obj));
@@ -119,6 +119,10 @@ export class ImportToolService {
         return this.resetEditor().then(() => {
             return this.history.addFromJsonUpload(data);
         });
+    }
+    // Add each zoom layer's object into canvas
+    public openZoomLayers(objects: any): void {
+        objects.forEach(object => this.canvas.addRectangleImagefromURL(object));
     }
 
     public resetEditor(params: {preserveHistory?: boolean} = {}): Promise<any> {

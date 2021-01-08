@@ -31,6 +31,7 @@ import { Settings } from 'common/core/config/settings.service';
 import { SetMapping } from '../state/mapping-state-actions';
 import { UploadState } from '../state/upload-state';
 import { UploadMLS, UploadProfile } from '../state/upload-state-actions';
+import { ZoomState } from '../state/zoom-state';
 
 @Injectable()
 export class HistoryToolService {
@@ -129,7 +130,8 @@ export class HistoryToolService {
             uploadFiles: {
                 uploadProfile: this.store.selectSnapshot(UploadState.getUploadProfile),
                 uploadMLS: this.store.selectSnapshot(UploadState.getUploadMls)
-            }
+            },
+            zoomLayers: this.store.selectSnapshot(ZoomState.getZoomLayers)
         };
     }
 
@@ -153,7 +155,7 @@ export class HistoryToolService {
                // Get map variables and transform them into profile data
                this.mappingService
                    .mapProfileVariables(canvas.objects)
-                   .then(objects => {                       
+                   .then(objects => {
                         if (!this.config.get('pixie.isAdmin')) canvas.objects = objects;
 
                         this.canvas.fabric().loadFromJSON(canvas, () => {
@@ -183,7 +185,7 @@ export class HistoryToolService {
                                 (obj as Image).applyFilters();
                             } 
                         });
-                    });
+                    });  
            });
        });
     }
