@@ -70,9 +70,9 @@
         </button>
         <span class="name design-title" trans> {{title}} </span>
     </div>
-    <div class="center" *ngIf="(isMlsImage$ | async)">
-        <div trans>Zoom Image</div>
-        <mat-slider (input)="zoomImage($event)" min="0" max="2" step="0.1" [value]="(sliderValue$ | async)"></mat-slider>
+    <div class="center" *ngIf="(isProfileImage$ | async) || (isMlsImage$ | async)">
+        <div trans>Zoom Image</div>        
+        <mat-slider (input)="zoomImage($event)" min="0" max="8" step="0.1" [value]="(sliderValue$ | async)"></mat-slider>
     </div> 
     <div class="center" *ngIf="config.get('pixie.ui.allowZoom')">
         <button mat-icon-button (click)="zoomOut()">

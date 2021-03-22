@@ -12,6 +12,7 @@ import {ImportToolService} from '../../../image-editor/tools/import/import-tool.
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
 import {EditorState} from '../../../image-editor/state/editor-state';
+import {SetSliderValue} from '../../../image-editor/state/editor-state-actions';
 import {ApplyChanges, CancelChanges, CloseEditor, CloseForePanel} from '../../../image-editor/state/editor-state-actions';
 import {HistoryNames} from '../../../image-editor/history/history-names.enum';
 import {HistoryState} from '../../state/history/history.state';
@@ -42,6 +43,7 @@ export class ToolbarComponent implements AfterViewInit {
     @Select(HistoryState.canRedo) canRedo$: Observable<boolean>;
     @Select(EditorState.profilePicture) profilePicture$: Observable<boolean>;
     @Select(EditorState.isMlsImage) isMlsImage$: Observable<boolean>;
+    @Select(EditorState.isProfileImage) isProfileImage$: Observable<boolean>;
     @Select(EditorState.isUploadImage) isUploadImage$: Observable<boolean>;
     @Select(EditorState.getSliderValue) sliderValue$: Observable<boolean>;
 
@@ -67,24 +69,19 @@ export class ToolbarComponent implements AfterViewInit {
         private store: Store,
         private importToolService: ImportToolService,
         public dialog: MatDialog,
-        private activeObject: ActiveObjectService
+        private activeObject: ActiveObjectService,
     ) {
         this.isAdmin = config.get('pixie.isAdmin');
         this.hasId = config.get('pixie.id') ? true: false;
         this.profileView = config.get('pixie.profileView');
         this.title = localStorage.getItem('flyerName')? 
                      localStorage.getItem('flyerName') : '' ;
-        this.tmpZoom = 1;
+        this.tmpZoom = 0;
         const tab = localStorage.getItem('main-tab');
          // Type of save 
         if (!this.config.get('pixie.isAdmin') && tab === '#user-templates') {
             this.type = Type.SAVEAS;
         }
-        /*if (!this.config.get('pixie.isAdmin')) {
-            const value = this.store.selectSnapshot(EditorState.getSliderValue);
-            this.sliderValue = value? value : this.sliderValue;
-            console.log('___ slider value ___', value);
-        }*/
     }
 
     ngAfterViewInit() {
@@ -226,14 +223,20 @@ export class ToolbarComponent implements AfterViewInit {
     }
 
     public zoomImage(event: any) {
-        const active: any = this.activeObject.get();                
+        const active: any = this.activeObject.get();
+        const currentZoom = this.canvas.getZoomLevel(active.data.id);
         
+        console.log('__ zoom image ____');
         active.enableCache(false);
-        
-        if (event.value > this.tmpZoom) active.zoomIn();
-        else active.zoomOut(); 
 
-        this.tmpZoom = event.value;
+        if (event.value > currentZoom) active.zoomIn();
+        else active.zoomOut();
+
+        this.tmpZoom = event.value; 
         this.canvas.render();
+
+        this.store.dispatch(new SetSliderValue(
+            this.canvas.getZoomLevel(active.data.id))
+        );
     }
 }

@@ -86,7 +86,8 @@ export class ObjectsService {
     /**
      * Select specified object.
      */
-    public select(object: Object) {
+    public select(object: Object) {        
+        console.log('__selected object _____', object);
         this.canvas.state.fabric.setActiveObject(object);
         this.canvas.state.fabric.requestRenderAll();
     }

@@ -51,6 +51,9 @@ export class ImageEditorComponent implements OnInit {
     private yMove: number;
     private isMoveDown: boolean = false;
     private lastX: number = null;
+    private sumX: number = 0;
+    private sumY: number = 0;
+    private id: string = null;
 
     @Select(EditorState.controlsPosition) controlsPosition$: Observable<ControlPosition>;
     @Select(EditorState.toolbarHidden) toolbarHidden$: Observable<boolean>;
@@ -274,7 +277,7 @@ export class ImageEditorComponent implements OnInit {
                                             textLink: 'picmonkey.com'
                                         }
                                     }
-                                );                                
+                                );
                                 msgRef.afterClosed().subscribe(() => {
                                     this.importToolService
                                         .openUploadDialog({validate: true, rectBorder: true})
@@ -284,8 +287,9 @@ export class ImageEditorComponent implements OnInit {
                                             );
                                             this.objects.syncObjects();
                                             this.store.dispatch(new UploadImage(true));
+                                            this.history.replaceCurrent();
                                         });
-                                });                                
+                                });
                             }
                         }
                     });
@@ -296,22 +300,24 @@ export class ImageEditorComponent implements OnInit {
     onClick(event: MouseEvent) {
         if (!this.config.get('pixie.isAdmin')) {
             const element:any = event;
-            const active: any = this.activeObject.get();
-            const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
-            let isProfile: boolean = false;
-            // if agent clicks on profile image
-            if (active.type === 'image' && 
-                mappedObjects.some(object => object.type === 'profile' && 
-                                             object.objectId === active.data.id)) { 
-                isProfile = true;
-            } 
-            this.store.dispatch(new SetProfilePicture(isProfile));
-            // if agent clicks on canvas
-            if (element.tagName === 'CANVAS') {
-                if (!this.floatingPanels.panelIsOpen('objects')) {
-                    this.floatingPanels.toggleObjects();
+            if (element.className.trim() === 'upper-canvas') {
+                const active: any = this.activeObject.get();
+                const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
+                let isProfile: boolean = false;
+                // if agent clicks on profile image
+                if (active.type === 'image' && 
+                    mappedObjects.some(object => object.type === 'profile' && 
+                                                object.objectId === active.data.id)) { 
+                    isProfile = true;                    
+                } 
+                this.store.dispatch(new SetProfilePicture(isProfile));
+                // if agent clicks on canvas
+                if (element.tagName === 'CANVAS') {
+                    if (!this.floatingPanels.panelIsOpen('objects')) {
+                        this.floatingPanels.toggleObjects();
+                    }
                 }
-            }
+            }            
         }
     }
 
@@ -337,13 +343,31 @@ export class ImageEditorComponent implements OnInit {
         const mappedObjects = this.store.selectSnapshot(MappingState.getMappingObjects);
 
         if (!this.config.get('pixie.isAdmin') && active) {
-            if (this.isMoveDown) {
+            if (this.isMoveDown) {                
                 if (mappedObjects.some(object => // if was mapped on admin side
                     (object.objectId === active.data.id) && 
                     (object.type === 'profile' || object.type === 'mls'))) {
-                        active.enableCache(false);
-                        active.moveImage(event.movementX, event.movementY);
+                        
+                        if ((!this.id) || (this.id === active.data.id)) {
+                            if (!this.id) this.id = active.data.id;
+                            
+                            this.sumY = this.sumY + event.movementY;
+                            this.sumX = this.sumX + event.movementX;
 
+                        } else if (this.id !== active.data.id){
+                            this.id = active.data.id;
+
+                            this.sumX = 0;
+                            this.sumY = 0;
+                        }
+
+                        if ('enableCache' in active) active.enableCache(false);
+                        if ('moveImage' in active ) {                            
+                            active.moveImage(event.movementX,
+                                             event.movementY,
+                                             this.sumX,
+                                             this.sumY);
+                        }
                         this.canvasState.fabric.requestRenderAll();
                     } 
             }

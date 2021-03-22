@@ -39,9 +39,10 @@ export class MappingState {
     updateObjectId(ctx: StateContext<MappingStateModel>, action: UpdateObjectId){
         const objectsState = ctx.getState().objects;
         const tempObject = objectsState.filter(object => object.objectId === action.objectId);
-        let objects: any;
         
         if (tempObject.length) {
+            let objects: any = [];
+            
             objects = objectsState.filter(object => object.objectId !== action.objectId);
             objects.push(
                 {
@@ -51,7 +52,7 @@ export class MappingState {
                    map: tempObject[0].map
                 }
             );
+            ctx.patchState({objects: objects});
         }
-        ctx.patchState({objects: objects});
     }
 }

@@ -15,6 +15,8 @@ type ValidFormats = 'png'|'jpeg'|'json';
 
 @Injectable()
 export class ExportToolService {
+    private host: string;
+    private hasBar: boolean;
     constructor(
         private canvas: CanvasService,
         private cropzone: CropZoneService,
@@ -23,7 +25,12 @@ export class ExportToolService {
         private http: HttpClient,
         private watermark: WatermarkToolService,
         private toast: Toast
-    ) {}
+    ) {
+        this.host = window.location.href.includes('devven2.avantiway.com/vrivas')? 
+                    window.location.href.substring(0, 57) : 
+                    window.location.protocol + '//' + window.location.hostname;
+        this.hasBar = (this.host.split('')[window.location.pathname.length-1] !== "/");
+    }
 
     public getDefault(key: 'name'|'format'|'quality') {
         return this.config.get('pixie.tools.export.default' + ucFirst(key));
@@ -105,15 +112,15 @@ export class ExportToolService {
         data = this.getJsonState();
         
         this.watermark.remove();
-        
+
         if ( ! data) return;
 
         if (localStorage.getItem('isNewDesign') === 'true') { // if user saves template without tabs change
             this.saveTemplate(data, raw_json_back, templateName, saveType, categoryId, share);
-        } else { // if user saves template with tabs change
+        } else { // if user saves template with tabs change            
             fetch((globalUrl !== '/') ? `${host}/${service}/${otherTab}` : `${host}${service}/${otherTab}`)
             .then(resp => resp.json())
-            .then(json => {
+            .then(json => {                
                 if (tab === 'front') {
                     raw_json = data;
                     raw_json_back = json.data;
@@ -160,9 +167,6 @@ export class ExportToolService {
             const profile = this.config.get('pixie.profileView');
     
             params[`${temp}name`] = templateName;
-
-            console.log('____SAVE PARAMS ____', JSON.stringify(params));
-            debugger;
 
             fetch(
                 `${this.config.get('pixie.saveUrl')}/${profile}`,
@@ -247,9 +251,6 @@ export class ExportToolService {
         if (share.length) data['share'] = share;
 
         const profile = this.config.get('pixie.profileView');
-        
-        console.log('___ UPDATE PARAMS ____', data);
-        debugger;
 
         fetch(
             `${this.config.get('pixie.updateUrl')}/${profile}`,
@@ -265,7 +266,6 @@ export class ExportToolService {
         )
         .then(res => res.json())
         .then(response => {
-            console.log('___ UPDATE SUCCESS _______');
             if (response.code === 404) {
                 document.getElementById('gif-loader').style.display = 'none';
                 alert(response.message);
@@ -372,8 +372,13 @@ export class ExportToolService {
         return newSVG;
     }
 
-    private getJsonState(): string {
+    public getJsonState(): string {
         return JSON.stringify(this.history.getCurrentCanvasState());
+    }
+
+    public getCanvasState(): void {
+        console.log('___ canvas state ____', this.canvas.fabric().toJSON(['crossOrigin', 'name', 'data']));
+        console.log('____ history state ____', this.history.getCurrentCanvasState());
     }
 
     private prepareCanvas() {

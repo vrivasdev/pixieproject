@@ -10,6 +10,7 @@ import {
     SetZoom,
     SetProfilePicture,
     SetMlsImage,
+    SetProfileImage,
     UploadImage,
     SetSliderValue
 } from './editor-state-actions';
@@ -52,6 +53,7 @@ interface EditorStateModel {
     uploadProfile?: boolean;
     profilePicture?: boolean;
     isMlsImage?: boolean;
+    isProfileImage?: boolean;
     isUpload?: boolean;
     sliderValue?: number;
 }
@@ -73,6 +75,7 @@ interface EditorStateModel {
         zoom: 100,
         profilePicture: false,
         isMlsImage: false,
+        isProfileImage: false,
         isUpload: false,
         sliderValue: 5
     },
@@ -166,6 +169,11 @@ export class EditorState implements NgxsOnInit {
     @Selector()
     static isMlsImage(state: EditorStateModel) {
         return state.isMlsImage;
+    }
+
+    @Selector()
+    static isProfileImage(state: EditorStateModel) {
+        return state.isProfileImage;
     }
 
     @Selector()
@@ -267,6 +275,11 @@ export class EditorState implements NgxsOnInit {
     @Action(SetMlsImage)
     setMlsImage(ctx: StateContext<EditorStateModel>, {isMlsImage}: SetMlsImage) {
         ctx.patchState({isMlsImage});
+    }
+
+    @Action(SetProfileImage)
+    setProfileImage(ctx: StateContext<EditorStateModel>, {isProfileImage}: SetProfileImage) {
+        ctx.patchState({isProfileImage});
     }
 
     @Action(UploadImage)

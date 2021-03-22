@@ -63,6 +63,11 @@ export class SetMlsImage {
     constructor(public isMlsImage: boolean) {}
 }
 
+export class SetProfileImage {
+    static readonly type = '[Editor] Is Profile image';
+    constructor(public isProfileImage: boolean) {}
+}
+
 export class UploadImage {
     static readonly type = '[Editor] Upload image';
     constructor(public isUpload: boolean) {}

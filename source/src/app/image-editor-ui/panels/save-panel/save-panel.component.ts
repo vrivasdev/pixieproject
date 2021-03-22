@@ -126,6 +126,9 @@ export class SavePanelComponent {
         const share = !this.agents.length && this.savePanel.validateEmail(val.agentCtrl)?
                        [val.agentCtrl] : this.agents;
         this.submitted = true;
+
+        console.log('__ json state ____', this.exportTool.getCanvasState());
+        debugger;
         
         if (this.saveForm.invalid) {
             return;

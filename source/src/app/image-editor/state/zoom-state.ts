@@ -20,7 +20,8 @@ export interface ZoomStateModel {
             type: string,
             zoomLevel: number,
             movementX: number,
-            movementY: number
+            movementY: number,
+            id: string
         }
     ]
 }
@@ -39,14 +40,15 @@ export class ZoomState {
     setZoomLayer(ctx: StateContext<ZoomStateModel>, action: SetZoomLayer) {
         const layersState = ctx.getState().zoomLayers;
         let layers;
-        if (layersState.some(object => object.data.id === action.data.id)) {
-            layers = layersState.filter(object => object.data.id !== action.data.id);
+
+        if (layersState.some(object => object.data.id === action.id)) {
+            layers = layersState.filter(object => object.data.id !== action.id);
             layers.push(action);
         } else {
             layers = layersState;
             layers.push(action);
         }
-        console.log('____ set zoom layers ____', layers);
+        
         ctx.patchState({zoomLayers: layers});
     }
     @Action(UpdateZoom)

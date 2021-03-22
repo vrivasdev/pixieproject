@@ -14,7 +14,8 @@ export class SetZoomLayer {
         public name?: string,
         public type?: string,
         public movementX?: number,
-        public movementY?: number
+        public movementY?: number,
+        public id?: string,
     ) {}
 }
 

@@ -64,7 +64,7 @@ export class ObjectsPanelComponent {
 
     public selectObject(object: Object) {
         const mappedObjs: any = this.store.selectSnapshot(MappingState.getMappingObjects);
-        
+
         this.store.dispatch(new SetMlsImage(
             mappedObjs.some(obj => obj.type === 'mls' && obj.objectId === object.data.id)?
             true : false

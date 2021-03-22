@@ -39,15 +39,14 @@ export class DialogImages {
         this.canvas.updateProfileImage(active, imgUrl)
                    .then(objectId => {
                        // sync canvas' objects with panel
-                       this.objects.syncObjects(); 
+                       this.objects.syncObjects();
                        // reorder first label inserted
                        const allObj = this.objects.getAll();
-                    
+                       
                        moveItemInArray(allObj, 0, position);
-
+                       
                        this.objects.getById(allObj[position].data.id).moveTo(allObj.length - position -1);
-                       this.canvasState.fabric.requestRenderAll();
-
+                       this.canvasState.fabric.requestRenderAll();               
                    })
                    .catch(error => console.log('Update profile image error'));
     }

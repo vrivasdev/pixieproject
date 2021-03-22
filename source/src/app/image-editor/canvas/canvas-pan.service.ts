@@ -86,8 +86,9 @@ export class CanvasPanService {
         });
         
         this.state.fabric.on('object:scaling', event => {
-            const e: any = event.e;
-            if (!this.isScale) {
+            const e: any = event.e;            
+            console.log('____ scaling ____', event);
+            if (!this.isScale) {                
                 if ('screenX' in e) this.clientX = e.clientX; 
                 if ('screenY' in e) this.clientY = e.clientY;                
                 this.isScale = true;
